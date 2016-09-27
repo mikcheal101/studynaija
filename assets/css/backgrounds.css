@@ -1,0 +1,92 @@
+.background-image {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.background-right-text {
+    margin-top: calc(80vh - 300px);
+    margin-left: 25px;
+    margin-right: 25px;
+    color: #FFFFFF;
+}
+
+.background-right-text p {
+    font-size: 12px;
+    font-family: LatoLatin;
+}
+
+.opacity-0 { opacity: 0.0!important; }
+.opacity-1 { opacity: 0.1!important; }
+.opacity-2 { opacity: 0.2!important; }
+.opacity-3 { opacity: 0.3!important; }
+.opacity-4 { opacity: 0.4!important; }
+.opacity-5 { opacity: 0.5!important; }
+.opacity-6 { opacity: 0.6!important; }
+.opacity-7 { opacity: 0.7!important; }
+.opacity-8 { opacity: 0.8!important; }
+.opacity-9 { opacity: 0.9!important; }
+
+.background-80 { background-size: 80%!important;}
+.background-70 { background-size: 70%!important;}
+
+.no-background-color { background-color: rgba(0, 0, 0, 0.0);}
+
+.background-brand {background: rgb(151, 15, 43);}
+.background-brand-02 {background-color: rgba(151, 15, 43, 0.2)!important;}
+
+.background-white { background-color: rgba(255, 255, 255, 0.7); }
+.background-white-2 { background-color: rgba(255, 255, 255, 0.2); }
+
+.background-black { background-color: rgba(0, 0, 0, 0.7); }
+.background-black-2 { background-color: rgba(0, 0, 0, 0.2); }
+.background-black-1 { background-color: rgba(0, 0, 0, 0.1); }
+
+.background-orange { background-color: rgba(254, 101, 5, 0.7); }
+.background-brown { background-color: rgba(254, 208, 159, 0.7); }
+.background-yellow { background-color: rgba(254, 252, 216, 0.7); }
+
+.background-orange-complete { background-color: #ff6721; }
+.background-brown-complete { background-color: #fed09f; }
+.background-yellow-complete { background-color: #fefcd8; }
+.background-white-complete { background-color: rgb(255, 255, 255); }
+.background-ash-complete { background-color: #606060; }
+.background-black-complete { background-color: rgb(0, 0, 0); }
+.background-light-brown-complete { background-color: #fed09f; }
+
+.background-01 { background-image: url("../images/bg1.jpg"); }
+.background-02 { background-image: url("../images/bg2.jpg"); }
+.background-03 { background-image: url("../images/bg3.jpg"); }
+.background-04 { background-image: url("../images/bg4.jpg"); }
+.background-05 { background-image: url("../images/bg5.jpg"); }
+.background-06 { background-image: url("../images/bg6.jpg"); }
+
+.background-07 { background-image: url("../images/bg-1.jpg"); }
+.background-08 { background-image: url("../images/bg-2.jpg"); }
+.background-09 { background-image: url("../images/bg-3.jpg"); }
+.background-10 { background-image: url("../images/bg-4.jpg"); }
+.background-11 { background-image: url("../images/bg-5.jpg"); }
+.background-12 { background-image: url("../images/bg-6.jpg"); }
+.background-13 { background-image: url("../images/bg-7.jpg"); }
+.background-14 { background-image: url("../images/bg-8.jpg"); }
+.background-15 { background-image: url("../images/bg-9.jpg"); }
+.background-16 { background-image: url("../images/bg-10.jpg"); }
+
+
+.background-17 { background: #fff url("../images/background-01.png") repeat left top!important; }
+.background-18 { background: url("../images/background-02.jpg") 0 0 repeat!important; }
+
+
+.background-19 { background-image: url("../assets/backgrounds/19.jpg"); }
+
+
+li.myHover:hover a {
+	color: rgb(151, 15, 43)!important;
+	font-weight: bold;
+	font-size: 20px!important;
+}
+
+div.ash_hover:hover {
+	background-color:#FCFCFC!important;
+	border: 1px solid #FFFFFF!important;
+}

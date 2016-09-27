@@ -1,0 +1,16 @@
+{
+    "name": "ingenious/bootstrap-multiselect",
+    "description": "Fork of Bootstrap Multiselect Plugin By David Stutz",
+    "type": "library",
+    "require": {
+        "twbs/bootstrap-sass": "^3.3@dev"
+    },
+    "license": "Apache 2.0",
+    "authors": [
+        {
+            "name": "David Stutz",
+            "email": "email@email.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}

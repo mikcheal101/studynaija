@@ -1,0 +1,21 @@
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .* index.php/$0 [PT,L]
+
+<ifmodule deflate_module>
+    DeflateCompressionLevel 1
+    DeflateBufferSize 8096
+    DeflateMemLevel 8
+    DeflateWindowSize 8
+
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+	AddOutputFilterByType DEFLATE text/php
+</ifmodule>
+
+<FilesMatch "\.(ico|pdf|jpg|jpeg|png|gif|html|htm|xml|txt|xsl|php|woff|woff2|ttf|svg|css|js)$">
+	Header set Cache-Control "max-age=31536050"
+</FilesMatch>
