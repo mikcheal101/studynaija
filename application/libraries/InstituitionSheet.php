@@ -52,3 +52,5 @@ class Instituition {
 	public $website;
 	public $type;
 }
+
+?>

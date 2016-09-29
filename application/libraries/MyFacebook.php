@@ -1,11 +1,12 @@
 <?php
-#defined('BASEPATH') OR exit('No direct script access allowed');
-
+defined('BASEPATH') OR exit('No direct script access allowed');
+/*
 if (session_status() == PHP_SESSION_NONE) {
 	echo "restarting";
     session_start();
 }
-require_once __DIR__."/Facebook/autoload.php";
+*/
+require_once "Facebook/autoload.php";
 
 class Myfacebook {
 	
@@ -52,3 +53,5 @@ class Myfacebook {
 		return null;
 	}	
 }
+
+?>

@@ -1151,3 +1151,5 @@ class PHPExcel
         return $this->uniqueID;
     }
 }
+
+?>
