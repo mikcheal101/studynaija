@@ -223,7 +223,7 @@ class UsersController extends CI_Controller {
 			$user->username		= $this->input->post('username');
 			$user->password	 	= md5($this->input->post('password'));
 			$result = $this->usersModel->authenticate($user);
-			
+			var_dump ($result); exit ();
 			if (count($result) > 0) {
 				# check user status
 				if ($result->status == SUSPENDED_ACCOUNT) {
