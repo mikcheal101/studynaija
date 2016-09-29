@@ -306,7 +306,8 @@ class AdminController extends CI_Controller {
 	}
 	
 	private function verifyUser () {
-		var_dump ($this->session->user);
+		var_dump ($this->session);
+		var_dump ($_SESSION);
 		exit ();
 		$usertype = (int)$this->session->user->usertype;
 		if ($this->session->user === NULL) {
