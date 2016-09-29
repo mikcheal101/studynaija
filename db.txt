@@ -1,6 +1,16 @@
-PGUSER=postgres PGPASSWORD=mikkytrionze 
-heroku pg:push studynaija DATABASE_URL='postgres://mycvfpwuihrnoc:Yz8vHgOvQYTStuqdaYnXJ0ed7Z@ec2-50-17-214-132.compute-1.amazonaws.com:5432/d8tderrvb132oj' --app studynaija
+pg_dump -Ft [DATABASE_NAME] > [TAR_FILE]
+heroku pg:psql --app studynaija
+pg_restore -U [username] -d DATABASE_URL --no-owner
+pg_restore -U [username] -d [DATABASE_NAME] --no-owner --password -h [HOST_NAME] -p [PORT_NUMBER] [FILENAME]
 
-heroku pg:push studynaija DATABASE --app studynaija
-PGUSER=postgres PGPASSWORD=mikkytrionze 
+--table=table 
+
+
+pg_dump -Ft --no-owner [DATABASE_NAME] > [TAR_FILE]
+heroku pg:psql --app studynaija
+pg_restore -U mycvfpwuihrnoc -d DATABASE_URL --no-owner
+
+pg_restore --clean --table=ci_sessions --host=ec2-50-17-214-132.compute-1.amazonaws.com --port=5432 -Ft --verbose --no-acl --username=mycvfpwuihrnoc --dbname=d8tderrvb132oj --no-owner -table=ci_sessions --password ci_sessions
+
+Yz8vHgOvQYTStuqdaYnXJ0ed7Z
 heroku pg:push studynaija DATABASE_URL --app studynaija
