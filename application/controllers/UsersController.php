@@ -26,7 +26,7 @@ class UsersController extends CI_Controller {
 		$this->data['passporterror'] = "";
 		$this->data['user'] = $this->me = ($this->session->user !== null)?$this->usersModel->getApplicant($this->session->user->id):array();
 		
-		$this->facebook = $this->myfacebook;
+		$this->facebook = $this->my_facebook;
 	}
 	
 	
