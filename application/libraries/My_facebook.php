@@ -3,7 +3,7 @@
 
 require_once "Facebook/autoload.php";
 
-class Myfacebook {
+class My_facebook {
 	
 	var $facebook		= null;
 	var $helper			= null;
