@@ -242,14 +242,7 @@ class UsersController extends CI_Controller {
 					# DIRECT TO ACCOUNT PAGE
 					switch($result->usertype) {
 						case SUPER_ADMIN:
-							var_dump ($result); 
-							echo "<hr>";
-							var_dump ($this->session);
-							echo "<hr>";
-							var_dump ($this->session->user);
-							exit ();
 							redirect('admin');
-							
 							break;
 						case ADMINISTRATOR:
 							redirect('admin');
