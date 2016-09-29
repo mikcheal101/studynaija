@@ -70,10 +70,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
-$active_group = 'default';
+$active_group = 'heroku';
 $query_builder = TRUE;
 
-$db['default'] = array(
+$db['heroku'] = array(
+	'dsn'	=> '',
+	'hostname' => 'ec2-50-17-214-132.compute-1.amazonaws.com',
+	'username' => 'mycvfpwuihrnoc',
+	'password' => 'Yz8vHgOvQYTStuqdaYnXJ0ed7Z',
+	'database' => 'd8tderrvb132oj',
+	'dbdriver' => 'postgre',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => TRUE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['localhost'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => 'mikkytrionze',
@@ -94,18 +116,4 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-$db['localhost']['hostname'] = 'localhost';
-$db['localhost']['username'] = 'mikkytrionze';
-$db['localhost']['password'] = 'mikkytrionze';
-$db['localhost']['database'] = 'school';
-$db['localhost']['dbdriver'] = 'mysql';
-$db['localhost']['dbprefix'] = '';
-$db['localhost']['pconnect'] = TRUE;
-$db['localhost']['db_debug'] = FALSE;
-$db['localhost']['cache_on'] = FALSE;
-$db['localhost']['cachedir'] = '';
-$db['localhost']['char_set'] = 'utf8';
-$db['localhost']['dbcollat'] = 'utf8_general_ci';
-$db['localhost']['swap_pre'] = '';
-$db['localhost']['autoinit'] = TRUE;
-$db['localhost']['stricton'] = FALSE;
+

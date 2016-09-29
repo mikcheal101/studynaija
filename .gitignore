@@ -1,0 +1,7 @@
+# directories to ignore
+/vendor/
+
+
+# files to ignore when updating
+.htaccess
+/application/config/config.php
