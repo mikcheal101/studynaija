@@ -68,7 +68,7 @@ class AdminController extends CI_Controller {
 	}
 	
 	public function uploadExcelDisciplines () {
-		#if ($this->upload->)
+		//if ($this->upload->)
 	}
 	
 	public function dropFaculty () {
@@ -306,6 +306,8 @@ class AdminController extends CI_Controller {
 	}
 	
 	private function verifyUser () {
+		var_dump ($this->session->user);
+		return;
 		$usertype = (int)$this->session->user->usertype;
 		if ($this->session->user === NULL) {
 			redirect('users/signIn');
