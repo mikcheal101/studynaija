@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database', 'email', 'form_validation', 'upload', 'session', 'paystack', 'MyFacebook');
+$autoload['libraries'] = array('database', 'email', 'form_validation', 'upload', 'session', 'paystack');
 
 /*
 | -------------------------------------------------------------------
@@ -97,7 +97,7 @@ $autoload['helper'] = array('url', 'file', 'html', 'form', 'cookie', 'captcha');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('facebook');
+$autoload['config'] = array();
 
 /*
 | -------------------------------------------------------------------
