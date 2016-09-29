@@ -71,6 +71,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | the query builder class.
 */
 $active_group = 'heroku';
+#$active_group = 'localhost';
 $query_builder = TRUE;
 
 $db['heroku'] = array(
