@@ -1,0 +1,6 @@
+PGUSER=postgres PGPASSWORD=mikkytrionze 
+heroku pg:push studynaija DATABASE_URL='postgres://mycvfpwuihrnoc:Yz8vHgOvQYTStuqdaYnXJ0ed7Z@ec2-50-17-214-132.compute-1.amazonaws.com:5432/d8tderrvb132oj' --app studynaija
+
+heroku pg:push studynaija DATABASE --app studynaija
+PGUSER=postgres PGPASSWORD=mikkytrionze 
+heroku pg:push studynaija DATABASE_URL --app studynaija
