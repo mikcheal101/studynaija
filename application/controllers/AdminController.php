@@ -68,7 +68,7 @@ class AdminController extends CI_Controller {
 	}
 	
 	public function uploadExcelDisciplines () {
-		var_dump ($_FILES);
+		#if ($this->upload->)
 	}
 	
 	public function dropFaculty () {

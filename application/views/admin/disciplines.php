@@ -33,16 +33,15 @@
 							</div>
 						</div>
 					</div>
-				<?=form_close();?>
+				</form>
 			</div>
-			
 			
 			<div class="col-sm-6 p-l-05 p-r-00">
 				<div class="panel m-t-00">
 					<div class="panel-heading text-ash-01 text-right p-b-10 flex">
 						<input type="search" ng-model="search_discipline" class="form-control" />
 						<i class="btn fa fa-download"></i>
-						<i class="btn fa fa-upload"></i>
+						<i class="btn fa fa-upload" data-toggle="modal" data-target="#upload"></i>
 						<i class="btn fa fa-print"></i>
 						<div class="clearfix"></div>
 					</div>
@@ -73,6 +72,60 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" role="dialog" id="upload"
+	tabindex="-1"  aria-labelledby="LdialogLabel">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			
+			<!-- header -->
+			<div class="modal-header">
+				<button class="close text-600" data-dismiss="modal" ng-click="disciplineUpload.clear ();">&times;</button>
+				<h4 class="modal-title text-primary text-600">Upload Excel Sheet [Disciplines]</h4>
+			</div>
+			
+			<!-- body -->
+			<div class="modal-body text-center">
+				
+				<div ng-show="disciplineUpload.file.name.length > 0">
+					Uploading... 
+					<p ng-bind="disciplineUpload.file.name" class="text-600 text-success"></p>
+					<p class="text-primary">
+						<span ng-bind="disciplineUpload.file_size"></span> KB
+					</p>
+				</div>
+				<br/>
+				<span ng-hide="disciplineUpload.status === 100"
+					class="btn btn-info btn-sm text-uppercase text-600" ng-click="disciplineUpload.upload ();"
+					ngf-max-total-size="10MB" ngf-select="disciplineUpload.upload ($file);" 
+					ng-model="disciplineUpload.file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+						application/vnd.ms-excel">
+					select file to upload
+				</span>
+				<span ng-show="disciplineUpload.status === 100" 
+					class="btn btn-danger btn-sm text-uppercase text-600" data-dismiss="modal">
+					close
+				</span>
+				<br />
+				<br />
+				<br />
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped progress-bar-success active" 
+						aria-valuenow="{{disciplineUpload.status}}" aria-valuemin="0" aria-valuemax="100" 
+						role="progressbar" ng-style="{'width':disciplineUpload.status+'%'}">
+						<span ng-bind="disciplineUpload.status"></span>%
+					</div>
+				</div>
+			</div>
+			
+			<!-- footer 
+			<div class="modal-footer">
+				<span class="btn btn-sm btn-success text-600">commit changes</span>
+			</div>
+			-->
 		</div>
 	</div>
 </div>

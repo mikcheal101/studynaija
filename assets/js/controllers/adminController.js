@@ -837,6 +837,43 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 		}
 	};
 	
+	$scope.disciplineUpload = {};
+	
+	$scope.disciplineUpload.upload = function ($file) {
+		if ($file) {
+			$scope.disciplineUpload.file = $file;
+			$scope.disciplineUpload.file_size = Math.round ($scope.disciplineUpload.file.size / 1000);
+			Upload.upload ({
+				url : 'uploadExcelDisciplines',
+				data : {
+					file: $file
+				}
+			})
+			.then (
+				function (succ) {
+					console.log (succ);
+				},
+				function (err) {
+					console.error (err);
+				},
+				function (prog) {
+					$scope.disciplineUpload.status = Math.round ((prog.loaded / prog.total) * 100) - 10;
+				}
+			);
+		}
+	};
+	
+	$scope.disciplineUpload.clear = function () {
+		$scope.disciplineUpload.status = 0;
+		$scope.disciplineUpload.file = {};
+	};
+	
+	$scope.disciplineUpload.status = 0;
+	$scope.disciplineUpload.file = {name:''};
+	$scope.disciplineUpload.file_size = 0;
+	
+	
+	
 	$scope.profile 	= {};
 	$scope.upload 	= {};
 	
