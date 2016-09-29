@@ -7,7 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require_once __DIR__."/Facebook/autoload.php";
 
-class MyFacebook {
+class Myfacebook {
 	
 	var $facebook		= null;
 	var $helper			= null;
