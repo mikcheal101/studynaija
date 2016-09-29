@@ -4,3 +4,4 @@
 
 # files to ignore when updating
 .htaccess
+/application/config/database.php
