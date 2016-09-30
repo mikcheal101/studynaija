@@ -23,9 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://studynaija.herokuapp.com';
-#$config['base_url'] = 'http://localhost:81/ngschools';
-#$config['my_url'] = '';
+$config['base_url'] = ($_SERVER['SERVER_NAME'] === "localhost") ?'http://localhost:81/ngschools' : 'https://studynaija.herokuapp.com';
+
 
 /*
 |--------------------------------------------------------------------------
@@ -373,7 +372,6 @@ $config['sess_driver'] 			= 'files';
 $config['sess_cookie_name'] 	= 'ci_session';
 $config['sess_expiration'] 		= 7200;
 $config['sess_save_path'] 		= APPPATH ."/tmp";
-$config['sess_expire_on_close']	= FALSE;
 $config['sess_match_ip'] 		= TRUE;
 $config['sess_time_to_update'] 	= 300;
 $config['sess_regenerate_destroy'] = FALSE;

@@ -18,6 +18,63 @@ class AdminModel extends CI_Model {
 		$this->db->update ('users', $data, array ('id'=> $this->session->user->id));
 	}
 	
+	public function excelSaveDisciplines (array $array) {
+		foreach ($array as $discipline) {
+			$course 			= [];
+			$course['name'] 	= $discipline->name;
+			$course['type'] 	= $this->excelDisciplineType ($discipline->type)->id;
+			$course['faculty']	= $this->excelGetFaculty ($discipline->faculty)->id;
+			if (!$this->excelDisciplineExists ($course)) {				
+				$this->db->insert ('static_sub_disciplines', $course);
+			}
+		}
+	}
+
+	private function excelDisciplineExists ($course) {
+		$exists = $this->db->get_where ('static_sub_disciplines', array(
+			'name' => $course['name'],
+			'type'	=> $course['type'],
+			'faculty' => $course['faculty'],
+		))->row ();
+		return isset ($exists);
+	}
+	
+	private function excelGetFaculty ($name = '') {
+		$name = strtolower ($name);
+		$faculty = new stdClass ();
+		if (empty ($name) || is_null ($name)) {
+			$faculty->id = 1;
+			return $type;
+		}
+		
+		$faculty = $this->db->get_where ('static_faculty', array ('name'=>$name))->row ();
+		
+		if (!isset ($faculty)) {
+			$this->db->insert ('static_faculty', array ('name'=>$name));
+			$faculty->id = $this->db->insert_id ();
+			$faculty->name = $name;
+			$faculty->imageUrl = "";
+		}
+		return $faculty;
+	}
+	
+	private function excelDisciplineType ($name = '') {
+		$name = strtolower ($name);
+		$type = new stdClass ();
+		if (empty ($name) || is_null ($name)) {
+			$type->id = 1;
+			return $type;
+		}
+		
+		$type = $this->db->get_where ('static_highest_qualification', array ('name'=>$name))->row ();
+		if (!isset ($type)) {
+			$this->db->insert ('static_highest_qualification', array ('name'=>$name));
+			$type->id = $this->db->insert_id ();
+			$type->name = $name;
+		}
+		return $type;
+	}
+	
 	public function load_instituition_types () {
 		$data = $this->db->get ('instituition_types')->result ();
 		echo json_encode (array ('types'=>$data));

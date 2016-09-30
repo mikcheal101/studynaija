@@ -39,7 +39,7 @@
 			<div class="col-sm-6 p-l-05 p-r-00">
 				<div class="panel m-t-00">
 					<div class="panel-heading text-ash-01 text-right p-b-10 flex">
-						<input type="search" ng-model="search_discipline" class="form-control" />
+						<input type="search" ng-model="search_discipline" class="form-control no-shadow no-radius text-600 text-black" />
 						<i class="btn fa fa-download"></i>
 						<i class="btn fa fa-upload" data-toggle="modal" data-target="#upload"></i>
 						<i class="btn fa fa-print"></i>
@@ -90,30 +90,37 @@
 			<!-- body -->
 			<div class="modal-body text-center">
 				
-				<div ng-show="disciplineUpload.file.name.length > 0">
+				<div ng-show="disciplineUpload.file.name.length > 0" class="m-b-10">
 					Uploading... 
 					<p ng-bind="disciplineUpload.file.name" class="text-600 text-success"></p>
 					<p class="text-primary">
 						<span ng-bind="disciplineUpload.file_size"></span> KB
 					</p>
 				</div>
-				<br/>
+				
 				<span ng-hide="disciplineUpload.status === 100"
-					class="btn btn-info btn-sm text-uppercase text-600" ng-click="disciplineUpload.upload ();"
+					class="btn btn-info btn-sm text-uppercase text-600 p-b-10" ng-click="disciplineUpload.upload ();"
 					ngf-max-total-size="10MB" ngf-select="disciplineUpload.upload ($file);" 
 					ng-model="disciplineUpload.file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
 						application/vnd.ms-excel">
 					select file to upload
 				</span>
-				<span ng-show="disciplineUpload.status === 100" 
-					class="btn btn-danger btn-sm text-uppercase text-600" data-dismiss="modal">
+				
+				<p class="p-t-10 p-b-10 text-red" ng-show="disciplineUpload.error" ng-bind="disciplineUpload.error"></p>
+				
+				<p class="p-t-10 p-b-10 text-success" ng-show="disciplineUpload.success" ng-bind="disciplineUpload.success"></p>
+				
+				<span ng-show="disciplineUpload.status === 100" ng-click="disciplineUpload.clear ();"
+					class="btn btn-sm text-uppercase text-600" 
+					ng-class="[{'btn-danger':disciplineUpload.error}, {'btn-success':disciplineUpload.success}]"
+					data-dismiss="modal">
 					close
 				</span>
-				<br />
-				<br />
-				<br />
-				<div class="progress">
-					<div class="progress-bar progress-bar-striped progress-bar-success active" 
+				<div class="progress m-t-10">
+					<div class="progress-bar progress-bar-striped active" 
+						ng-class="[
+							{'progress-bar-danger':disciplineUpload.error}, 
+							{'progress-bar-success':disciplineUpload.success}]"
 						aria-valuenow="{{disciplineUpload.status}}" aria-valuemin="0" aria-valuemax="100" 
 						role="progressbar" ng-style="{'width':disciplineUpload.status+'%'}">
 						<span ng-bind="disciplineUpload.status"></span>%

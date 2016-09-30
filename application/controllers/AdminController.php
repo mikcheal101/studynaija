@@ -68,7 +68,27 @@ class AdminController extends CI_Controller {
 	}
 	
 	public function uploadExcelDisciplines () {
-		//if ($this->upload->)
+		
+		$name 		= $_FILES['files']['name'] ?? null;
+		$tmp_name 	= $_FILES['files']['tmp_name'] ?? null;
+		$boolean 	= $name !== strtolower ("disciplines.xlsx");
+		
+		if (is_null ($name) || ("disciplines.xlsx") !== strtolower ($name)) {
+			$this->echoJSON (null, 'Invalid File Uploaded! [check file name] ');
+			return ;
+		}
+		
+		$phpexcel = PHPExcel_IOFactory::load ($tmp_name);
+		$data = $this->instituitionsheet
+				->init ($phpexcel)
+				->loadDisciplines ()
+				->getDisciplines ();
+		$this->adminModel->excelSaveDisciplines ($data);
+		
+		$this->echoJSON (
+			$data, 
+			'Disciplines Saved!'
+		);
 	}
 	
 	public function dropFaculty () {
@@ -399,6 +419,22 @@ class AdminController extends CI_Controller {
 			'message' => ($boolean) ? 'WebAdmin Deleted Successfully' : 'Error Deleting Web Admin' ));
 	}
 	
+	
+	private function echoJSON ($array, $message = '') {
+		$this->output->set_header ('Access-Control-Allow-Origin: *');
+		$this->output->set_header ('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+		$this->output->set_header ('Access-Control-Allow-Headers: content-type');
+		$this->output->set_content_type ('application/json');
+				
+		$json = json_encode (
+			array (
+				'status' 	=> (is_null ($array) || empty ($array)) ? 400 : 200,
+				'message' 	=> (is_null ($message) || empty ($message)) ? 'Error Sent' : $message,
+				'object'	=> (is_null ($array) || empty ($array)) ? [] : $array
+			) , JSON_NUMERIC_CHECK
+		);
+		$this->output->set_output ($json);
+	}
 }
 
  

@@ -837,23 +837,38 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 		}
 	};
 	
-	$scope.disciplineUpload = {};
+	$scope.disciplineUpload 		= {};
+	$scope.disciplineUpload.error 	= "";
+	$scope.disciplineUpload.success = "";
 	
-	$scope.disciplineUpload.upload = function ($file) {
+	$scope.disciplineUpload.upload  = function ($file) {
 		if ($file) {
 			$scope.disciplineUpload.file = $file;
 			$scope.disciplineUpload.file_size = Math.round ($scope.disciplineUpload.file.size / 1000);
 			Upload.upload ({
 				url : 'uploadExcelDisciplines',
 				data : {
-					file: $file
+					files: $file
 				}
 			})
 			.then (
 				function (succ) {
-					console.log (succ);
+					var data = succ.data;
+					console.log (data);
+					$scope.disciplineUpload.status = 100;
+					if (data.status === 400) {
+						$scope.disciplineUpload.error = data.message;
+					} else {
+						$scope.disciplineUpload.success = data.message;
+						angular.forEach (data.object, function (param) {
+							console.log (param);
+						});
+					}
+					
 				},
 				function (err) {
+					$scope.disciplineUpload.status = 100;
+					$scope.disciplineUpload.error = 'Compilation Error, Please conact Administrator!';
 					console.error (err);
 				},
 				function (prog) {
@@ -865,6 +880,8 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 	
 	$scope.disciplineUpload.clear = function () {
 		$scope.disciplineUpload.status = 0;
+		$scope.disciplineUpload.error 	= "";
+		$scope.disciplineUpload.success = "";
 		$scope.disciplineUpload.file = {};
 	};
 	

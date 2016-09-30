@@ -135,20 +135,20 @@
 			<div class="col-sm-12 m-t-05 padding-00" ng-init="loadInstituitions ();">
 				<div class="panel">
 					<div class="panel-heading text-ash-01 text-right p-b-10 flex">
-						<input type="search" ng-model="search_instituitions" class="form-control" />
+						<input type="search" ng-model="search_instituitions" class="form-control text-black text-600 no-shadow no-radius" />
 						<i class="btn fa fa-download"></i>
 						<i class="btn fa fa-upload"></i>
 						<i class="btn fa fa-print"></i>
 						<div class="clearfix"></div>
 					</div>
 					<div class="panel-body">
-						<table class="table table-responsive text-600">
+						<table class="table table-responsive table-bordered text-600">
 							<thead>
-								<td width="5%"></td>
-								<td width="" class="text-left font-14 text-600 text-uppercase">Institution's Name</td>
-								<td width="" class="text-right font-14 text-600 text-uppercase">Institution's username</td>
-								<td width="10%" class="text-right font-14 text-600 text-uppercase">Type</td>
-								<td width="5%"  class="text-right"></td>
+								<td width="5%" class="text-center"><i class="fa fa-photo"></i></td>
+								<td width="" class="text-center font-14 text-600 text-uppercase">Institution's Name</td>
+								<td width="" class="font-14 text-600 text-center text-uppercase">Institution's username</td>
+								<td width="10%" class="font-14 text-600 text-center text-uppercase">Type</td>
+								<td width="5%"  class="text-center"><i class="fa fa-cogs"></i></td>
 							</thead>
 							<tbody>
 								<tr dir-paginate="inst in instituitions | filter:search_instituitions | itemsPerPage: 10 ">
@@ -180,6 +180,67 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" role="dialog" id="upload"
+	tabindex="-1"  aria-labelledby="LdialogLabel">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			
+			<!-- header -->
+			<div class="modal-header">
+				<button class="close text-600" data-dismiss="modal" ng-click="disciplineUpload.clear ();">&times;</button>
+				<h4 class="modal-title text-primary text-600">Upload Excel Sheet [Disciplines]</h4>
+			</div>
+			
+			<!-- body -->
+			<div class="modal-body text-center">
+				
+				<div ng-show="disciplineUpload.file.name.length > 0" class="m-b-10">
+					Uploading... 
+					<p ng-bind="disciplineUpload.file.name" class="text-600 text-success"></p>
+					<p class="text-primary">
+						<span ng-bind="disciplineUpload.file_size"></span> KB
+					</p>
+				</div>
+				
+				<span ng-hide="disciplineUpload.status === 100"
+					class="btn btn-info btn-sm text-uppercase text-600 p-b-10" ng-click="disciplineUpload.upload ();"
+					ngf-max-total-size="10MB" ngf-select="disciplineUpload.upload ($file);" 
+					ng-model="disciplineUpload.file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+						application/vnd.ms-excel">
+					select file to upload
+				</span>
+				
+				<p class="p-t-10 p-b-10 text-red" ng-show="disciplineUpload.error" ng-bind="disciplineUpload.error"></p>
+				
+				<p class="p-t-10 p-b-10 text-success" ng-show="disciplineUpload.success" ng-bind="disciplineUpload.success"></p>
+				
+				<span ng-show="disciplineUpload.status === 100" ng-click="disciplineUpload.clear ();"
+					class="btn btn-sm text-uppercase text-600" 
+					ng-class="[{'btn-danger':disciplineUpload.error}, {'btn-success':disciplineUpload.success}]"
+					data-dismiss="modal">
+					close
+				</span>
+				<div class="progress m-t-10">
+					<div class="progress-bar progress-bar-striped active" 
+						ng-class="[
+							{'progress-bar-danger':disciplineUpload.error}, 
+							{'progress-bar-success':disciplineUpload.success}]"
+						aria-valuenow="{{disciplineUpload.status}}" aria-valuemin="0" aria-valuemax="100" 
+						role="progressbar" ng-style="{'width':disciplineUpload.status+'%'}">
+						<span ng-bind="disciplineUpload.status"></span>%
+					</div>
+				</div>
+			</div>
+			
+			<!-- footer 
+			<div class="modal-footer">
+				<span class="btn btn-sm btn-success text-600">commit changes</span>
+			</div>
+			-->
 		</div>
 	</div>
 </div>
