@@ -72,7 +72,7 @@ class AdminController extends CI_Controller {
 			return ;
 		}
 		$phpexcel = PHPExcel_IOFactory::load ($tmp_name);
-		$data = $this->instituitionsheet
+		$data = $this->instituition_sheet
 				->init ($phpexcel)
 				->loadInstituitions ()
 				->getInstituitions ();
@@ -97,7 +97,7 @@ class AdminController extends CI_Controller {
 		}
 		
 		$phpexcel = PHPExcel_IOFactory::load ($tmp_name);
-		$data = $this->instituitionsheet
+		$data = $this->instituition_sheet
 				->init ($phpexcel)
 				->loadDisciplines ()
 				->getDisciplines ();
