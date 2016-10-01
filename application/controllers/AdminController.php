@@ -64,6 +64,24 @@ class AdminController extends CI_Controller {
 	}
 	
 	public function uploadExcelInstituitions () {
+		$name 		= $_FILES['files']['name'] ?? null;
+		$tmp_name 	= $_FILES['files']['tmp_name'] ?? null;
+		$boolean 	= $name !== strtolower ("instituitions.xlsx");
+		if (is_null ($name) || ("instituitions.xlsx") !== strtolower ($name)) {
+			$this->echoJSON (null, 'Invalid File Uploaded! [check file name] ');
+			return ;
+		}
+		$phpexcel = PHPExcel_IOFactory::load ($tmp_name);
+		$data = $this->instituitionsheet
+				->init ($phpexcel)
+				->loadInstituitions ()
+				->getInstituitions ();
+		$this->adminModel->excelSaveInstituition ($data);
+		
+		$this->echoJSON (
+			$data, 
+			'Instituition(s) Saved!'
+		);
 		
 	}
 	

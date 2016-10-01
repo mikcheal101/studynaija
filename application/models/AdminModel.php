@@ -18,6 +18,44 @@ class AdminModel extends CI_Model {
 		$this->db->update ('users', $data, array ('id'=> $this->session->user->id));
 	}
 	
+	public function excelSaveInstituition (array $array) {
+		
+		foreach ($array as $institution) {
+			$school 			= [];
+			$school['name'] 	= $institution->name;
+			if (!is_null ($institution->mail ?? null))
+				$school['mail'] 	=  	$institution->mail;
+			if (!is_null ($institution->email ?? null))
+				$school['email'] 	= 	$institution->email;
+			if (!is_null ($institution->tel ?? null))
+				$school['tel'] 		=  $institution->tel;
+			if (!is_null ($institution->website ?? null))
+				$school['url'] 		= 	$institution->website;
+			if (!is_null ($institution->type ?? null)) {
+				$school['type'] 	=  $institution->type;
+				$school['type'] 	= $this->excelGetInstitutionType ($school['type']);
+			}
+				
+			if (!$this->excelInstitutionExists ($school)) {
+				$this->db->insert ('school', $school);
+			}
+		}
+		
+	}
+	
+	private function excelGetInstitutionType (string $name) {
+		$data =  $this->db->get_where ('instituition_types', array ('name'=>$name))->row ();
+		return isset ($data) ? $data->id : 1;
+	}
+	
+	private function excelInstitutionExists (array $institution):bool {
+		$this->db->where ('name', $institution['name']);
+		if (isset ($institution['email']))
+			$this->db->or_where ('email', $institution['email']);
+		$data = $this->db->get ('school')->row ();
+		return isset ($data);
+	}
+	
 	public function excelSaveDisciplines (array $array) {
 		foreach ($array as $discipline) {
 			$course 			= [];
@@ -30,7 +68,7 @@ class AdminModel extends CI_Model {
 		}
 	}
 
-	private function excelDisciplineExists ($course) {
+	private function excelDisciplineExists (string $course) :bool{
 		$exists = $this->db->get_where ('static_sub_disciplines', array(
 			'name' => $course['name'],
 			'type'	=> $course['type'],
@@ -39,7 +77,7 @@ class AdminModel extends CI_Model {
 		return isset ($exists);
 	}
 	
-	private function excelGetFaculty ($name = '') {
+	private function excelGetFaculty (string $name) {
 		$name = strtolower ($name);
 		$faculty = new stdClass ();
 		if (empty ($name) || is_null ($name)) {
@@ -58,7 +96,7 @@ class AdminModel extends CI_Model {
 		return $faculty;
 	}
 	
-	private function excelDisciplineType ($name = '') {
+	private function excelDisciplineType (string $name) {
 		$name = strtolower ($name);
 		$type = new stdClass ();
 		if (empty ($name) || is_null ($name)) {
@@ -74,6 +112,7 @@ class AdminModel extends CI_Model {
 		}
 		return $type;
 	}
+	
 	
 	public function load_instituition_types () {
 		$data = $this->db->get ('instituition_types')->result ();

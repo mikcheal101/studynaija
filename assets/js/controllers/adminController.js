@@ -189,25 +189,336 @@ app.directive ('checkinstsname', function ($q) {
 
 app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window) {
 	
-	$scope.disciplines 	= [];
-	$scope.users		= [];
+	/** Messages **/
 	$scope.messages		= [];
-	$scope.instituitions= [];
-	$scope.news			= []; // holding all the news items
-	$scope.faculties	= [];
 	
-	$scope.scholarships = [];
-	$scope.webAdmins	= [];
-	$scope.schAdmins	= [];
+	/** States **/
+	$scope.states = [];
+	$scope.loadStates = function () {
+		$.getJSON ('loadStates', function (s) {
+			$scope.states = s.states;
+			$scope.$digest ();
+		});
+	};
+	
+	/** Assign Courses to Instrituitions **/
+	$scope.assign 		= {};
+	$scope.assign.commitChanges = function () {
+		
+	};
+	
+	/** Users **/
 	$scope.users		= [];
-	$scope.disciplineTypes = [];
+	$scope.schoolusertypes = [
+		{
+			id:3, 
+			name:'Institution Super Administrator'
+		}, {
+			id:5, 
+			name:'Institution Sub Administrator'
+		}
+	];
+	$scope.loadUsers = function () {
+		$.getJSON ('ajaxUsers', function (data) {
+			$scope.users = data.object;
+			angular.forEach ($scope.users, function (user) {
+				user.fullname = user.firstname + ' ' + (user.middlename.length > 0 ? user.middlename + ' ' : '') + user.lastname;
+				user.profile_image = '../'+user.profile_image;
+			});
+			$scope.$digest ();
+		});
+	};
 	
-	$scope.schoolusertypes = [{id:3, name:'Institution Super Administrator'}, {id:5, name:'Institution Sub Administrator'}];
-	$scope.selectedDisciplineType 	= {};
-	$scope.selectedfaculty 			= {id:0, name:''};
-	$scope.selectedInstType 		= {id:0, name:''};
-	$scope.selectedScholarship		= {id: 0, name: '', details : '', ts: new Date ()};
-	$scope.selectedSchAdmin = {
+	
+	/** Scholarships **/
+	$scope.scholarships 		= [];
+	$scope.scholarship 			= {
+		id : 0,
+		name : '',
+		details : '',
+		image : {},
+		poster : {},
+		ts : ''
+	};
+	$scope.selectedScholarship	= {
+		id: 0, 
+		name: '', 
+		details : '', 
+		ts: new Date ()
+	};
+	$scope.clearScholarship 	= function () {
+		$scope.selectedScholarship = {
+			id : 0,
+			name : '',
+			details : '',
+			image : {},
+			poster : {},
+			ts : ''
+		};
+	};
+	$scope.commitScholarship 	= function (form) {
+		$scope.selectedScholarship.details = tinyMCE.activeEditor.getContent ();
+		var scholarship = $scope.selectedScholarship;
+		
+		
+		$.post ('commitScholarship', {param:scholarship})
+		.then (function (r) {
+			r = $.parseJSON (r);
+			console.log (r);
+			
+		}, function (err) {console.error (err);});
+	};
+	$scope.dropScholarship 		= function (param) {
+		$scope.scholarships.splice ($scope.scholarships.indexOf (param), 1);
+		$.post ('dropScholarship', {id:param.id})
+		.then (function (s) {
+			console.info (s);
+		}, function (err) {console.error (err);});
+	};
+	$scope.loadScholarships 	= function () {
+		$scope.clearScholarship ();
+		$.getJSON ('ajaxScholarships', function (data) {
+			$scope.scholarships = data.object;
+			angular.forEach ($scope.scholarships, function (x) {
+				var t = x.details.substring ()
+			});
+			$scope.$digest ();
+		});
+	};
+	$scope.setScholarship 		= function (param) {
+		$scope.selectedScholarship = param;
+		tinyMCE.activeEditor.setContent (param.details);
+	};
+	
+	
+	/** instituition Types **/
+	$scope.clear_inst_type 			= function () {
+		$scope.selectedInstType = {id:0, name:''};
+	};
+	$scope.load_inst_type 			= function () {
+		$.getJSON ('load_instituition_types')
+		.then (function (d) {
+			$scope.InstituitionTypes = d.types;
+			$scope.$digest ();
+			$scope.clear_inst_type ();
+		});
+	};
+	$scope.inst_type_makeChanges 	= function (form) {
+		if (form.$valid) {
+			var inst = $scope.selectedInstType;
+			$scope.clear_inst_type ();
+			$.post ('commit_inst_type', {param:inst})
+			.then (function (r) {
+				r = $.parseJSON (r);
+				if (r.type === 'save') {
+					inst.id = r.id;
+					$scope.InstituitionTypes.unshift (inst);
+					$scope.$digest ();
+				}
+			});
+		}
+	};
+	$scope.set_inst_type 			= function (inst) {
+		$scope.selectedInstType = inst;
+	};
+	$scope.delete_inst_type 		= function (param) {
+		$scope.InstituitionTypes.splice ($scope.InstituitionTypes.indexOf (param), 1);
+		$.post ('drop_inst_type', {id:param.id});
+	};
+	
+	
+	/** Faculties **/
+	$scope.faculties			= [];
+	$scope.selectedfaculty 		= {id:0, name:''};
+	$scope.loadFaculties 		= function () {
+		$scope.clearFaculty ();
+		$.getJSON ('loadFaculties')
+		.then (
+			function (r) {
+				$scope.faculties = r.faculties;
+				$scope.$digest ();
+			},
+			function (e) {
+				console.error (e);
+			}
+		);
+	};
+	$scope.dropFaculty 			= function (fac) {
+		$scope.faculties.splice($scope.faculties.indexOf (fac), 1);
+		$scope.clearFaculty ();
+		$.post ('dropFaculty', {id:fac.id});
+	};
+	$scope.faculty_makeChanges 	= function (form) {
+		if (form.$valid)
+			$.post ('commitFaculty', {faculty:$scope.selectedfaculty})
+			.then (
+				function (r) {
+					r = $.parseJSON (r);
+					if (r.type === 'save') {
+						$scope.selectedfaculty.id = r.id;
+						$scope.faculties.push ($scope.selectedfaculty);
+						$scope.$digest ();
+						$scope.clearFaculty ();
+					} 
+				}
+			);
+	};
+	$scope.setfaculty 			= function (fac) {
+		$scope.selectedfaculty = fac;
+	};
+	$scope.clearFaculty 		= function () {
+		$scope.selectedfaculty = {
+			id : 0,
+			name : ''
+		};
+	};
+	
+	
+	/** News **/
+	$scope.news					= []; // holding all the news items
+	$scope.newsDetails 			= {
+		files : [],
+		details : "",
+		subject	: "",
+		id		: 0
+	};
+	$scope.newsuploadImage 		= function ($files) {
+		$scope.newsDetails.files = $files;
+	};	
+	$scope.clearNews 			= function () {
+		$scope.newsDetails 	= {
+			files : [],
+			details : "",
+			subject	: "",
+			id		: 0
+		};
+	};	
+	$scope.loadNews 			= function () {
+		$.getJSON ('loadNews')
+		.then (
+			function (news) {
+				console.log (news);
+				$scope.news = news.news;
+				$scope.$digest ();
+			},
+			function (err) {
+				console.error (err);
+			}
+		);
+	};	
+	$scope.editNews 			= function ($index) {
+		$scope.newsDetails = $scope.news[$index];
+	}
+	$scope.commitNews 			= function (form) {
+		if (form.$valid) {
+			Upload.upload ({
+				url: 'commitNews',
+				data : {
+					files 	: $scope.newsDetails.files,
+					param	: $scope.newsDetails
+				}
+			})
+			.then (
+				function (news) {
+					news = news.data;
+					if (news.type === 'save')
+						$scope.news.unshift (news.news);
+					$scope.clearNews ();
+				},
+				function (err) {
+					console.error (err);
+				}
+			);
+		}
+	};
+	$scope.dropNews 			= function ($index) {
+		var news = $scope.news[$index];
+		$scope.news.splice($index, 1);
+		
+		$.post ('dropNews', {id:news.id})
+		.then (
+			function (n) {
+				//$scope.news.splice ($scope.news.indexOf (news));
+				//$scope.$digest ();
+			},
+			function (err) {
+				console.error (err);
+			}
+		);
+	};
+	
+	
+	/** Web Administrators **/
+	$scope.webAdmins				= [];
+	$scope.selectedWebAdmin 		= {
+		id		: 0,
+		username: "",
+		password: "",
+		email	: "sample@mail.com",
+		status  : 3,
+		profile_image : ""
+	};
+	$scope.selectedWebAdmin.username_error = "";
+	$scope.selectedWebAdmin.password_error = "";
+	$scope.setWebAdmin 				= function (param) {
+		$scope.selectedWebAdmin = param;
+	};
+	$scope.clearWebAdmin 			= function () {
+		$scope.selectedWebAdmin = {
+			id		: 0,
+			username: "",
+			password: "",
+			email	: "sample@mail.com",
+			status  : 3,
+			profile_image : ""
+		};
+	};
+	$scope.deleteWebAdmin	 		= function () {
+		var tobe = $scope.webAdmins.indexOf ($scope.selectedWebAdmin);
+		$.post ('deleteWebAdmin', {id:$scope.selectedWebAdmin.id}, function (res) {
+			$scope.webAdmins.splice (tobe, 1);
+			$scope.clearWebAdmin ();
+			$scope.$digest ();
+		});
+	};
+	$scope.commitChangesWebAdmin 	= function () {
+		// send the web admin details to the server
+		if ($scope.selectedWebAdmin.username.trim ().length < 6) {
+			$scope.selectedWebAdmin.username_error = "username length must be greater than 10";
+			return ;
+		}
+		if ($scope.selectedWebAdmin.password.trim ().length < 6) {
+			$scope.selectedWebAdmin.password_error = "password length must be greater than 10";
+			return ;
+		}
+		
+		$.post ('commitWebAdmin', {data: $scope.selectedWebAdmin}, function (res) {
+			var data = $.parseJSON (res);
+			if (data.status == 200) {
+				if (data.object > 0) {
+					// push into array 
+					$scope.selectedWebAdmin.id = data.object;
+					$scope.webAdmins.unshift ($scope.selectedWebAdmin);
+					$scope.clearWebAdmin ();
+					$scope.$digest ();
+				}
+			}
+		});
+	};
+	$scope.loadWebAdmins 			= function () {
+		$.getJSON ('ajaxWebAdmins', function (data) {
+			$scope.webAdmins = data.object;
+			angular.forEach ($scope.webAdmins, function (user) {
+				user.profile_image = '../'+user.profile_image;
+			});
+			$scope.$digest ();
+		});
+	};
+	
+	
+	/** School Administrators **/
+	$scope.schAdmins	= [];
+	$scope.selectedSchAdmin 	= {
 			id : 0,
 			username : '',
 			password : '',
@@ -232,344 +543,11 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 				type : ''
 			}
 		};
-	
-	$scope.newsDetails 	= {
-		files : [],
-		details : "",
-		subject	: "",
-		id		: 0
-	};
-	
-	
-	$scope.scholarship = {
-		id : 0,
-		name : '',
-		details : '',
-		image : {},
-		poster : {},
-		ts : ''
-	};
-	
-	$scope.clearScholarship = function () {
-		$scope.selectedScholarship = {
-			id : 0,
-			name : '',
-			details : '',
-			image : {},
-			poster : {},
-			ts : ''
-		};
-	};
-	
-	$scope.commitScholarship = function (form) {
-		$scope.selectedScholarship.details = tinyMCE.activeEditor.getContent ();
-		var scholarship = $scope.selectedScholarship;
-		
-		
-		$.post ('commitScholarship', {param:scholarship})
-		.then (function (r) {
-			r = $.parseJSON (r);
-			console.log (r);
-			
-		}, function (err) {console.error (err);});
-	};
-	
-	$scope.dropScholarship = function (param) {
-		$scope.scholarships.splice ($scope.scholarships.indexOf (param), 1);
-		$.post ('dropScholarship', {id:param.id})
-		.then (function (s) {
-			console.info (s);
-		}, function (err) {console.error (err);});
-	};
-	
-	$scope.loadScholarships = function () {
-		$scope.clearScholarship ();
-		$.getJSON ('ajaxScholarships', function (data) {
-			$scope.scholarships = data.object;
-			angular.forEach ($scope.scholarships, function (x) {
-				var t = x.details.substring ()
-			});
-			$scope.$digest ();
-		});
-	};
-	
-	$scope.setScholarship = function (param) {
-		$scope.selectedScholarship = param;
-		tinyMCE.activeEditor.setContent (param.details);
-	};
-	
-	
-	
-	$scope.assign 		= {};
-	$scope.assign.commitChanges = function () {
-		
-	};
-	
-	$scope.clear_inst_type = function () {
-		$scope.selectedInstType = {id:0, name:''};
-	};
-	
-	$scope.load_inst_type = function () {
-		$.getJSON ('load_instituition_types')
-		.then (function (d) {
-			$scope.InstituitionTypes = d.types;
-			$scope.$digest ();
-			$scope.clear_inst_type ();
-		});
-	};
-	
-	$scope.inst_type_makeChanges = function (form) {
-		if (form.$valid) {
-			var inst = $scope.selectedInstType;
-			$scope.clear_inst_type ();
-			$.post ('commit_inst_type', {param:inst})
-			.then (function (r) {
-				r = $.parseJSON (r);
-				if (r.type === 'save') {
-					inst.id = r.id;
-					$scope.InstituitionTypes.unshift (inst);
-					$scope.$digest ();
-				}
-			});
-		}
-	};
-	
-	$scope.set_inst_type = function (inst) {
-		$scope.selectedInstType = inst;
-	};
-	
-	$scope.delete_inst_type = function (param) {
-		$scope.InstituitionTypes.splice ($scope.InstituitionTypes.indexOf (param), 1);
-		$.post ('drop_inst_type', {id:param.id});
-	};
-	
-	$scope.loadFaculties = function () {
-		$scope.clearFaculty ();
-		$.getJSON ('loadFaculties')
-		.then (
-			function (r) {
-				$scope.faculties = r.faculties;
-				$scope.$digest ();
-			},
-			function (e) {
-				console.error (e);
-			}
-		);
-	};
-	
-	$scope.dropFaculty = function (fac) {
-		$scope.faculties.splice($scope.faculties.indexOf (fac), 1);
-		$scope.clearFaculty ();
-		$.post ('dropFaculty', {id:fac.id});
-	};
-	
-	$scope.faculty_makeChanges = function (form) {
-		if (form.$valid)
-			$.post ('commitFaculty', {faculty:$scope.selectedfaculty})
-			.then (
-				function (r) {
-					r = $.parseJSON (r);
-					if (r.type === 'save') {
-						$scope.selectedfaculty.id = r.id;
-						$scope.faculties.push ($scope.selectedfaculty);
-						$scope.$digest ();
-						$scope.clearFaculty ();
-					} 
-				}
-			);
-	};
-	
-	$scope.setfaculty = function (fac) {
-		$scope.selectedfaculty = fac;
-	};
-	
-	$scope.clearFaculty = function () {
-		$scope.selectedfaculty = {
-			id : 0,
-			name : ''
-		};
-	};
-	
-	$scope.newsuploadImage = function ($files) {
-		$scope.newsDetails.files = $files;
-	};
-	
-	$scope.clearNews = function () {
-		$scope.newsDetails 	= {
-			files : [],
-			details : "",
-			subject	: "",
-			id		: 0
-		};
-	};
-	
-	$scope.loadNews = function () {
-		$.getJSON ('loadNews')
-		.then (
-			function (news) {
-				console.log (news);
-				$scope.news = news.news;
-				$scope.$digest ();
-			},
-			function (err) {
-				console.error (err);
-			}
-		);
-	};
-	
-	$scope.editNews = function ($index) {
-		$scope.newsDetails = $scope.news[$index];
-	}
-	
-	$scope.commitNews = function (form) {
-		if (form.$valid) {
-			Upload.upload ({
-				url: 'commitNews',
-				data : {
-					files 	: $scope.newsDetails.files,
-					param	: $scope.newsDetails
-				}
-			})
-			.then (
-				function (news) {
-					news = news.data;
-					if (news.type === 'save')
-						$scope.news.unshift (news.news);
-					$scope.clearNews ();
-				},
-				function (err) {
-					console.error (err);
-				}
-			);
-		}
-	};
-	
-	$scope.dropNews = function ($index) {
-		var news = $scope.news[$index];
-		$scope.news.splice($index, 1);
-		
-		$.post ('dropNews', {id:news.id})
-		.then (
-			function (n) {
-				//$scope.news.splice ($scope.news.indexOf (news));
-				//$scope.$digest ();
-			},
-			function (err) {
-				console.error (err);
-			}
-		);
-	};
-	
-	$scope.selectDisciplineType = function ($index) {
-		$scope.selectedDisciplineType = $scope.disciplineTypes.slice ($index);
-	};
-	
-	$scope.loadDisciplineTypes = function () {
-		$.getJSON ('disciplineTypes')
-		.then (
-			function (d) {
-				$scope.disciplineTypes = d.types;
-				$scope.selectedDisciplineType = $scope.disciplineTypes[0];
-				$scope.$digest ();
-			},
-			function (err) {
-				console.error (err);
-			}
-		);
-	};
-	
-	$scope.selectedWebAdmin = {
-		id		: 0,
-		username: "",
-		password: "",
-		email	: "sample@mail.com",
-		status  : 3,
-		profile_image : ""
-	};
-	
-	$scope.setWebAdmin = function (param) {
-		$scope.selectedWebAdmin = param;
-	};
-	
-	$scope.clearWebAdmin = function () {
-		$scope.selectedWebAdmin = {
-			id		: 0,
-			username: "",
-			password: "",
-			email	: "sample@mail.com",
-			status  : 3,
-			profile_image : ""
-		};
-	};
-	
-	$scope.clearScholarship = function () {};
-	
-	$scope.clearSchoolAdmins = function () {};
-	
-	$scope.selectedWebAdmin.username_error = "";
-	$scope.selectedWebAdmin.password_error = "";
-	
-	$scope.deleteWebAdmin = function () {
-		var tobe = $scope.webAdmins.indexOf ($scope.selectedWebAdmin);
-		$.post ('deleteWebAdmin', {id:$scope.selectedWebAdmin.id}, function (res) {
-			$scope.webAdmins.splice (tobe, 1);
-			$scope.clearWebAdmin ();
-			$scope.$digest ();
-		});
-	};
-	
-	$scope.commitChangesWebAdmin = function () {
-		// send the web admin details to the server
-		if ($scope.selectedWebAdmin.username.trim ().length < 6) {
-			$scope.selectedWebAdmin.username_error = "username length must be greater than 10";
-			return ;
-		}
-		if ($scope.selectedWebAdmin.password.trim ().length < 6) {
-			$scope.selectedWebAdmin.password_error = "password length must be greater than 10";
-			return ;
-		}
-		
-		$.post ('commitWebAdmin', {data: $scope.selectedWebAdmin}, function (res) {
-			var data = $.parseJSON (res);
-			if (data.status == 200) {
-				if (data.object > 0) {
-					// push into array 
-					$scope.selectedWebAdmin.id = data.object;
-					$scope.webAdmins.unshift ($scope.selectedWebAdmin);
-					$scope.clearWebAdmin ();
-					$scope.$digest ();
-				}
-			}
-		});
-	};
-	
-	$scope.loadUsers = function () {
-		$.getJSON ('ajaxUsers', function (data) {
-			$scope.users = data.object;
-			angular.forEach ($scope.users, function (user) {
-				user.fullname = user.firstname + ' ' + (user.middlename.length > 0 ? user.middlename + ' ' : '') + user.lastname;
-				user.profile_image = '../'+user.profile_image;
-			});
-			$scope.$digest ();
-		});
-	};
-	
-	$scope.loadWebAdmins = function () {
-		$.getJSON ('ajaxWebAdmins', function (data) {
-			$scope.webAdmins = data.object;
-			angular.forEach ($scope.webAdmins, function (user) {
-				user.profile_image = '../'+user.profile_image;
-			});
-			$scope.$digest ();
-		});
-	};
-	
-	
-	$scope.setSchAdmin = function (param) {
+	$scope.clearSchoolAdmins 	= function () {};
+	$scope.setSchAdmin	 		= function (param) {
 		$scope.selectedSchAdmin = param;
 	};
-	
-	$scope.clearSchAdmin = function () {
+	$scope.clearSchAdmin 		= function () {
 		$scope.selectedSchAdmin = {
 			id : 0,
 			username : '',
@@ -596,8 +574,7 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 			}
 		};
 	};
-	
-	$scope.loadSchAdmins = function () {
+	$scope.loadSchAdmins 		= function () {
 		$.getJSON ('ajaxSchAdmins')
 		.then(function (data) {
 			$scope.schAdmins = data.object;
@@ -610,25 +587,10 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 	};
 	
 	
-	
-	$scope.selectedDiscipline = {
-		id : 0,
-		name : "",
-		type: {},
-		type_brand : {
-			id : 0,
-			name : ""
-		}, 
-		faculty : {
-			id : 0,
-			name : '',
-			imageUrl : ''
-		}
-	};
-	
-	
-	
-	$scope.selectedInstituition = {
+	/** Instituitions **/
+	$scope.instituitions			= [];
+	$scope.selectedInstType 		= {id:0, name:''};
+	$scope.selectedInstituition 	= {
 		id:0,
 		name : '',
 		year_of_est : new Date (),
@@ -657,17 +619,7 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 		},
 		logo_file : ''
 	};
-	
-	$scope.states = [];
-	
-	$scope.loadStates = function () {
-		$.getJSON ('loadStates', function (s) {
-			$scope.states = s.states;
-			$scope.$digest ();
-		});
-	};
-	
-	$scope.resetInstituition = function () {
+	$scope.resetInstituition 		= function () {
 		$scope.selectedInstituition = {
 			id:0,
 			name : '',
@@ -699,8 +651,7 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 		};
 		tinyMCE.activeEditor.setContent("")
 	};
-	
-	$scope.instituitionMakeChanges = function (form) {
+	$scope.instituitionMakeChanges 	= function (form) {
 		if (form.$valid) {
 			$scope.selectedInstituition.address = tinyMCE.activeEditor.getContent();
 			var inst = $scope.selectedInstituition;
@@ -727,19 +678,16 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 			} else $.post ('ajaxSaveInstituition', {data: inst}, function (res) { console.log (res); });
 		}
 	};
-	
-	$scope.deleteInstituition = function ($index) {
+	$scope.deleteInstituition 		= function ($index) {
 		var inst = $scope.instituitions.slice ($index, 1);
 		$scope.instituitions.splice ($index, 1); 
 		$.post ('ajaxDeleteInstituition', {data:inst}, function (res) { console.log (res); });
 	};
-	
-	$scope.init = function () {
+	$scope.init 					= function () {
 		$scope.loadDisciplines ();
 		$scope.loadInstituitions ();
 	};
-	
-	$scope.loadInstituitions = function () {
+	$scope.loadInstituitions 		= function () {
 		
 		$.getJSON ('ajaxLoadInstituitions', function (res) {
 			$scope.instituitions = res.instituitions;
@@ -766,21 +714,97 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 			$scope.load_inst_type ();
 		});
 	};
-	
-	$scope.setInstitution = function (param) {
+	$scope.setInstitution 			= function (param) {
 		$scope.selectedInstituition = param;
 		$scope.selectedInstituition.year_of_est = new Date ($scope.selectedInstituition.year_of_est);
 		tinyMCE.activeEditor.setContent(param.address);
 	};
-	
-	$scope.getInstituitionLogo = function(param) {
+	$scope.getInstituitionLogo 		= function(param) {
 		//$scope.selectedInstituition.logo = '';
 	};
 	
+	$scope.institutionUpload 	= {};
+	$scope.institutionUpload.error = "";
+	$scope.institutionUpload.success = "";
+	$scope.institutionUpload.status = 0;
+	$scope.institutionUpload.file = {name:''};
+	$scope.institutionUpload.file_size = 0;
+	$scope.institutionUpload.upload = function ($file) {
+		if ($file) {
+			$scope.institutionUpload.file = $file;
+			$scope.institutionUpload.file_size = Math.round ($scope.institutionUpload.file.size / 1000);
+			Upload.upload ({
+				url : "uploadExcelInstituitions",
+				data : {
+					files: $file
+				}
+			})
+			.then (
+				function (result) {
+					var data = result.data;
+					$scope.institutionUpload.status = 100;
+					if (data.status === 400) $scope.institutionUpload.error = data.message;
+					else $scope.institutionUpload.success = data.message;
+				}, 
+				function (error) {
+					$scope.institutionUpload.status = 100;
+					$scope.institutionUpload.error 	=  'Compilation Error, Please conact Administrator!';
+					console.error (error);
+				}, 
+				function (progress) {
+					$scope.institutionUpload.status = Math.round ((progress.loaded / progress.total) * 100) - 10;
+				}
+			);
+		}
+	};
+	$scope.institutionUpload.clear = function () {
+		$scope.institutionUpload.error 		= "";
+		$scope.institutionUpload.success 	= "";
+		$scope.institutionUpload.status 	= 0;
+		$scope.institutionUpload.file 		= {name:''};
+	};
 	
-	
-	
-	$scope.loadDisciplines = function () {
+	/** disciplines **/
+	$scope.disciplines 				= [];
+	$scope.disciplineTypes 			= [];
+	$scope.selectedDisciplineType 	= {};
+	$scope.disciplineUpload 		= {};
+	$scope.disciplineUpload.error 	= "";
+	$scope.disciplineUpload.success = "";
+	$scope.disciplineUpload.status 	= 0;
+	$scope.disciplineUpload.file 	= {name:''};
+	$scope.disciplineUpload.file_size = 0;
+	$scope.selectedDiscipline 		= {
+		id : 0,
+		name : "",
+		type: {},
+		type_brand : {
+			id : 0,
+			name : ""
+		}, 
+		faculty : {
+			id : 0,
+			name : '',
+			imageUrl : ''
+		}
+	};
+	$scope.selectDisciplineType 	= function ($index) {
+		$scope.selectedDisciplineType = $scope.disciplineTypes.slice ($index);
+	};
+	$scope.loadDisciplineTypes 		= function () {
+		$.getJSON ('disciplineTypes')
+		.then (
+			function (d) {
+				$scope.disciplineTypes = d.types;
+				$scope.selectedDisciplineType = $scope.disciplineTypes[0];
+				$scope.$digest ();
+			},
+			function (err) {
+				console.error (err);
+			}
+		);
+	};
+	$scope.loadDisciplines 			= function () {
 		$.getJSON ('ajaxgetDisciplines', function (data) {
 			$scope.disciplines = data.object;
 			angular.forEach ($scope.disciplines, function (x) {
@@ -791,18 +815,15 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 			$scope.loadFaculties ();
 		});
 	};
-	
-	$scope.setDiscipline = function (param) {
+	$scope.setDiscipline 			= function (param) {
 		$scope.selectedDiscipline = param;
 	};
-	
-	$scope.deleteDiscipline = function ($index, param) {
+	$scope.deleteDiscipline 		= function ($index, param) {
 		// remove the item from the list
 		$scope.disciplines.splice ($index, 1);
 		$.post ('removeDiscipline', {data: param.id}, function () {});
 	};
-	
-	$scope.clear_discipline = function () {
+	$scope.clear_discipline 		= function () {
 		$scope.selectedDiscipline = {
 			id : 0,
 			name : "",
@@ -818,8 +839,7 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 			}
 		};
 	};
-	
-	$scope.discipline_makeChanges = function (form) {
+	$scope.discipline_makeChanges 	= function (form) {
 		
 		if (form.$valid) {
 			$.post ('ajaxUpdateDiscipline', {param: $scope.selectedDiscipline})
@@ -836,11 +856,6 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 			);
 		}
 	};
-	
-	$scope.disciplineUpload 		= {};
-	$scope.disciplineUpload.error 	= "";
-	$scope.disciplineUpload.success = "";
-	
 	$scope.disciplineUpload.upload  = function ($file) {
 		if ($file) {
 			$scope.disciplineUpload.file = $file;
@@ -854,17 +869,11 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 			.then (
 				function (succ) {
 					var data = succ.data;
-					console.log (data);
 					$scope.disciplineUpload.status = 100;
-					if (data.status === 400) {
-						$scope.disciplineUpload.error = data.message;
-					} else {
+					if (data.status === 400) $scope.disciplineUpload.error = data.message;
+					else {
 						$scope.disciplineUpload.success = data.message;
-						angular.forEach (data.object, function (param) {
-							console.log (param);
-						});
 					}
-					
 				},
 				function (err) {
 					$scope.disciplineUpload.status = 100;
@@ -877,28 +886,21 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 			);
 		}
 	};
-	
-	$scope.disciplineUpload.clear = function () {
-		$scope.disciplineUpload.status = 0;
+	$scope.disciplineUpload.clear 	= function () {
+		$scope.disciplineUpload.status 	= 0;
 		$scope.disciplineUpload.error 	= "";
 		$scope.disciplineUpload.success = "";
-		$scope.disciplineUpload.file = {};
+		$scope.disciplineUpload.file 	= {};
 	};
 	
-	$scope.disciplineUpload.status = 0;
-	$scope.disciplineUpload.file = {name:''};
-	$scope.disciplineUpload.file_size = 0;
 	
-	
-	
-	$scope.profile 	= {};
-	$scope.upload 	= {};
-	
-	$scope.upload.getImage = function (img) {
+	/** Profile **/
+	$scope.profile 				= {};
+	$scope.upload 				= {};
+	$scope.upload.getImage 		= function (img) {
 		$scope.profile.profile_image = img;
 	};
-	
-	$scope.upload.makeChanges = function (form) {
+	$scope.upload.makeChanges 	= function (form) {
 		console.log (form.$error, form.$valid, form);
 		
 		if (form.$valid) {
@@ -924,8 +926,7 @@ app.controller('adminCntrl', function ($scope, $http, Upload, $interval, $window
 		}
 		
 	};
-	
-	$scope.getProfileDetails = function () {
+	$scope.getProfileDetails 	= function () {
 		$http.get ('getProfile')
 		.then (function (res) {
 			res.data.user.profile_image = '../'+res.data.user.profile_image;

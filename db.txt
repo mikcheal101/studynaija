@@ -6,11 +6,11 @@ pg_restore -U [username] -d [DATABASE_NAME] --no-owner --password -h [HOST_NAME]
 --table=table 
 
 
-pg_dump -Ft --no-owner [DATABASE_NAME] > [TAR_FILE]
+pg_dump -Ft --no-owner --table=school [DATABASE_NAME] > [TAR_FILE]
 heroku pg:psql --app studynaija
 pg_restore -U mycvfpwuihrnoc -d DATABASE_URL --no-owner
 
-pg_restore --clean --table=static_sub_disciplines --host=ec2-50-17-214-132.compute-1.amazonaws.com --port=5432 -Ft --verbose --no-acl --username=mycvfpwuihrnoc --dbname=d8tderrvb132oj --no-owner -table=ci_sessions --password static_sub_disciplines
+pg_restore --clean --table=school --host=ec2-50-17-214-132.compute-1.amazonaws.com --port=5432 -Ft --verbose --no-acl --username=mycvfpwuihrnoc --dbname=d8tderrvb132oj --no-owner --password school_table
 
 Yz8vHgOvQYTStuqdaYnXJ0ed7Z
 heroku pg:push studynaija DATABASE_URL --app studynaija

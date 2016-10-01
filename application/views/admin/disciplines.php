@@ -40,9 +40,9 @@
 				<div class="panel m-t-00">
 					<div class="panel-heading text-ash-01 text-right p-b-10 flex">
 						<input type="search" ng-model="search_discipline" class="form-control no-shadow no-radius text-600 text-black" />
-						<i class="btn fa fa-download"></i>
+						<i class="btn fa fa-download disabled"></i>
 						<i class="btn fa fa-upload" data-toggle="modal" data-target="#upload"></i>
-						<i class="btn fa fa-print"></i>
+						<i class="btn fa fa-print disabled"></i>
 						<div class="clearfix"></div>
 					</div>
 					<div class="panel-body p-b-00 p-t-00">
