@@ -1,5 +1,5 @@
 <?php
-require_once 'PhpExcel.php';
+require_once "PHPExcel.php";
 class Instituition_sheet {
 
 	private $sheet_count;
