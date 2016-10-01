@@ -45,10 +45,13 @@ class PHPExcel_Autoloader
     {
         if (function_exists('__autoload')) {
             // Register any existing autoloader function with SPL, so we don't get any clashes
+			echo "auto load does not exit<br>";
             spl_autoload_register('__autoload');
         }
         // Register ourselves with SPL
-		return spl_autoload_register(array('PHPExcel_Autoloader', 'load'), true, true);
+		$autoload = spl_autoload_register(array('PHPExcel_Autoloader', 'load'), true, true);
+		var_dump ($autoload);
+		return $autoload;
 		/*
         if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
             return spl_autoload_register(array('PHPExcel_Autoloader', 'load'), true, true);
