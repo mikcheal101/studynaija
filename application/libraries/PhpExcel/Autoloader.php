@@ -48,11 +48,14 @@ class PHPExcel_Autoloader
             spl_autoload_register('__autoload');
         }
         // Register ourselves with SPL
+		return spl_autoload_register(array('PHPExcel_Autoloader', 'load'));
+		/*
         if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-            return spl_autoload_register(array('PHPExcel_Autoloader', 'load'));
+            return spl_autoload_register(array('PHPExcel_Autoloader', 'load'), true, true);
         } else {
             return spl_autoload_register(array('PHPExcel_Autoloader', 'load'));
         }
+		*/
     }
 
     /**
