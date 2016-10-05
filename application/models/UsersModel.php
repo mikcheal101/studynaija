@@ -19,15 +19,15 @@ class UsersModel extends CI_Model {
     }
 	
 	public function loadNews () {
-		$this->db->select('*')->from('news')->order_by('date', 'DESC');
-		$news = $this->db->get ()->result ();
+		$this->db->order_by('date', 'DESC');
+		$news = $this->db->get ('news')->result ();
 		
 		foreach ($news as $n) {
 			$n->subject 	= base64_decode ($n->subject);
 			$n->details		= base64_decode ($n->details);
 			$n->resources 	= $this->db->get_where ('news_resources', array ('news'=>$n->id))->result();
 		}
-		echo json_encode (array ('news'=> $news));
+		return $news;
 	}
 	
 	public function checkUsername () {
@@ -428,6 +428,11 @@ class UsersModel extends CI_Model {
 
     public function getAllFaculties() {
         return $this->db->get('static_faculty')->result();
+    }
+
+    public function getAllScholarships () {
+        $this->db->order_by ('ts', 'DESC');
+        return $this->db->get ('scholarships')->result ();
     }
 
 }

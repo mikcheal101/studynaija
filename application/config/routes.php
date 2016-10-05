@@ -52,7 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 #	user routes
 
-$route['test']	= 'usersController/test';
+$route['test']						= 'usersController/test';
 $route['admin/getProfile'] 			= 'usersController/getProfile';
 $route['admin/checkUsername'] 		= 'usersController/checkUsername';
 $route['admin/checkEmail'] 			= 'usersController/checkEmail';

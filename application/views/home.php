@@ -44,12 +44,6 @@
  		</style>
 	</head>
 	<body data-spy="scroll" data-target=".navbar" data-offset="60" id="body" ng-app="homeApp" ng-controller="homeCntrl">
-		<!--
-		<h1>Do you want a wonderful education and expirence amongst the best higher education expirence?</h1>
-		<p>With over 100 private and public Universities, Polytecnics, Monotechnics and instituitions of higher learning. </p>
-		<p>A country with a vast culture, rich Heritage and history...</p>
-		<p>We wish to solve the question and profer solutions to a wonderful education and expirence amongst the best higher education expirence.</p>
-		-->
 		<nav class="navbar white">
 			<div class="container-fluid" style="border-bottom-color:rgba(108,186,53,0.3); border-top:none; border-right:none; border-left:none;">
 				<!-- Brand and toggle get grouped for better mobile display -->
@@ -70,7 +64,9 @@
 						<li class=""> 
 							<a href="#" class="navbar-link text-ash-02 text-uppercase font-12">register</a>
 						</li>
-						<li><a href="#" class="navbar-link text-ash-02 text-uppercase font-12">sign in</a></li>
+						<li>
+							<?=anchor('users/signIn', 'sign in', ['class'=>'navbar-link text-ash-02 text-uppercase font-12']);?>
+						</li>
 						<li>
 							<button class="btn btn-success btn-sm navbar-btn text-uppercase font-12">testing</button>
 						</li>

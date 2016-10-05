@@ -42,13 +42,19 @@
 		<script src="<?=base_url('assets/js/dirPagination.js');?>"></script>
 		<script src="<?=base_url('assets/js/alert.js');?>"></script>
 		<script src="<?=base_url('assets/js/directives/checklist-model.js');?>"></script>
-		
+		<script src="<?=base_url('assets/js/ng-file-upload-all.min.js');?>"></script>
+		<script src="<?=base_url('assets/js/ng-file-upload-shim.min.js');?>"></script>
 		<script src="<?=base_url('assets/js/money.min.js');?>"></script>
 		
 		<script src="<?=base_url('assets/js/bootcards.1.0.0.min.js');?>"></script>
-		<script src="<?=base_url('assets/js/controllers/applicantController.js');?>"></script>
-		<script src="<?=base_url('assets/js/controllers/generalController.js');?>"></script>
+		<!-- <script src="<?=base_url('assets/js/controllers/applicantController.js');?>"></script> -->
 		
+		
+
+		<script src="<?=base_url('assets/js/controllers/generalController.js');?>"></script>
+		<script src="<?=base_url('assets/js/services/user_services.js');?>"></script>
+		<script src="<?=base_url('assets/js/controllers/user.controller.js');?>"></script>
+
 		<script>
 			/*
 			$('.selectpicker').selectpicker({

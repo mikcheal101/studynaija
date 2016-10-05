@@ -8,12 +8,13 @@ class UsersController extends CI_Controller {
 	protected $fb 			= null;
 	protected $userNode 	= null;
 	protected $fbSession 	= null;
-	protected $data			= array();
+	protected $data			= [];
 	
 	public function __construct () {
 		parent::__construct();
 		$this->data['title'] 					= "studynaija";
-		$this->data['positions'] 				= array("studynaija");
+		$base_url								= base_url ();
+		$this->data['positions'] 				= ["studynaija:{$base_url}"];
 		
 		$this->data['countries'] 				= $this->usersModel->getCountries();
 		$this->data['semesters'] 				= $this->usersModel->getSemesters();
@@ -24,7 +25,7 @@ class UsersController extends CI_Controller {
 		$this->data['faculties']				= $this->usersModel->getAllFaculties();
 		
 		$this->data['passporterror'] = "";
-		$this->data['user'] = $this->me = ($this->session->user !== null)?$this->usersModel->getApplicant($this->session->user->id):array();
+		$this->data['user'] = $this->me = ($this->session->user !== null)?$this->usersModel->getApplicant($this->session->user->id):[];
 		
 		$this->facebook = $this->my_facebook;
 	}
@@ -51,7 +52,7 @@ class UsersController extends CI_Controller {
 	}
 	
 	public function loadNews () {
-		$this->usersModel->loadNews ();
+		$this->json (['news' => $this->usersModel->loadNews ()]);
 	}
 	
 	public function checkUsername () {
@@ -63,7 +64,7 @@ class UsersController extends CI_Controller {
 	}
 	
 	public function getProfile () {
-		echo json_encode (array ('user'=>$this->session->user));
+		echo json_encode (['user'=>$this->session->user]);
 	}
 	
 	private function onlyLoggedInApplicant () {
@@ -319,7 +320,6 @@ class UsersController extends CI_Controller {
 		$this->data['positions'][1] = "disciplines";
 		if ($fav!= "false") $this->data['positions'][2] = "my favourite disciplines";
 		
-		
 		$this->load->view("user/header", $this->data);
 		$this->load->view("user/search_bar", $this->data);
 		$this->load->view("user/disciplines", $this->data);
@@ -355,9 +355,20 @@ class UsersController extends CI_Controller {
 		echo json_encode(array('course'=>$result));
 	}
 	
-	public function scholarships () {}
+	public function scholarships () {
+		$this->data['positions'][1] = "scholarships";
+		
+		$this->load->view("user/header", $this->data);
+		$this->load->view("user/search_bar", $this->data);
+		$this->load->view("user/scholarships", $this->data);
+		$this->load->view("footer", $this->data);
+	}
 	
 	public function scholarship ($param) {}
+
+	public function loadScholarships () {
+		$this->json (['scholarships' => $this->usersModel->getAllScholarships ()]);
+	}
 	
 	public function courses () {
 		$this->load->view("user/header", $this->data);
@@ -500,7 +511,7 @@ class UsersController extends CI_Controller {
 	}
 	
 	public function fetchMyApplications  () {
-		echo json_encode(array('applications'=>$this->usersModel->fetchMyApplications()));
+		$this->json (['applications'=>$this->usersModel->fetchMyApplications()]);
 	}
 	
 	public function fetchStates () {
@@ -512,11 +523,15 @@ class UsersController extends CI_Controller {
 	}
 	
 	public function getFaculties () {
-		echo json_encode(array('faculties'=> $this->data['faculties']));
+		$this->json (
+			['faculties'=> $this->data['faculties']]
+		);
 	}
 	
 	public function getCartItems () {
-		echo json_encode(array('cartItems' => $this->usersModel->getMyCart()));
+		$this->json (
+			['cartItems' => $this->usersModel->getMyCart()]
+		);
 	}
 	
 	private function verifyUser () {
@@ -576,7 +591,31 @@ class UsersController extends CI_Controller {
 	}
 	
 	public function ajaxGetFacebookUser () {
-		echo json_encode(array('facebook'=>$this->fb));
+		$this->json (
+			['facebook'=>$this->fb]
+		);
+	}
+
+	private function json ($result) {
+		if (isset($_SERVER['HTTP_ORIGIN'])) {
+			header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+			header('Access-Control-Allow-Credentials: true');
+			header('Access-Control-Max-Age: 86400');    // cache for 1 day
+		}
+	 
+		// Access-Control headers are received during OPTIONS requests
+		if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+			if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+				header("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
+	 
+			if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+				header("Access-Control-Allow-Headers:{$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+			exit(0);
+		}
+		$this->output->set_header ('Access-Control-Allow-Origin: *');
+		$this->output->set_header ('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+		$this->output->set_header ('Access-Control-Allow-Headers: content-type');
+		$this->output->set_content_type('application/json')->set_output(json_encode( $result, JSON_NUMERIC_CHECK));
 	}
 	
 } 

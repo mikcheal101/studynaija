@@ -28,7 +28,7 @@
  		</style>
 	
 	</head>
-	<body data-spy="scroll" data-target=".navbar" data-offset="60" id="body" ng-app="applicantApp" ng-controller="applicantCntrl" ng-init="init();">
+	<body data-spy="scroll" data-target=".navbar" data-offset="60" id="body" ng-app="generalApp" ng-controller="generalCntrl">
 		<nav class="navbar navbar-fixed-top transparent-border nav-black" style="background-color: #f9f9f9!important;" role="navigation" id="header">
 			<div class="container">
 		    	<div class="navbar-header">

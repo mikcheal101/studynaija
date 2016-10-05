@@ -6,9 +6,11 @@
 
 				<?php 
 					foreach($positions as $position) {
-						$position = urldecode($position);
-						$position = mb_strimwidth($position, 0, 20, "...");
-						echo '<li><a href="#">'.strtolower ($position).'</a></li>';
+						$position 	= urldecode($position);
+						$string 	= explode(':', $position);
+						$url 		= $string[1] ?? '#';
+						$position = mb_strimwidth($string[0], 0, 20, "...");
+						echo '<li><a href="'.$url.'">'.strtolower ($position).'</a></li>';
 					}
 				?>
 				</ol>
