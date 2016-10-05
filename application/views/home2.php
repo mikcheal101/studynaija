@@ -43,7 +43,7 @@
 			}
 			
 			.home-bg {
-				background-image: url('<?=base_url ("assets/images/home.JPG");?>');
+				background-image: url('<?=base_url ("assets/images/home.jpg");?>');
 				background-size: cover;
 				background-position: 0px 0px;
 				background-repeat : no-repeat;
