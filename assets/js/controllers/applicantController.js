@@ -54,10 +54,10 @@ app.filter('mySearchFilter', function () {
 
 app.controller('applicantCntrl', function ($scope, $http, $filter, $window) {
 	
-	$scope.baseMsgControllerUrl 	= 'http://localhost/ngschools/index.php?/messagesController/';
-	$scope.baseControllerUrl 		= 'http://localhost/ngschools/index.php?/usersController/';
+	$scope.baseMsgControllerUrl 	= 'https://studynaija.herokuapp.com/index.php?/messagesController/';
+	$scope.baseControllerUrl 		= 'https://studynaija.herokuapp.com/index.php?/usersController/';
 	$scope.facebookId				= "605081073007423";
-	$scope.addCartCallback			= "http://localhost/ngschools/users/addCartCallback";
+	$scope.addCartCallback			= "https://studynaija.herokuapp.com/users/addCartCallback";
 	$scope.facebookLoggedIn 		= false; 
 	$scope.facebookDetails 			= {}; 
 	

@@ -34,6 +34,21 @@ class UsersController extends CI_Controller {
 		$this->data['positions'][1] = "home";
 		$this->load->view("home", $this->data);
 	}
+
+	public function home2 () {
+		$this->data['positions'][1] = "home";
+		$this->load->view("home2", $this->data);
+	}
+
+	public function home3 () {
+		$this->data['positions'][1] = "home";
+		$this->load->view("home3", $this->data);
+	}
+
+	public function home4 () {
+		$this->data['positions'][1] = "home";
+		$this->load->view("home4", $this->data);
+	}
 	
 	public function loadNews () {
 		$this->usersModel->loadNews ();

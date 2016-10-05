@@ -228,6 +228,10 @@ $route['admin/trash'] 				= 'adminController/trash';
 $route['admin/compose'] 			= 'adminController/compose';
 $route['admin/saved'] 				= 'adminController/saved';
 
+$route['home2']		= 'usersController/home2';
+$route['home3']		= 'usersController/home3';
+$route['home4']		= 'usersController/home4';
+
 $route['default_controller'] 		= 'usersController/index';
 
 $route['404_override'] = '';

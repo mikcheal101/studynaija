@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = ($_SERVER['SERVER_NAME'] === "localhost") ?'http://localhost:81/ngschools' : 'https://studynaija.herokuapp.com';
+$config['base_url'] = ($_SERVER['SERVER_NAME'] === "localhost") ?'http://localhost:81/studynaija' : 'https://studynaija.herokuapp.com';
 
 
 /*
