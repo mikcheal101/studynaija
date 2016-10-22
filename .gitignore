@@ -1,9 +1,0 @@
-# directories to ignore
-/vendor/
-/application/tmp/
-/application/config/database.php
-/application/config/config.php
-
-
-# files to ignore when updating
-.htaccess
