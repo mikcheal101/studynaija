@@ -1,0 +1,302 @@
+<ng-include src="templates.header"></ng-include>
+<ng-include src="templates.search" ng-init="setCrumbs (['applicant', 'profile']);"></ng-include>
+
+<style type="text/css">
+	.border-red { border: 1px solid red!important; }
+</style>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 m-t-05 padding-00">
+			<form name="form" enctype="multipart/form-data">
+				<ng-include src="templates.applicant_side" ></ng-include>
+			
+				<div class="col-sm-9 padding-00">
+					<div class="panel m-b-05">
+						<div class="panel-body padding-10">
+							<div class="col-sm-12 padding-00">
+								<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+									<div class="input-box">
+										<label for="username" class="text-green font-12 bold" style="width:100%!important;">
+											username: 
+											<span ng-if="form.$submitted || form.username.$touched">
+												<small ng-if="form.username.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter username</small>
+												<small class="text-red pull-right" ng-if="form.username.$error.username" style="padding-top: 2px!important;">username already taken</small>
+												<small ng-if="form.username.$error.minlength" class="text-red pull-right" style="padding-top: 2px!important;">enter username min. length of 5</small>	
+											</span>
+										</label><br>
+										<input class="font-12 bold" username myusername="{{ sessions.user.username }}" minlength="5" type="text" placeholder="enter username" name="username" ng-model="applicant.username" 
+											required="required" />	
+									</div>
+								</div>
+								<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+									<div class="input-box ">
+										<label for="pwd" class="text-green font-12 bold" style="width:100%!important;">
+											password:
+											<span ng-if="form.$submitted || form.pwd.$touched">
+												<small ng-if="form.pwd.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter password</small>
+												<small ng-if="form.pwd.$error.minlength" class="text-red pull-right" style="padding-top: 2px!important;">enter password min. length of 5</small>	
+											</span>
+										</label><br>
+										<input class="font-12 bold" type="password" placeholder="enter password" name="pwd" ng-model="applicant.password" 
+											required="required" />	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="panel m-b-05">
+						<div class="panel-body padding-10">
+							<h5 class="m-b-10 m-t-10 text-green bold p-l-05">Personal Information</h5>
+							
+								<div class="col-sm-12 padding-00">
+									<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+										<div class="input-box ">
+											<label for="fname" class="text-green font-12 bold" style="width:100%!important;">
+												firstname:
+												<span ng-if="form.$submitted || form.fname.$touched">
+													<small ng-if="form.fname.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter firstname</small>
+												</span>
+											</label><br>
+											<input class="font-12 bold" type="text" placeholder="enter firstname" name="fname" ng-model="applicant.firstname" required="required" />	
+										</div>
+									</div>
+									<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+										<div class="input-box ">
+											<label for="lname" class="text-green font-12 bold" style="width:100%!important;">
+												lastname:
+												<span ng-if="form.$submitted || form.lname.$touched">
+													<small ng-if="form.lname.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter lastname</small>	
+												</span>
+											</label><br>
+											<input class="font-12 bold" type="text" placeholder="enter lastname" name="lname" ng-model="applicant.lastname" required="required" />	
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-12 padding-00">
+									<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+										<div class="input-box ">
+											<label for="mname" class="text-green font-12 bold" style="width:100%!important;">
+												middlename:
+											</label><br>
+											<input class="font-12 bold" type="text" placeholder="enter middlename" name="mname" ng-model="applicant.middlename" />	
+										</div>
+									</div>
+									<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+										<div class="input-box ">
+											<label for="email" class="text-green font-12 bold" style="width:100%!important;">
+												email:
+												<span ng-if="form.$submitted || form.email.$touched">
+													<small ng-if="form.email.$error.required" class="text-red pull-right" 
+														style="padding-top: 2px!important;">enter email</small>
+													<small class="text-red pull-right" ng-if="form.email.$error.email" style="padding-top: 2px!important;">email already taken</small>
+												</span>
+											</label><br>
+											<input email myemail="{{ sessions.user.email }}" class="font-12 bold" type="email" placeholder="enter username" name="email" ng-model="applicant.email" required="required" />	
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-12 padding-00">
+									<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+										<div class="input-box ">
+											<label for="gender" class="text-green font-12 bold" style="width:100%!important;">gender:</label><br>
+											<div class="radio radio-success m-b-05 m-l-20 font-12" style="margin-top:-20px!important;">
+												<input type="radio" checked="checked" name="gender" value="1" ng-model="applicant.gender" />
+					                    		<label for="gender" class="m-l-45 bold"><strong>Male</strong></label>
+											</div>
+											<div class="radio radio-success m-t-00 m-l-20 m-b-00 font-12">
+												<input type="radio" checked="checked" name="gender" value="2" ng-model="applicant.gender" />
+					                    		<label for="gender" class="m-l-45 bold"><strong>Female</strong></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+										<div class="input-box ">
+											<label for="tel" class="text-green font-12 bold" style="width:100%!important;">
+												tel:
+												<span ng-if="form.$submitted || form.tel.$touched">
+													<small ng-if="form.tel.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter telephone number</small>
+													<small ng-if="form.tel.$error.minlength" class="text-red pull-right" style="padding-top: 2px!important;">enter telephone number with a min. length of 10</small>	
+												</span>
+											</label><br>
+											<input class="font-12 bold" type="tel" placeholder="enter tel number" name="tel" ng-model="applicant.tel" required="required" minlength="10" />	
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-12 padding-00">
+									<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+										<div class="input-box ">
+											<label for="dob" class="text-green font-12 bold" style="width:100%!important;">
+												date of birth:
+												<span ng-if="form.$submitted || form.dob.$touched">
+													<small ng-if="form.dob.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter your date of birth</small>	
+												</span>
+											</label><br>
+											<input class="font-12 bold" type="date" placeholder="enter date of birth" name="dob" ng-model="applicant.dob" required="required" />	
+										</div>
+									</div>
+									<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+										<div class="input-box ">
+											<label for="nationality" class="text-green font-12 bold" style="width:100%!important;">
+												nationality:
+												<span ng-if="form.$submitted || form.nationality.$touched">
+													<small ng-if="form.nationality.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">select nationality</small>
+												</span>
+											</label><br>
+											<select ng-options="country.id as country.name for country in app.countries" ng-model="applicant.nationality" required="required" style="width: 100%; border:1px solid #dedede; color:#000;" class="padding-05 font-12 bold" name="nationality">
+												<option value="">select nationality</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-12 padding-00">
+									<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+										<div class="input-box ">
+											<label for="cor" class="text-green font-12 bold" style="width:100%!important;">
+												Country of residence:
+												<span ng-if="form.$submitted || form.cor.$touched">
+													<small ng-if="form.cor.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">select your country of residence</small>	
+												</span>
+											</label><br>
+											<select ng-options="country.id as country.name for country in app.countries" ng-model="applicant.country_of_residence" name="cor" 
+												style="width: 100%; border:1px solid #dedede; color:#000; margin-top:17px;" required="required" class="padding-05 font-12 bold m-b-05">
+												<option value="">select country of residence</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+										<div class="input-box ">
+											<label for="address" class="text-green font-12 bold" style="width:100%!important;">
+												Address:
+												<span ng-if="form.$submitted || form.address.$touched">
+													<small ng-if="form.address.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enteryour address</small>
+												</span>
+											</label><br>
+											<textarea ng-model="applicant.address" class="font-12 bold" name="address" required="required" >{{ applicant.address }}</textarea>
+										</div>
+									</div>
+								</div>
+						</div>
+					</div>
+					
+					<div class="panel m-b-05">
+						<div class="panel-body padding-10">
+							<h5 class="m-b-10 m-t-10 text-green bold p-l-05">Interests</h5>
+							
+							 <div class="col-sm-12 padding-00">
+								<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+									<div class="input-box ">
+										<label for="name" class="text-green font-12 bold" style="width:100%!important;">Starting Semester:</label><br>
+										<select ng-model="applicant.start_semester" ng-options="semester.id as semester.name for semester in app.semesters" style="width: 100%; border:1px solid #dedede; color:#000;" class="padding-05 font-12 bold">
+											<option value="">select start semester</option>
+										</select>	
+									</div>
+								</div>
+								<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+									<div class="input-box ">
+										<label for="name" class="text-green font-12 bold" style="width:100%!important;">Mode of funding:</label><br>
+										<select style="width: 100%; border:1px solid #dedede; color:#000;" class="padding-05 font-12 bold" ng-model="applicant.payment_options"
+										ng-options="funding.id as funding.name for funding in app.funding">
+											<option value="">select mode of funding</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="panel m-b-05">
+						<div class="panel-body padding-10">
+							<h5 class="m-b-10 m-t-10 text-green bold p-l-05">Educational Background:</h5>
+							
+							<div class="col-sm-12 padding-00">
+								<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+									<div class="input-box ">
+										<label for="name" class="text-green font-12 bold" style="width:100%!important;">
+											highest obtained qualification:
+											<span ng-if="form.$submitted || form.qualification.$touched">
+												<small ng-if="form.qualification.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">select highest qualification obtained</small>	
+											</span>
+										</label><br>
+										<select style="width: 100%; border:1px solid #dedede; color:#000;" class="padding-05 font-12 bold" name="qualification" ng-model="applicant.highest_qualification" ng-options="qualification.id as qualification.name for qualification in app.qualifications" required="required">
+											<option value="">select Highest Qualification Obtained</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+									<div class="input-box ">
+										<label for="name" class="text-green font-12 bold" style="width:100%!important;">
+											Country of study:
+											<span ng-if="form.$submitted || form.cos.$touched">
+												<small ng-if="form.cos.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">select country of study</small>
+											</span>
+										</label><br>
+										<select style="width: 100%; border:1px solid #dedede; color:#000;" class="padding-05 font-12 bold" name="cos" 
+											ng-model="applicant.country_of_study" ng-options="country.id as country.name for country in app.countries" required="required">
+											<option value="">select country of study</option>
+										</select>	
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-12 padding-00">
+								<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+									<div class="input-box ">
+										<label for="expirience" class="text-green font-12 bold" style="width:100%!important;">years of work expirience:</label><br>
+										<input class="font-12 bold" type="number" min="0" placeholder="enter amount of years of work expirience" name="expirience" ng-model="applicant.years_of_expirence" />	
+									</div>
+								</div>
+								<div class="col-sm-6 m-b-10 p-l-05 p-r-05">
+									<div class="input-box ">
+										<label for="name" class="text-green font-12 bold" style="width:100%!important;">
+											english proficiency:
+											<span ng-if="form.$submitted || form.english.$touched">
+												<small ng-if="form.ennglish.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">select english proficiency</small>
+											</span>
+										</label><br>
+										<select style="width: 100%; border:1px solid #dedede; color:#000;" name="english" class="padding-05 font-12 bold" ng-model="applicant.english_level"
+										ng-options="english_level.id as english_level.name for english_level in app.english" required="required">
+											<option value="">select English Proficiency</option>
+										</select>	
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-sm-12 padding-00">
+								<div class="col-sm-12 m-b-10 p-l-05 p-r-05">
+									<div class="input-box ">
+										<label for="name" class="text-green font-12 bold" style="width:100%!important;">extra notes:</label><br>
+										<textarea ng-model="applicant.extra_notes" class="font-12 bold" name="extra_notes">{{ applicant.extra_notes }}</textarea>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-12 padding-00">
+								<div class="col-sm-12 m-b-10 p-l-05 p-r-05">
+									<div class="input-box ">
+										<label for="name" class="text-green font-12 bold" style="width:100%!important;">files / documents:</label><br>
+										<span class="btn btn-info btn-sm m-t-10">select supporting documents</span>	
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					
+					<div class="panel">
+						<div class="panel-body padding-05">
+							<button class="btn btn-success bold btn-sm" type="submit" ng-click="profile.updateProfile (form);">save</button>
+						</div>
+					</div>
+				</div>
+
+
+			</form>
+		</div>
+	</div>
+</div>

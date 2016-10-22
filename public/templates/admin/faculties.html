@@ -1,0 +1,59 @@
+<ng-include src="templates.header"></ng-include>
+<ng-include src="templates.ordinary_bar" ng-init="setCrumbs (['administrator', 'faculties']);"></ng-include>
+
+<div class="container-fluid m-l-10 m-r-10 p-t-10 no-border">
+	<div class="row ">
+		<ng-include src="templates.admin_side" ></ng-include>
+
+		<div class="col-sm-10 p-r-05 p-l-05">
+			<div class="col-sm-6 p-l-05 p-r-05">
+				<form name="form" novalidate>
+					<div class="panel m-b-05">
+						<div class="panel-body">
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="name" class="text-green font-12 bold">Faculty Name:</label><br>
+								<input class="font-12" required name="name" type="text" placeholder="enter the faculty name" 
+									ng-model="selectedfaculty.name" facultyname />
+								<small class="text-red" ng-show="form.name.$error.facultyname">faculty name already exists!</small>
+							</div>
+							
+							<div class="col-sm-12 p-l-00 p-r-05 p-b-10 text-right btns-family text-600">
+								<button ng-class="['btn', 'btn-sm', 'btn-success', 'text-600']" type="submit" ng-click="faculty_makeChanges (form);" >
+									make changes
+								</button>
+								<span ng-class="['btn', 'btn-sm', 'btn-default', 'text-600']" ng-click="clearFaculty ();" >clear</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			
+			<div class="col-sm-6 p-l-05 p-r-05">
+				<div class="panel m-t-00">
+					<div class="panel-body p-b-05 p-t-05">
+						<table class="table table-list table-responsive m-b-00 table-condensed">
+							<thead>
+								<td width="90%" class="text-600 text-left p-b-20">Faculty Name</td>
+								<td width="10%" class="text-right"><i class="fa fa-cog"></i></td>
+							</thead>
+							<tbody>
+								<tr dir-paginate="faculty in faculties | itemsPerPage:15 ">
+									<td class="font-12 text-600 text-left">
+										<h5 class="hand text-600 m-b-00 m-t-00" ng-click="setfaculty (faculty);">
+											<p ng-bind="faculty.name" class="p-b-05" ></p>
+										</h5>
+									</td>
+									<td class="font-12 text-right">
+										<i class="fa fa-1x fa-times text-red" ng-click="dropFaculty(faculty);"></i>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<dir-pagination-controls></dir-pagination-controls>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

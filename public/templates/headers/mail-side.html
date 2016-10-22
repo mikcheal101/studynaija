@@ -1,0 +1,55 @@
+<div class="col-sm-2 hidden-xs p-l-00 padding-00" ng-show="sessions.authenticated === true" >
+	
+	<div class="panel m-b-10" ng-show="sessions.authenticated === true && (sessions.user.usertype === 1 || sessions.user.usertype === 2)" >
+		<div class="panel-heading"><i class="glyphicon glyphicon-list"></i></div>
+		<ul class="list-group">
+			<li class="list-group-item">
+				<a href="/admin/applicants" class="font-12 text-lowercase text-green">Applicant (s)</a>
+			</li>
+
+			<li class="list-group-item" ng-if="sessions.user.usertype === 1">
+				<a href="/sadmin/web_admins" class="font-12 text-lowercase text-green">Web Administrator (s)</a>
+			</li>
+			
+			<li class="list-group-item" >
+				<a href="/admin/sch_admins" class="font-12 text-lowercase text-green">School Administrator (s)</a>
+			</li>
+			<li class="list-group-item">
+				<a href="/admin/scholarships" class="font-12 text-lowercase text-green">Scholarship (s)</a>
+			</li>
+			<li class="list-group-item">
+				<a href="/admin/course_institution" class="font-12 text-lowercase text-green">Assign Courses To Instituition</a>
+			</li>
+			<li class="list-group-item">
+				<a href="/admin/news" class="font-12 text-lowercase text-green">News</a>
+			</li>
+			<li class="list-group-item">
+				<a href="/admin/faculties" class="font-12 text-lowercase text-green">Faculties</a>
+			</li>
+			<li class="list-group-item">
+				<a href="/admin/institutions_types" class="font-12 text-lowercase text-green">Instituition Types</a>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="panel">
+		<h5 class="panel-heading m-t-00 m-b-00 bold"><i class="glyphicon glyphicon-envelope"></i></h5>
+		<ul class="list-group ">
+		  	<li class="list-group-item">
+		  		<a href="/mail/compose" class="font-12 text-lowercase text-green">compose</a>
+		  	</li>
+		  	<li class="list-group-item">
+			    <a href="/mail/inbox" class="font-12 text-lowercase text-green">
+				    inbox
+				    <span ng-class="sidebar.inbox.length > 0 ? 'label pull-right label-info' : 'label pull-right label-danger'" ng-bind="sidebar.inbox.length"></span>
+				</a>
+			</li>
+			<li class="list-group-item">
+			    <a href="/mail/sent" class="font-12 text-lowercase text-green">
+				    sent messages
+				    <span ng-class="sidebar.sent.length > 0 ? 'label pull-right label-info' : 'label pull-right label-danger'" ng-bind="sidebar.sent.length"></span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>

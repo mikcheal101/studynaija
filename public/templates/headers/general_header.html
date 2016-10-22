@@ -1,0 +1,131 @@
+<nav ng-show="sessions.authenticated === false" class="navbar navbar-fixed-top bg-white m-b-00 no-border" style="background-color:green!important;">
+	<div class="container-fluid" style="border-bottom-color:rgba(108,186,53,0.3); border-top:none; border-right:none; border-left:none;">
+		<!-- Brand and toggle get grouped for better mobile display -->
+
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+				data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar bg-white"></span>
+				<span class="icon-bar bg-white"></span>
+				<span class="icon-bar bg-white"></span>
+			</button>
+			<h1 class="navbar-brand m-b-00 m-t-00" style="color:#FFF!important;">studynaija</h1>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse no-overflow no-scroll" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="/" class="navbar-link text-white text-lowercase font-12">Home</a></li>
+				<li><a href="/institutions" class="navbar-link text-white text-lowercase font-12">Institutions</a></li>
+				<li><a href="/news" class="navbar-link text-white text-lowercase font-12">news</a></li>
+				<li><a href="/scholarships" class="navbar-link text-white text-lowercase font-12">scholarships</a></li>
+				<li><a href="/states" class="navbar-link text-white text-lowercase font-12">states</a></li>
+				<li><a href="/register" class="navbar-link text-white text-lowercase font-12">register</a></li>
+				<li><a href="/login" class="navbar-link text-white text-lowercase font-12">sign in</a></li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- nav for applicant -->
+<nav ng-show="sessions.authenticated === true && sessions.user.usertype === 4" 
+	class="navbar navbar-fixed-top bg-white m-b-00 no-border" style="background-color:green!important;">
+	<div class="container-fluid" style="border-bottom-color:rgba(108,186,53,0.3); border-top:none; border-right:none; border-left:none;">
+		<!-- Brand and toggle get grouped for better mobile display -->
+
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+				data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar bg-white"></span>
+				<span class="icon-bar bg-white"></span>
+				<span class="icon-bar bg-white"></span>
+			</button>
+			<h1 class="navbar-brand m-b-00 m-t-00" style="color:#FFF!important;">studynaija</h1>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse no-overflow no-scroll" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="/" class="navbar-link text-white text-lowercase font-12">Home</a></li>
+				<li><a href="/institutions" class="navbar-link text-white text-lowercase font-12">Institutions</a></li>
+				<li><a href="/news" class="navbar-link text-white text-lowercase font-12">news</a></li>
+				<li><a href="/scholarships" class="navbar-link text-white text-lowercase font-12">scholarships</a></li>
+				<li><a href="/states" class="navbar-link text-white text-lowercase font-12">states</a></li>
+				<li class="dropdown">
+		          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+		          		aria-haspopup="true" aria-expanded="false">
+		          		<img class="img-circle"
+	        				ng-src="{{ sessions.user.profile_image }}" 
+	        				alt="{{ sessions.user.username }}"  
+	        				style="width: 25px!important; height: 25px!important;"/>&nbsp;&nbsp;
+	        			<span style="vertical-align: middle!important; font-size: 0.9em; color:#FFF!important;">{{ sessions.user.username }}</span> 
+		          		<span class="caret" style="color:#FFF!important;"></span>
+		          	</a>
+		          		
+		          	<ul class="dropdown-menu">
+			            <li><a href="/app/profile">My Profile</a></li>
+			            <li><a href="/app/cart">Shopping Cart</a></li>
+			            <li><a href="/app/myApplications">My Applications</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="/messages/inbox">Mails <span class="label label-info pull-right" style="margin-top:3px;">0</span></a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="#" ng-click="app.logout ();">Sign Out</a></li>
+		          	</ul>
+		        </li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+
+<!-- super admin -->
+<!-- nav for applicant -->
+<nav ng-show="sessions.authenticated === true && sessions.user.usertype === 1" 
+	class="navbar navbar-fixed-top bg-white m-b-00 no-border" style="background-color:green!important;">
+	<div class="container-fluid" style="border-bottom-color:rgba(108,186,53,0.3); border-top:none; border-right:none; border-left:none;">
+		<!-- Brand and toggle get grouped for better mobile display -->
+
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+				data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar bg-white"></span>
+				<span class="icon-bar bg-white"></span>
+				<span class="icon-bar bg-white"></span>
+			</button>
+			<h1 class="navbar-brand m-b-00 m-t-00" style="color:#FFF!important;">studynaija</h1>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse no-overflow no-scroll" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="/" class="navbar-link text-white text-lowercase font-12">Home</a></li>
+				<li><a href="/institutions" class="navbar-link text-white text-lowercase font-12">Institutions</a></li>
+				<li><a href="/news" class="navbar-link text-white text-lowercase font-12">news</a></li>
+				<li><a href="/scholarships" class="navbar-link text-white text-lowercase font-12">scholarships</a></li>
+				<li><a href="/states" class="navbar-link text-white text-lowercase font-12">states</a></li>
+				<li class="dropdown">
+		          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+		          		aria-haspopup="true" aria-expanded="false">
+		          		<img class="img-circle"
+	        				ng-src="{{ sessions.user.profile_image }}" 
+	        				alt="{{ sessions.user.username }}"  
+	        				style="width: 25px!important; height: 25px!important;"/>&nbsp;&nbsp;
+	        			<span style="vertical-align: middle!important; font-size: 0.9em; color:#FFF!important;">{{ sessions.user.username }}</span> 
+		          		<span class="caret" style="color:#FFF!important;"></span>
+		          	</a>
+		          		
+		          	<ul class="dropdown-menu">
+			            <li><a href="/sadmin/profile">My Profile</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="/messages/inbox">Mails <span class="label label-info pull-right" style="margin-top:3px;">0</span></a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="#" ng-click="app.logout ();">Sign Out</a></li>
+		          	</ul>
+		        </li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>

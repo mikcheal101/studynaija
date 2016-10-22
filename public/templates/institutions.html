@@ -1,0 +1,24 @@
+<ng-include src="templates.header"></ng-include>
+<ng-include src="templates.search" ng-init="setCrumbs (['institutions']);"></ng-include>
+
+<div class="container" ng-init="app.loadInstitutions ();">
+	<div class="row m-t-05">
+		<div class="col-sm-3">
+			
+		</div>
+
+		<div class="col-md-9 p-l-05 p-r-00 m-b-05">
+			<div class="panel m-b-05">
+				<div class="panel-body m-t-00 m-b-00 padding-05">
+					<h2 class="bold text-green m-b-05 m-t-05">Institutions</h2>	
+				</div>
+			</div>
+			<!-- list of institutions -->
+			<div class="panel m-b-05">
+				<div class="panel-body padding-05" ng-repeat="school in app.institutions">
+					<a ng-href="/institution/{{school.id}}?University_of_jos" ng-bind="school.name"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,39 @@
+<div class="col-sm-3 p-l-00 p-r-05">
+				
+	<div class="panel padding-00 m-b-05">
+		<div class="panel-body p-l-00 p-r-00 p-t-00 text-center">
+			<img ng-if="(applicant.profile_image && !documents.profile_image)" class="img-responsive img-fluid" style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px;" 
+				ngf-thumbnail="documents.profile_image" />	
+
+			<img class="img-responsive img-fluid" style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px;" 
+				ngf-thumbnail="documents.profile_image" />	
+			<div class="">
+				<input type="file" name="passport" ngf-max-total-size="10MB" ngf-select="profile.getImage ($files);" 
+					ng-model="documents.profile_image" accept="image/*" placeholder="change passport image" />
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel padding-00 m-b-05">
+		<div class="panel-body padding-10">
+			<h5 class="text-green m-t-00 m-b-10 bold">Documents</h5>
+			<ul style="list-style: none!important;" class="p-l-00">
+				<li style="border-bottom: 1px solid #F9F9F9;" class="p-l-05 p-b-05 p-t-05">
+					<i class="fa fa-history text-purple"> </i> &nbsp; &nbsp;
+					<a href="#" class="m-b-10 font-12">Curriculum Vitea </a>	
+				</li>
+				<li style="border-bottom: 1px solid #F9F9F9;" class="p-l-05 p-b-05 p-t-05">
+					<i class="fa fa-plus text-purple font-12"> </i> &nbsp; &nbsp;
+					<a href="#" class="m-b-10 font-12">Other Documents </a>	
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+	
+	<div class="panel padding-00 m-b-05">
+		<div class="panel-body padding-10">
+			<!-- ads -->
+		</div>
+	</div>
+</div>

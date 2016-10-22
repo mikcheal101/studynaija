@@ -1,0 +1,123 @@
+<ng-include src="templates.header"></ng-include>
+<ng-include src="templates.ordinary_bar" ng-init="setCrumbs (['administrator', 'profile']);"></ng-include>
+
+<div class="container-fluid p-t-10 no-border">
+	<div class="row p-r-20 p-l-20">
+		<ng-include src="templates.admin_side" ></ng-include>
+
+		<form name="form">
+			<div class="col-sm-2 p-l-05 p-r-05">
+				<div class="panel p-b-05">
+					<img class="width-200x img-fluid img-responsive align-center" ngf-thumbnail="profile.profile_image"/>				
+					<div class="panel-body p-l-05 p-r-05 p-b-05">
+						<ul class="list-group">
+							<li class="list-group-item">
+								<h5 class="m-t-00 m-b-00 text-600">
+									email: <br>
+									<small ng-bind="admin.email" class="p-t-10 text-green font-12 bold"></small>
+								</h5>
+							</li>
+							<li class="list-group-item">
+								<h5 class="m-t-00 m-b-00 text-600">
+									username: <br>
+									<small ng-bind="admin.username" class="p-t-10 text-green font-12 bold"></small>
+								</h5>
+							</li>
+							<li class="list-group-item text-center ">
+								<span class="btn btn-info btn-sm text-600 text-wrap" 
+									ngf-max-total-size="10MB" ngf-select="upload.getImage ($files);" 
+									ng-model="profile.profile_image" accept="image/*">
+									select profile Image
+								</span>
+								<input type="hidden" name="image" ng-model="profile.profile_image" />
+								<div ng-show="profileForm.$submitted">
+									<p class="text-danger font-12" 
+										ng-show="form.image.$error.required ">
+										Select A Passport Photo
+									</p>
+									<p class="text-danger font-12" ng-if="form.image.$error.maxSize">File too large {{ admin.profile_image.size / 1000000|number:1 }} MB : max 10MB</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-8 m-t-00 p-l-05 p-r-00">
+				<div class="col-sm-12 padding-00">
+					<div class="panel m-b-10">
+						<div class="panel-body">
+							<p class="lead text-600 p-b-10 font-14 text-ash-01">Click on the blue button on the left to change / select a passport photo</p>
+							
+							<div class="col-sm-12 m-b-10">
+								<div class="input-box">
+									<label for="email" class="text-green font-12 bold" style="width:100%!important;">
+										Email Address:
+										<span ng-if="form.$submitted || form.email.$touched">
+											<small ng-if="form.email.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter username</small>
+											<small class="text-red pull-right" ng-if="form.email.$error.email" style="padding-top: 2px!important;">email already taken</small>
+										</span>
+									</label><br>
+									<input class="font-12" required type="email" placeholder="enter email" autocomplete="false" name="email" ng-model="admin.email" email 
+										myemail="{{ admin.email }}" />	
+								</div>
+							</div>
+							
+							<div class="col-sm-12 m-b-10">
+								<div class="input-box">
+									<label for="email" class="text-green font-12 bold" style="width:100%!important;">
+										Username:
+										<span ng-if="form.$submitted || form.username.$touched">
+											<small ng-if="form.username.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter username</small>
+											<small class="text-red pull-right" ng-if="form.username.$error.username" style="padding-top: 2px!important;">username already taken</small>
+											<small ng-if="form.username.$error.minlength" class="text-red pull-right" style="padding-top: 2px!important;">enter username min. length of 5</small>	
+										</span>
+									</label><br>
+									<input class="font-12" required type="text" placeholder="enter username" autocomplete="false" name="username" ng-model="admin.username" 	username myusername="{{ admin.username }}" />	
+								</div>
+							</div>
+
+							<div class="col-sm-12 m-b-10">
+								<div class="input-box">
+									<label for="email" class="text-green font-12 bold" style="width:100%!important;">
+										Password:
+										<span ng-if="form.$submitted || form.password.$touched">
+											<small ng-if="form.password.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter password</small>
+											<small ng-if="form.password.$error.minlength" class="text-red pull-right" style="padding-top: 2px!important;">enter password with a min. length of 6</small>	
+										</span>
+									</label><br>
+									<input class="font-12" required type="password" placeholder="enter password" name="password" ng-model="admin.password" 	username 
+										myusername="{{ admin.password }}" minlength="6" />	
+								</div>
+							</div>
+						</div>
+
+
+						<div class="panel-footer text-right">
+							<button type="submit" class="btn btn-sm btn-success text-600 " ng-click="updateProfile (form);">
+								make changes
+							</button>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-sm-12 padding-00">
+					<div class="panel">
+						<h5 class="panel-heading m-b-00 m-t-00 text-600 text-lowercase">Activity Log</h5>
+						<div class="panel-body">
+							<table class="table font-12 text-600 table-responsive">
+								<tr>
+									<td class="text-info">
+										Logged In
+									</td>
+									<td width="20%" class="text-right text-success">
+										2 June, 2016 12: 45 pm 
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

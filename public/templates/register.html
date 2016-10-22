@@ -1,0 +1,120 @@
+<ng-include src="templates.header"></ng-include>
+<ng-include src="templates.search" ng-init="setCrumbs (['registration portal']);"></ng-include>
+
+<div class="container">
+	<div class="row m-b-00 m-t-10">
+		<div class="col-sm-6 col-sm-offset-3 ">
+			
+			<div class="panel ">
+				<h4 class="m-t-00 m-b-00 panel-heading font-16 bold">create an studynaija account</h4>
+				
+				<div class="panel-body">
+					<h4 class="m-b-30 text-green text-justify">studynaija is fully equiped to get you from start to finish in your pursuit for gretness and quality education.</h4>
+					<div class="line-ash m-b-20"></div>
+					
+					<p class="text-black text-justify font-12">Aim for success, not perfection. Never give up your right to be wrong, because then you will lose the ability to learn new things and move forward with your life. Remember that fear always lurks behind perfectionism. <caption class="text-green">David M. Burns</caption></p>
+					
+					<form class="form m-b-10 m-t-20 p-b-10" name="form">
+					
+						<div class="alert alert-info alert-dismissible" role="alert" ng-show="register.info">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<span>{{ register.info }}</span>
+						</div>
+
+						<div class="alert alert-error alert-dismissible" role="alert" ng-show="register.error">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<span>{{ register.error }}</span>
+						</div>
+						
+						<div class="col-sm-12 input-box m-b-10 m-t-10">
+							<label for="username" class="text-green">Username:</label><br>
+							<input class="font-13" type="text" placeholder="enter username" name="username" ng-model="register.user.username" required />
+							<div></div>
+						</div>
+						
+						<div class="col-sm-12 input-box m-b-10">
+							<label for="password" class="text-green">Password:</label><br>
+							<input class="font-13" type="password" placeholder="enter password" name="password" ng-model="register.user.password" required />
+							
+						</div>
+						
+						<div class="col-sm-12 m-t-10 line-ash m-b-15"></div>
+						
+						<div class="col-sm-12 m-b-00 p-l-00 p-r-00">
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="firstname" class="text-green">Firstname:</label><br>
+								<input class="font-13" type="text" placeholder="enter firstname" name="firstname" ng-model="register.user.firstname" required />
+							</div>
+							
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="lastname" class="text-green">Lastname:</label><br>
+								<input class="font-13" type="text" placeholder="enter lastname" name="lastname" ng-model="register.user.lastname" required />
+							</div>
+						</div>
+						
+						<div class="col-sm-12 m-b-00 p-l-00 p-r-00">
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="middlename" class="text-green">Middlename:</label><br>
+								<input class="font-13" type="text" placeholder="enter middlename" name="middlename" ng-model="register.user.middlename" />
+							</div>
+							
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="gender" class="text-green col-sm-4">Gender: </label>
+								<div class="p-l-00 col-sm-8">
+					                <div class="radio radio-info col-sm-6 no-margin padding-00">
+					                    <input type="radio" checked="checked" name="gender" class="" value="1" ng-model="register.user.gender" />
+					                    <label for="gender" class="m-l-45 bold"><strong>Male</strong></label>
+					                </div>
+					                <div class="radio radio-info col-sm-6 no-margin padding-00" style="margin-top: 0%!important;">
+					                    <input type="radio" name="gender" value="2" class="" ng-model="register.user.gender" />
+					                    <label class="m-l-45 bold"><strong>Female</strong></label>
+					                </div>
+					            </div>  
+							</div>
+						</div>
+						
+						<div class="col-sm-12 m-t-10 line-ash m-b-15"></div>
+	
+						<div class="col-sm-12 input-box m-b-10">
+							<label for="email" class="text-green">Email:</label><br>
+							<input class="font-13" type="email" placeholder="enter email" name="email" ng-model="register.user.email" required />
+						</div>
+						
+						<div class="col-sm-12 m-b-10 p-l-00 p-r-00">
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="tel" class="text-green">Tel Number:</label><br>
+								<input class="font-13" type="tel" placeholder="enter tel number"  name="tel" ng-model="register.user.tel" />
+							</div>
+							
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="dob" class="text-green">dob:</label><br>
+								<input class="font-13" type="date" placeholder="enter date of birth" name="dob" ng-model="register.user.dob" required />
+							</div>
+							
+						</div>
+						
+						<div class="col-sm-12 m-b-10 p-l-00 p-r-00">
+							<button class="btn btn-block btn-success" type="submit" ng-click="app.register (form);">Register</button>
+						</div>
+						
+					</form>
+					
+					<div class="line-ash m-b-20"></div>
+					
+					<p class="text-black col-sm-6 p-l-00">Already have an account ? <a href="/login">Sign in</a></p>
+					<!--
+					<div class="col-sm-6 p-r-00">
+						<div class="btn-block text-right">
+							<button class="btn btn-sm btn-default" id="fb"><i class="fa fa-facebook"></i></button>
+							<button class="btn btn-sm btn-default" id="fb"><i class="fa fa-twitter"></i></button>
+							<button class="btn btn-sm btn-default" id="fb"><i class="fa fa-google-plus"></i></button> 
+							<button class="btn btn-sm btn-default" id="fb"><i class="fa fa-linkedin"></i></button>
+						</div>
+					</div>
+					-->
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

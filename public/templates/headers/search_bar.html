@@ -1,0 +1,30 @@
+<div class="container search-bar" style="margin-top: 53px;">
+	<div class="row full-height">
+		<div class="col-sm-12 full-height p-t-10 p-l-10 p-r-10 no-scroll" style="background-color: #fbfbfb; border: 1px solid #dedede;" >
+			<div class="col-md-5 col-sm-5 m-b-05 p-l-00 p-r-05">
+				<ol class="breadcrumb success">
+					<li>
+						<a href="#">studynaija <sup>&copy;</sup></a>
+					</li>
+					<li ng-repeat="crumb in breadcrumbs">
+						<a href="#" ng-bind="crumb"></a>
+					</li>
+				</ol>
+			</div>
+			
+			<div class="col-md-7 col-sm-7">
+			
+				<div class=" input-group">
+					<input class="form-control font-12"  style="border-radius: 0px; -moz-border-radius: 0px;" 
+						ng-model="search.text" type="text" placeholder="Search for courses and schools here..." aria-describedby="searchBtn" 
+						name="searchbar" />
+					<span class="input-group-addon btn btn-white background-white-complete" style="background-color: #FFF;">
+						<button class="fa fa-search" style="color: #607D8B; background-color: rgba(0, 0, 0, 0)!important; border:none!important;"></button>
+					</span>
+					
+				</div>
+			
+			</div>
+		</div>		
+	</div>
+</div>

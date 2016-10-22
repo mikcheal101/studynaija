@@ -1,0 +1,32 @@
+<ng-include src="templates.header"></ng-include>
+<ng-include src="templates.search" ng-init="setCrumbs (['scholarships']);"></ng-include>
+
+<div class="container" ng-init="init_scholarships ();">
+	<div class="row m-t-05">
+		<div class="col-sm-3">
+			
+		</div>
+
+		<div class="col-md-9 p-l-05 p-r-00 m-b-05">
+			<div class="panel m-b-05">
+				<div class="panel-body m-t-00 m-b-00 padding-05">
+					<h2 class="bold text-green m-b-05 m-t-05">Scholarships</h2>	
+				</div>
+			</div>
+			
+			<!-- list of new items -->
+			<div class="panel m-b-05" ng-repeat="scholarship in app.scholarships">
+				<div class="panel-body padding-05">
+					<h5 class="bold text-uppercase">
+						<a ng-href="/scholarship/{{ scholarship.id }}/{{ scholarship.name | underline }}">{{ scholarship.name }}</a>
+					</h5>
+					<small class="bold text-ash">{{ scholarship.ts | date }}</small>
+					<hr class="m-t-05">
+					<div class="text-ash-01">
+						{{ scholarship.details }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

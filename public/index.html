@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<base href="/">
+	
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>studynaija</title>
+
+
+	<link href="assets/stylesheets/backgrounds.css" rel="stylesheet" type="text/css">
+	<link href="assets/stylesheets/border.css" rel="stylesheet" type="text/css">
+	<link href="assets/stylesheets/font-face.css" rel="stylesheet" type="text/css">
+	<link href="assets/stylesheets/cascade.css" rel="stylesheet" type="text/css">
+	<link href="assets/stylesheets/inputBoxes.css" rel="stylesheet" type="text/css">
+	<link href="assets/stylesheets/animate.css" rel="stylesheet" type="text/css">
+	<link href="assets/stylesheets/styles.css" rel="stylesheet" type="text/css">
+	<link href="assets/stylesheets/home.css" rel="stylesheet" type="text/css">
+
+	
+
+	<style>
+		.line-divider {height: 55px; border:none; width: 1px!important; background-color:#dedede;}
+		.one_half_rm {font-size: 1.5rem!important;}
+		.header-icons {vertical-align: middle!important; font-size: 0.9em;}
+		.three_rm {font-size: 3rem!important;}
+	</style>
+
+
+	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
+	<link href="assets/angular/loading-bar.min.css" rel="stylesheet" type="text/css" media="all">
+	<link href="assets/bootstrap/css/awesome-bootstrap-checkbox.css" rel="stylesheet" type="text/css" media="all">
+
+	<!-- jquery -->
+	<script src="assets/jquery/jquery.js"></script>
+
+	<!-- include libraries used -->
+	<script src="lib/tinymce.min.js"></script>
+	<script src="lib/alert.js"></script>
+	
+	<script src="lib/tether.min.js"></script>
+
+	<!-- bootstrap 3 -->
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/bootstrap/js/bootstrap-multiselect.js"></script>
+	<script src="assets/bootstrap/js/bootstrap-notify.js"></script>
+	<script src="assets/bootstrap/js/bootcards.1.0.0.min.js"></script>
+	
+	<!-- adding angular equied files -->
+	<script src="assets/angular/angular.min.js"></script>
+	<script src="assets/angular/angular-route.min.js"></script>
+	<script src="assets/angular/angular-animate.1.5.7.min.js"></script>
+	<script src="assets/angular/angular-sanitize.js"></script>
+	<script src="assets/angular/loading-bar.min.js"></script>
+
+
+	<!-- angular controllers, services and directives -->
+	<script src="assets/javascript/app.js"></script>
+
+	<!-- Controllers -->
+	<script src="assets/javascript/controllers/GeneralCtrl.js"></script>
+	<script src="assets/javascript/controllers/AdminCtrl.js"></script>
+	<script src="assets/javascript/controllers/InstitutionCtrl.js"></script>
+	<script src="assets/javascript/controllers/ApplicantCtrl.js"></script>
+
+	<!-- Routes -->
+	<script src="assets/javascript/routes/general.route.js"></script>
+	<script src="assets/javascript/routes/applicant.route.js"></script>
+	<script src="assets/javascript/routes/institution.route.js"></script>
+	<script src="assets/javascript/routes/webadmin.route.js"></script>
+	<script src="assets/javascript/routes/admin.route.js"></script>
+	
+	<!-- Services -->
+	<script src="assets/javascript/services/general.service.js"></script>
+	<script src="assets/javascript/services/applicant.service.js"></script>
+	<script src="assets/javascript/services/admin.service.js"></script>
+	<script src="assets/javascript/services/institution.service.js"></script>
+
+	<!-- directives -->
+	<script src="assets/javascript/directives/GeneralDirectives.js"></script>
+	
+	<!-- third party Directives for angular -->
+	<script src="assets/angular/ng-file-upload-all.min.js"></script>
+	<script src="assets/angular/ng-file-upload-shim.min.js"></script>
+	<script src="assets/angular/dirPagination.js"></script>
+	<script src="assets/angular/checklist-model.js"></script>
+
+</head>
+ 
+<body ng-app="app" ng-controller="AppController" data-spy="scroll" data-target=".navbar" data-offset="60" id="body" class="home-bg">
+	<div ng-view></div>
+</body>
+</html>
