@@ -81,8 +81,8 @@ app.io 					= socket;
 app.path 				= path;
 app.fs 					= fs;
 app.pgp					= require ('pg-promise')();
-app.conn 				= 'postgres://postgres:mikkytrionze@localhost:5432/studynaija';
-//app.conn 				= process.env.DATABASE_URL || 'postgres://mikkytrionze:mikkytrionze@127.0.0.1:5432/studynaija';
+//app.conn 				= 'postgres://postgres:mikkytrionze@localhost:5432/studynaija';
+app.conn 				= process.env.DATABASE_URL || 'postgres://mikkytrionze:mikkytrionze@127.0.0.1:5432/studynaija';
 app.db 					= app.pgp (app.conn);
 app.bcrypt 				= require ('bcryptjs');
 
