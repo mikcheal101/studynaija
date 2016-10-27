@@ -28,7 +28,6 @@
 	</div><!-- /.container-fluid -->
 </nav>
 
-
 <!-- nav for applicant -->
 <nav ng-show="sessions.authenticated === true && sessions.user.usertype === 4" 
 	class="navbar navbar-fixed-top bg-white m-b-00 no-border" style="background-color:green!important;">
@@ -81,8 +80,8 @@
 </nav>
 
 <!-- super admin -->
-<!-- nav for applicant -->
-<nav ng-show="sessions.authenticated === true && sessions.user.usertype === 1" 
+<!-- nav for admin -->
+<nav ng-show="sessions.authenticated === true && ( sessions.user.usertype === 1 || sessions.user.usertype === 2)" 
 	class="navbar navbar-fixed-top bg-white m-b-00 no-border" style="background-color:green!important;">
 	<div class="container-fluid" style="border-bottom-color:rgba(108,186,53,0.3); border-top:none; border-right:none; border-left:none;">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -93,7 +92,7 @@
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar bg-white"></span>
 				<span class="icon-bar bg-white"></span>
-				<span class="icon-bar bg-white"></span>
+				<span clase"></span>
 			</button>
 			<h1 class="navbar-brand m-b-00 m-t-00" style="color:#FFF!important;">studynaija</h1>
 		</div>
@@ -108,11 +107,12 @@
 				<li><a href="/states" class="navbar-link text-white text-lowercase font-12">states</a></li>
 				<li class="dropdown">
 		          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
-		          		aria-haspopup="true" aria-expanded="false">
+		          		aria-haspopup="true" aria-expanded="false">		          	
 		          		<img class="img-circle"
-	        				ng-src="{{ sessions.user.profile_image }}" 
+	        				ngf-thumbnail="admin.image || '/uploads/admin/' + admin.profile_image" 
 	        				alt="{{ sessions.user.username }}"  
-	        				style="width: 25px!important; height: 25px!important;"/>&nbsp;&nbsp;
+	        				ng-style="wh_2" />&nbsp;&nbsp;
+
 	        			<span style="vertical-align: middle!important; font-size: 0.9em; color:#FFF!important;">{{ sessions.user.username }}</span> 
 		          		<span class="caret" style="color:#FFF!important;"></span>
 		          	</a>

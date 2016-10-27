@@ -14,10 +14,10 @@
 						{{ app.scholarship.name }} &nbsp;
 						<small class="bold">{{ app.scholarship.ts | date }}</small>
 					</h4>
-					<hr class="m-t-05">
 
+					<hr class="m-t-05">
 					<div class="p-b-10">
-						{{ app.scholarship.details }}
+						<p ng-bind-html="app.scholarship.details"></p>
 					</div>
 				</div>
 			</div>

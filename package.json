@@ -7,10 +7,11 @@
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Hirekaan Micheal",
+  "author": "Hirekaan Micheal Hemen",
   "license": "ISC",
   "engines": {
-    "node": "^6.5.0"
+    "node": "^6.5.0",
+    "npm" : "^3.10.3"
   },
   "keywords": [],
   "dependencies": {
@@ -30,6 +31,8 @@
     "multer": "^1.2.0",
     "pg-promise": "^5.3.4",
     "serve-favicon": "^2.3.0",
-    "socket.io": "^1.5.0"
+    "socket.io": "^1.5.0",
+    "xls-to-json-lc": "^0.3.3",
+    "xlsx-to-json-lc": "^0.2.5"
   }
 }

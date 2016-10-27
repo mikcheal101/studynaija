@@ -8,7 +8,17 @@
 		<form name="form" novalidate>
 			<div class="col-sm-2 p-l-05 p-r-05">
 				<div class="panel p-b-05">
-					<img class="width-200x img-fluid img-responsive align-center" ngf-thumbnail="profile.profile_image"/>				
+					<div class="text-center" ng-if="admin.image || admin.profile_image">
+						<img style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px; width:100%;" 
+							ng-src="{{ '/uploads/admin/' + admin.profile_image }}" ng-if="!admin.image"/>	
+
+						<img style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px;" 
+							ngf-thumbnail="admin.image" ng-if="admin.image" />	
+						<span ng-if="form.$submitted">
+							<small ng-if="form.passport.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">select a passport</small>
+						</span>
+					</div>
+
 					<div class="panel-body p-l-05 p-r-05 p-b-05">
 						<ul class="list-group">
 							<li class="list-group-item">

@@ -16,6 +16,17 @@ angular.module ('app.service', [])
 		return defer.promise;
 	};
 
+	svc.loadInstitutionTypes = function () {
+		var defer = $q.defer ();
+		$http.get ($rootScope.api.institutionTypes)
+		.then ( y => {
+			defer.resolve (y.data.institutionTypes);
+		}, no => {
+			defer.reject (no);
+		});
+		return defer.promise;
+	};
+
 	// load institutions
 	svc.loadInstitutions = function () {
 		var defer = $q.defer ();

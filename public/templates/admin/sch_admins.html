@@ -8,43 +8,91 @@
 		<div class="col-sm-10 p-r-05 p-l-05">
 			<div class="col-sm-6 m-b-05 p-r-05 p-l-05 ">
 				<div class="panel m-b-05">
-					<h5 class="panel-heading m-b-00 m-t-00 text-600"></h5>
-					<div class="panel-body">
-						<div class="col-sm-12 input-box m-b-10">
-							<label for="username" class="text-green font-12">Profile Image:</label><br>
-							<img />
+					<form name="form" novalidate>
+						<div class="panel-body">
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="" class="text-green font-12">Profile Image:</label><br>
+								<img />
+							</div>
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="" class="text-green font-12">Upload Image:</label><br>
+								<input class="font-12" required name="passport" type="file" placeholder="select profile image" 
+									ng-model="schAdmin.profile_image" accept="image/*"  />
+							</div>
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="username" class="text-green font-12 bold" style="width:100%!important;">
+									username: 
+									<span ng-if="form.$submitted || form.username.$touched">
+										<small ng-if="form.username.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter username</small>
+										<small class="text-red pull-right" ng-if="form.username.$error.username" style="padding-top: 2px!important;">username already taken</small>
+										<small ng-if="form.username.$error.minlength" class="text-red pull-right" style="padding-top: 2px!important;">enter username min. length of 5</small>	
+									</span>
+								</label><br>
+								<input class="font-12 bold" username minlength="5" type="text" placeholder="enter username" name="username" ng-model="schAdmin.username" 
+									required="required" />
+							</div>
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="email" class="text-green font-12 bold" style="width:100%!important;">
+									email:
+									<span ng-if="form.$submitted || form.email.$touched">
+										<small ng-if="form.email.$error.required" class="text-red pull-right" 
+											style="padding-top: 2px!important;">enter email</small>
+										<small class="text-red pull-right" ng-if="form.email.$error.email" style="padding-top: 2px!important;">email already taken</small>
+									</span>
+								</label><br>
+								<input email class="font-12 bold" type="email" placeholder="enter username" name="email" ng-model="schAdmin.email" required="required" />
+							</div>
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="pwd" class="text-green font-12 bold" style="width: 100%!important;">
+									Password:
+									<span ng-if="form.$submitted || form.pwd.$touched">
+										<small ng-if="form.pwd.$error.required" class="text-red pull-right" 
+											style="padding-top: 2px!important;">enter password</small>
+									</span>
+								</label><br>
+								<input class="font-12" required name="pwd" type="text" placeholder="enter password" 
+									ng-model="admin.pwd" minlength="6" />
+							</div>
+							<div class="col-sm-12 input-box m-b-10">
+								<label for="usertype" class="text-green font-12 bold" style="width: 100%!important;">
+									Usertype:
+									<span ng-if="form.$submitted || form.usertype.$touched">
+										<small ng-if="form.usertype.$error.required" class="text-red pull-right" 
+											style="padding-top: 2px!important;">select usertype</small>
+									</span>
+								</label><br>
+								<select class="ngselect font-12" name="usertype" 
+									ng-options="option.id as option.name for option in schoolusertypes track by option.id"
+									ng-model="schAdmin.usertype">
+									<option selected value="">-- Select A Usertype --</option>
+								</select>
+								
+							</div>
+							
+							<hr>
+
+							<div class="col-sm-12 input-box m-b-10 " >
+								<label for="institution" class="text-green font-12 bold" style="width: 100%!important;">
+									Institution: {{ form.institution }}
+									<span ng-if="form.$submitted || form.institution.$touched">
+										<small ng-if="form.institution.$error.required" class="text-red pull-right" 
+											style="padding-top: 2px!important;">select institution</small>
+									</span>
+								</label><br>
+								<div class="radio radio-success m-b-10 m-l-00 p-l-00 font-13" style="" dir-paginate="n in app.institutions | itemsPerPage:15">
+									<input type="radio" name="institution" value="{{n.id}}" ng-model="schAdmin.institution" required/>
+		                    		<label for="" class="m-l-45 bold"><strong>{{ n.name }}</strong></label>
+								</div>
+
+								<dir-pagination-controls style="padding-top:10px;"></dir-pagination-controls>
+							</div>
+
+							<div>
+								<button type="submit" class="btn btn-sm text-600 btn-success">commit changes</button>
+								<span class="btn btn-danger btn-sm text-600">clear</span>
+							</div>
 						</div>
-						<div class="col-sm-12 input-box m-b-10">
-							<label for="username" class="text-green font-12">Upload Image:</label><br>
-							<input class="font-12" required name="passport" type="file" placeholder="select profile image" 
-								ng-model="selectedSchAdmin.profile_image"  />
-						</div>
-						<div class="col-sm-12 input-box m-b-10">
-							<label for="username" class="text-green font-12">Username:</label><br>
-							<input class="font-12" required name="username" type="text" placeholder="enter username" 
-								ng-model="selectedSchAdmin.name" disciplinename />
-							<small class="text-red" ng-show="form.username.$error.required">username name already exists!</small>
-						</div>
-						<div class="col-sm-12 input-box m-b-10">
-							<label for="pwd" class="text-green font-12">Password:</label><br>
-							<input class="font-12" required name="username" type="text" placeholder="enter password" 
-								ng-model="selectedSchAdmin.password_n" disciplinename />
-							<small class="text-red" ng-show="form.username.$error.required">discipline name already exists!</small>
-						</div>
-						<div class="col-sm-12 input-box m-b-10">
-							<label for="usertype" class="text-green font-12">Usertype:</label><br>
-							<select class="ngselect font-12" 
-								ng-options="option.name for option in schoolusertypes track by option.id"
-								ng-model="selectedSchAdmin.usertype">
-								<option selected value="">-- Select A Usertype --</option>
-							</select>
-							<small class="text-red" ng-show="form.username.$error.required">discipline name already exists!</small>
-						</div>
-						<div>
-							<button type="submit" class="btn btn-sm text-600 btn-success">commit changes</button>
-							<span class="btn btn-danger btn-sm text-600">clear</span>
-						</div>
-					</div>
+					</form>
 				</div>
 			</div>
 			
@@ -70,7 +118,7 @@
 						</ul>
 					</div>
 					<div class="panel-footer text-center p-b-00 p-t-00">
-						<dir-pagination-controls></dir-pagination-controls>
+						
 					</div>
 				</div>
 				

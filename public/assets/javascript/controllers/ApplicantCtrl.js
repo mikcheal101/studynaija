@@ -1,6 +1,6 @@
 angular.module ('applicant.controller', [])
 
-.controller ('ApplicantController', function ($scope, $rootScope, $location, $filter, ApplicantService) {
+.controller ('ApplicantController', function ($scope, $rootScope, $location, $filter, $route, ApplicantService) {
 	$scope.sessions 	= $rootScope.sessions;
 	$scope.templates 	= $rootScope.templates;
 	$scope.app 			= $rootScope.app;
@@ -47,14 +47,12 @@ angular.module ('applicant.controller', [])
 		if (form.$valid) {
 			$scope.applicant.oldpassword 	= $scope.sessions.user.password;
 			$scope.applicant.profile_image 	= form.passport;
-			
-			console.log ('images: ', $scope.applicant.profile_image);
 
 			ApplicantService
 			.updateProfile ($scope.applicant, $scope.documents)
 			.then (
 				updated => {
-					console.info ('updated: ', updated);
+					$route.reload ();
 				}, err => {
 					console.error ('error: ', err);
 				}

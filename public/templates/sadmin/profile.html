@@ -5,10 +5,18 @@
 	<div class="row p-r-20 p-l-20">
 		<ng-include src="templates.admin_side" ></ng-include>
 
-		<form name="form">
+		<form name="form" enctype="multipart/form-data">
 			<div class="col-sm-2 p-l-05 p-r-05">
 				<div class="panel p-b-05">
-					<img class="width-200x img-fluid img-responsive align-center" ngf-thumbnail="profile.profile_image"/>				
+					<div class="text-center" ng-if="admin.image || admin.profile_image">
+						
+						<img  style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px;" 
+							ngf-thumbnail="admin.image || '/uploads/admin/' + admin.profile_image" />	
+						<span ng-if="form.$submitted">
+							<small ng-if="form.passport.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">select a passport</small>
+						</span>
+					</div>
+				
 					<div class="panel-body p-l-05 p-r-05 p-b-05">
 						<ul class="list-group">
 							<li class="list-group-item">
@@ -25,11 +33,12 @@
 							</li>
 							<li class="list-group-item text-center ">
 								<span class="btn btn-info btn-sm text-600 text-wrap" 
-									ngf-max-total-size="10MB" ngf-select="upload.getImage ($files);" 
-									ng-model="profile.profile_image" accept="image/*">
+									ngf-max-total-size="10MB" ngf-select="getProfileImage ($files);" 
+									ng-model="admin.image" accept="image/*" ngf-resize="{width:200, height:200, quality:.9}">
 									select profile Image
 								</span>
-								<input type="hidden" name="image" ng-model="profile.profile_image" />
+								<input type="hidden" name="passport" required="required" ng-model="admin.image" />
+
 								<div ng-show="profileForm.$submitted">
 									<p class="text-danger font-12" 
 										ng-show="form.image.$error.required ">

@@ -24,7 +24,7 @@ angular.module ('app.controller', [])
 			username : $scope.login.username,
 			password : $scope.login.password
 		}})
-		.then (function (data) {console.log (data);
+		.then (function (data) {
 			$rootScope.sessions = $scope.sessions = { authenticated: data.auth, user: data.data };
 			$scope.redirectToProfile (data);
 		});
@@ -60,7 +60,6 @@ angular.module ('app.controller', [])
 				$location.path ('/schsub/profile');
 
 			} else {
-				console.log ('heading home');
 				$location.path ('/');
 			}
 		} else {
@@ -86,6 +85,8 @@ angular.module ('app.controller', [])
 	$rootScope.app.english 				= [];
 	$rootScope.app.funding 				= [];
 	$rootScope.app.semesters 			= [];
+	$rootScope.app.inst_types			= [];
+	
 
 	
 	$rootScope.app.loadCountries  = function () {
@@ -115,13 +116,16 @@ angular.module ('app.controller', [])
 	$rootScope.app.loadScholarships = function () {
 		AppService
 		.loadScholarships ()
-		.then (data => { angular.copy (data, $rootScope.app.scholarships); });
+		.then (data => { 
+			angular.forEach(data, function(value){ value.details = value.details.replace(/\r?\n/g, '<br />'); });
+			angular.copy (data, $rootScope.app.scholarships); 
+		});
 	};
 
 	$rootScope.app.getScholarship = function () {
 		AppService
 		.getScholarship ($routeParams.id)
-		.then (data => { angular.copy (data, $rootScope.app.scholarship); });
+		.then (data => { data.details = data.details.replace(/\r?\n/g, '<br />'); angular.copy (data, $rootScope.app.scholarship); });
 	};
 	
 	$rootScope.app.loadStates = function () {
@@ -192,6 +196,14 @@ angular.module ('app.controller', [])
 				angular.copy (semesters, $rootScope.app.semesters);
 			}
 		);
+	};
+
+	$rootScope.app.loadInstitutionTypes = function () {
+		AppService
+		.loadInstitutionTypes ()
+		.then (types => {
+			angular.copy(types, $rootScope.app.inst_types);
+		});
 	};
 
 	$rootScope.app.logout = function () {

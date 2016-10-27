@@ -14,11 +14,13 @@
 					</h5>
 					<div class="panel-body p-t-00">
 						<ul class="list-group">
-							<li class="list-group-item flex" dir-paginate="n in users | itemsPerPage: 5">
+							<li class="list-group-item flex" dir-paginate="n in app.applicants | itemsPerPage: 5">
 								<img ng-src="{{n.profile_image}}" class="img-responsive img-rounded img-fluid" width="50px" />
 								<div class="p-t-05 p-l-10 ">
-									<h5 class="m-t-00 m-b-05 text-600 text-black" ng-bind="n.fullname"></h5>
-									<div class="font-12 text-ash-01" ng-bind="n.email"></div>
+									<h5 class="m-t-00 m-b-05 text-600 text-black hand" ng-click="selectApplicant (n);">
+										{{ n.firstname + n.middlename ? (' ' + n.middlename + ' ') : ' ' + n.lastname }}
+									</h5>
+									<div class="font-12 text-ash-01">{{ n.email }}</div>
 								</div>
 							</li>
 						</ul>
@@ -33,7 +35,77 @@
 			<div class="col-sm-8 m-b-05 p-r-05 p-l-05 ">
 				<div class="panel m-b-05">
 					<h5 class="panel-heading m-b-00 m-t-00 text-600"></h5>
-					<div class="panel-body">
+					<div class="panel-body" ng-if="applicant">
+						<div ng-if="applicant.profile_image != null">
+							<!-- profile image -->
+							<div class="" style="background-image: url('{{ applicant.profile_image }}'); height: 100px; width: 100px; background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
+						</div>
+						
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Username:</label><br>
+							<p>{{ applicant._username }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Gender:</label><br>
+							<p>{{ applicant._gender }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Country of residence:</label><br>
+							<p>{{ applicant._cor }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Country of study:</label><br>
+							<p>{{ applicant._cos }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">English Level:</label><br>
+							<p>{{ applicant._english }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Nationality:</label><br>
+							<p>{{ applicant._n }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Highest Qualification:</label><br>
+							<p>{{ applicant._qualification }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Payment Option:</label><br>
+							<p>{{ applicant._payment_options }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Semester (preffered):</label><br>
+							<p>{{ applicant._sem }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Address:</label><br>
+							<p>{{ applicant.address }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Date of Birth:</label><br>
+							<p>{{ applicant.dob | date }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Email Address:</label><br>
+							<p>{{ applicant.email }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Extra Notes:</label><br>
+							<p>{{ applicant.extra_notes }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Years of experience:</label><br>
+							<p>{{ applicant.years_of_expirence }}</p>
+						</div>
+						<div class="col-sm-12 input-box m-b-10 font-12">
+							<label for="name" class="text-green">Tel:</label><br>
+							<p>{{ applicant.tel }}</p>
+						</div>
+
+						<hr ng-if="applicant.documents">
+						<p ng-repeat="doc in applicant.documents" class="hand text-green font-12 bold text-underline" ng-click="openApplicantDoc (doc.url);">
+							{{ doc.name }}
+						</p>
 					</div>
 				</div>
 			</div>

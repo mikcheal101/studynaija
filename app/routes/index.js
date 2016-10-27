@@ -1,56 +1,54 @@
 module.exports = function (app) {
-	const pgp 		= require ('pg-promise')();
-	const conn 		= process.env.DATABASE_URL || 'postgres://mikkytrionze:mikkytrionze@127.0.0.1:5432/studynaija';
-	const db 		= pgp (conn);
-	const bcrypt 	= require ('bcryptjs');
+	const db 		= app.db;
+	const bcrypt 	= app.bcrypt;
 
 
-	app.use ((req, res, next) => {
-		req.session.user = req.session.user || {authenticated: false, user:{}};
+	app.use ((request, response, next) => {
+		request.session.user = request.session.user || {authenticated: false, user:{}};
 		next ();
 	});
 
-	app.get ('/api/session', (req, res, next) => {
-		res.json ({
-			session : req.session.user
+	app.get ('/api/session', (request, response, next) => {
+		response.json ({
+			session : request.session.user
 		});
 	});
 
-	app.get ('/api/signout', (req, res, next) => {
-		req.session.destroy ();
-		res.json ({
+	app.get ('/api/signout', (request, response, next) => {
+		request.session.destroy ();
+		response.json ({
 			done: true
 		});
 	});
 
-	app.get ('/api/english', (req, res) => {
+	app.get ('/api/english', (request, response, next) => {
 		db.any ('SELECT * FROM static_english_level ORDER BY name DESC')
 		.then ((english) => {
-			res.status (200).json ({
+			response.status (200).json ({
 				english : english
 			});
 		});
 	});
 
-	app.get ('/api/semesters', (req, res) => {
+	app.get ('/api/semesters', (request, response, next) => {
 		db.any ('SELECT * FROM static_semesters ORDER BY name DESC')
 		.then ((semesters) => {
-			res.status (200).json ({
+			response.status (200).json ({
 				semesters: semesters
 			});
 		});
 	});
 
-	app.get ('/api/funding', (req, res) => {
+	app.get ('/api/funding', (request, response, next) => {
 		db.any ('SELECT * FROM static_payment_options ORDER BY name DESC')
 		.then ((funding) => {
-			res.status (200).json ({
+			response.status (200).json ({
 				funding: funding
 			});
 		});
 	});
 
-	app.get ('/api/news',  function (req, res, next) {
+	app.get ('/api/news',  function (request, response, next) {
 
 		var sql = `
 			SELECT 
@@ -60,7 +58,7 @@ module.exports = function (app) {
 			WHERE 
 				n.poster = p.id 
 			ORDER BY 
-				n.date DESC
+				n.id DESC
 		`;
 
 		db.task (t => {
@@ -75,15 +73,15 @@ module.exports = function (app) {
 		})
 		.then (
 			(news) => {
-				res.json ({news:news});
+				response.json ({news:news});
 			}, (error) => {
-				res.json ({news:[]});
+				response.json ({news:[]});
 			}
 		);
 	});
 
-	app.post ('/api/single_news',  function (req, res, next) {
-		var id  = req.body.id || 0;
+	app.post ('/api/single_news',  function (request, response, next) {
+		var id  = request.body.id || 0;
 		if (id !== 0) {
 			var sql = `
 				SELECT 
@@ -109,15 +107,15 @@ module.exports = function (app) {
 			})
 			.then (
 				(news) => {
-					res.json ({news:news});
+					response.json ({news:news});
 				}, (error) => {
-					res.json ({news:[]});
+					response.json ({news:[]});
 				}
 			);	
 		}
 	});
 
-	app.get ('/api/states', (req, res) => {
+	app.get ('/api/states', (request, response, next) => {
 		db.any (`
 			SELECT 
 				s.id, s.name, s.slogan, s.emblem, s.description, (SELECT COUNT(*) FROM school sch WHERE sch.state = s.id) AS schools 
@@ -127,15 +125,15 @@ module.exports = function (app) {
 				s.name ASC`)
 		.then (
 			data => {
-				res.json ({states:data});
+				response.json ({states:data});
 			}, error => {
-				res.json ({states:[]});
+				response.json ({states:[]});
 			}
 		);
 	});
 
-	app.post ('/api/states', (req, res) => {
-		if (req.body.id) {
+	app.post ('/api/states', (request, response, next) => {
+		if (request.body.id) {
 			db.any (`
 				SELECT 
 					s.id, s.name, s.slogan, s.emblem, s.description, (SELECT COUNT(*) FROM school sch WHERE sch.state = s.id) AS schools 
@@ -144,27 +142,59 @@ module.exports = function (app) {
 				WHERE
 					s.id = $1
 				LIMIT 1
-				`, [req.body.id]
+				`, [request.body.id]
 			)
 			.then (
 				data => {
-					res.status (200).json ({ state:data });
+					response.status (200).json ({ state:data });
 				}, error => {
-					res.status (200).json ({ state:[] });
+					response.status (200).json ({ state:[] });
 				}
 			);
-		} else res.status (404).json ({ state:{} });
+		} else response.status (404).json ({ state:{} });
 	});
 	
-	app.get ('/api/institutions', (req, res) => {
-		db.any ('SELECT * FROM school ORDER BY name ASC').then (data => { res.json ({ schools:data }); }, err => { res.json ({ schools:[] }); });
+	app.get ('/api/institutions', (request, response, next) => {
+		db.any (`
+			SELECT 
+				s.name, s.year_of_est, s.url, s.logo, s.state, s.email, s.address, s.cover_photo, s.history, s.type, s.id AS __id, s.tel, s.mail,
+				t.name as type_name, st.name as state_name
+			FROM 
+				school as s, static_states as st, institution_types as t
+			WHERE
+				s.type = t.id AND s.state = st.id
+			ORDER BY 
+				s.name ASC`).then (data => { 
+					response.json ({ 
+						schools:data 
+					}); 
+				}, err => { 
+					console.log (err);
+					response.json ({ 
+						schools:[] 
+					}); 
+				}
+			);
 	});
 
-	app.get ('/api/educational_variants', (req, res) => {
-		db.any ('SELECT * FROM static_educational_variant ORDER BY name ASC').then (data => { res.json ({ variants:data }); }, err => { res.json ({ variants:[] }); });
+	app.get ('/api/institution_types', (request, response, next) => {
+		db.any ('SELECT * FROM institution_types ORDER BY name DESC').then (data => {
+			response.json ({
+				institutionTypes : data
+			});
+		}, error => {
+			response.status (404).json ({
+				institutionTypes:[]
+			});
+		});
+	});
+
+	app.get ('/api/educational_variants', (request, response, next) => {
+		db.any ('SELECT * FROM static_educational_variant ORDER BY name ASC')
+		.then (data => { response.json ({ variants:data }); }, err => { response.json ({ variants:[] }); });
 	});	
 
-	app.get ('/api/disciplines', (req, res) => {
+	app.get ('/api/disciplines', (request, response, next) => {
 		var sql = `
 			SELECT 
 				d.id, d.name, d.faculty, d.type,
@@ -179,18 +209,18 @@ module.exports = function (app) {
 			ORDER BY 
 				d.name ASC
 		`;
-		db.any (sql).then (data => { res.json ({ disciplines: data }); }, err => { res.json ({ disciplines: [] })});
+		db.any (sql).then (data => { response.json ({ disciplines: data }); }, err => { response.json ({ disciplines: [] })});
 	});
 
-	app.get ('/api/faculties', (req, res) => {
-		db.any ('SELECT * FROM static_faculty ORDER BY name DESC').then (data => { res.json ({ faculties:data }); }, err => { res.json ({ faculties:[] }); });
+	app.get ('/api/faculties', (request, response, next) => {
+		db.any ('SELECT * FROM static_faculty ORDER BY name DESC').then (data => { response.json ({ faculties:data }); }, err => { response.json ({ faculties:[] }); });
 	});
 
-	app.get ('/api/highest_qualification', (req, res) => {
-		db.any ('SELECT * FROM static_highest_qualification ORDER BY name DESC').then (data => { res.json ({ highest_qualification:data }); }, err => { res.json ({ highest_qualification:[] }); });
+	app.get ('/api/highest_qualification', (request, response, next) => {
+		db.any ('SELECT * FROM static_highest_qualification ORDER BY name DESC').then (data => { response.json ({ highest_qualification:data }); }, err => { response.json ({ highest_qualification:[] }); });
 	});
 
-	app.get ('/api/scholarships', (req, res) => {
+	app.get ('/api/scholarships', (request, response, next) => {
 		var sql = `
 			SELECT 
 				s.id, s.ts, s.name, s.details, s.image, s.poster, p.username, p.profile_image
@@ -201,12 +231,12 @@ module.exports = function (app) {
 			ORDER BY 
 				s.ts DESC
 		`;
-		db.any (sql).then (data => { res.json ({ scholarships:data }); }, err => { res.json ({ scholarships:[] }); });
+		db.any (sql).then (data => { response.json ({ scholarships:data }); }, err => { response.json ({ scholarships:[] }); });
 	});
 
-	app.post ('/api/scholarships', (req, res) => {
-		if (!req.body.id) {
-			res.status (404);
+	app.post ('/api/scholarships', (request, response, next) => {
+		if (!request.body.id) {
+			response.status (404);
 		} else {
 			var sql = `
 				SELECT 
@@ -219,17 +249,17 @@ module.exports = function (app) {
 					s.ts DESC
 				LIMIT 1
 			`;
-			db.any (sql, [req.body.id]).then (data => { res.json ({ scholarship:data }); }, err => { res.json ({ scholarship:[] }); });	
+			db.any (sql, [request.body.id]).then (data => { response.json ({ scholarship:data }); }, err => { response.json ({ scholarship:[] }); });	
 		}
 	});
 
-	app.get ('/api/countries', (req, res) => {
-		db.any ("SELECT * FROM static_country").then (data => { res.json ({ countries:data }); }, err => { res.json ({ countries:[] }); });
+	app.get ('/api/countries', (request, response, next) => {
+		db.any ("SELECT * FROM static_country").then (data => { response.json ({ countries:data }); }, err => { response.json ({ countries:[] }); });
 	});
 
 	/* this is a general route so login, logout, forgot_password, register urls would also reside here */
-	app.post ('/api/authenticate', (req, res) => {
-		var user = req.body.user || {username:'', password:''};
+	app.post ('/api/authenticate', (request, response, next) => {
+		var user = request.body.user || {username:'', password:''};
 
 		var sql = `SELECT * FROM users WHERE username = $1 AND status=$2 LIMIT 1`;
 
@@ -239,23 +269,23 @@ module.exports = function (app) {
 
 				var valid = bcrypt.compareSync (user.password, data.password);
 				if (valid) {
-					req.session.user = { authenticated: true, user:data };
-					res.status (200).json ({
+					request.session.user = { authenticated: true, user:data };
+					response.status (200).json ({
 						msg		: 'authenticated',
 						auth 	: true,
 						data 	: data
 					});
 				} else {
-					req.session.user = { authenticated: false, user:{} };
-					res.status (200).json ({
+					request.session.user = { authenticated: false, user:{} };
+					response.status (200).json ({
 						msg		: bcrypt.hashSync ('password'),
 						auth 	: false,
 						data 	: {}
 					});
 				}
 			}, err => {
-				req.session.user = { authenticated: false, user:{} };
-				res.status (200).json ({
+				request.session.user = { authenticated: false, user:{} };
+				response.status (200).json ({
 					msg 	: err,
 					auth 	: false,
 					data 	: {}
@@ -264,17 +294,17 @@ module.exports = function (app) {
 		);
 	});
 
-	app.post ('/api/forgot_password', (req, res, next) => {
+	app.post ('/api/forgot_password', (request, response, next) => {
 		var sql = `
 
 		`;
 
-		db.any ().then (data => { res.json ({  }); }, err => { res.json ({  }); });
+		db.any ().then (data => { response.json ({  }); }, err => { response.json ({  }); });
 	});
 
-	app.post ('/api/register', (req, res, next) => {
-		if (req.body.user) {
-			var applicant 			= req.body.user;
+	app.post ('/api/register', (request, response, next) => {
+		if (request.body.user) {
+			var applicant 			= request.body.user;
 			applicant.middlename 	= applicant.middlename || '';
 
 			var sql = `INSERT INTO users (username, password, usertype, status, email) VALUES ($1, $2, $3, $4, $5) returning id`;
@@ -288,132 +318,74 @@ module.exports = function (app) {
 			})
 			.then (
 				saved => {
-					res.json ({
+					response.json ({
 						msg: saved,
 						data: true
 					});
 				}, err => {
-					res.json ({
+					response.json ({
 						msg: err,
 						data: false
 					});
 				}
 			);
 		} else {
-			res.status (404).json ({
+			response.status (404).json ({
 				msg: 'unfilled fields',
 				data: false
 			});
 		}
 	});
 
-	app.post ('/api/verifyemail', (req, res) => {
-		console.log ('email', req.body);
+	app.post ('/api/verifyemail', (request, response, next) => {
+		console.log ('email', request.body);
 
-		if (req.body.email) {
-			db.any ('SELECT * FROM users WHERE email=$1', [req.body.email])
+		if (request.body.email) {
+			db.any ('SELECT * FROM users WHERE email=$1', [request.body.email])
 			.then (
 				found => {
 					if (found.length >= 1) {
 						console.log ('found: email ', found);
-						res.status (200).json ({ valid: true });
+						response.status (200).json ({ valid: true });
 					}
 					else {
 						console.log ('notfound: email ', found);
-						res.status (200).json ({ valid: false });	
+						response.status (200).json ({ valid: false });	
 					}
 				}, err => {
 					console.log ('notfound err: ', err);
-					res.status (200).json ({ valid: false });
+					response.status (200).json ({ valid: false });
 				}
 			);
 		} else {
-			res.status (404).json ({
+			response.status (404).json ({
 				message: 'no such url'
 			});
 		}
 	});
 
-	app.post ('/api/verifyusername', (req, res) => {
-		if (req.body.username) {
-			db.any ('SELECT * FROM users WHERE username=$1', [req.body.username])
+	app.post ('/api/verifyusername', (request, response, next) => {
+		if (request.body.username) {
+			db.any ('SELECT * FROM users WHERE username=$1', [request.body.username])
 			.then (
 				found => {
 					if (found.length >= 1) {
 						console.log ('found: username', found);
-						res.status (200).json ({ valid: true });
+						response.status (200).json ({ valid: true });
 					}
 					else {
 						console.log ('notfound: username ', found);
-						res.status (200).json ({ valid: false });	
+						response.status (200).json ({ valid: false });	
 					}
 				}, err => {
 					console.log ('notfound err: ', err);
-					res.status (200).json ({ valid: false });
+					response.status (200).json ({ valid: false });
 				}
 			);
 		} else {
-			res.status (404).json ({
+			response.status (404).json ({
 				message: 'no such url'
 			});
 		}
-	});
-
-	app.post ('/api/applicantUpdateProfile', app.applicant_upload.single ('file'), (req, res) => {
-		console.log ('files: ', req.files);
-		console.log ('applicant: ', req.body);
-
-		if (req.body.applicant) {
-			var applicant = req.body.applicant;
-			// update user
-			applicant.password = (applicant.password === applicant.oldpassword) ? applicant.oldpassword : bcrypt.hashSync (applicant.password);
-
-			var sql = `
-				UPDATE applicant set address=$1, country_of_residence=$2, country_of_study=$3, dob=$4, english_level=$5, extra_notes=$6, firstname=$7, 
-				gender=$8, highest_qualification=$9, lastname=$10, middlename=$11, nationality=$12, payment_options=$13,  start_semester=$14, tel=$15,
-				years_of_expirence=$16 WHERE id=$17;
-			`;
-			db.task (t => {
-				return t.map ('UPDATE users SET username = $1, password = $2, profile_image=$3, email=$4 WHERE id = $5 returning id',
-					[applicant.username, applicant.password, applicant.profile_image, applicant.email, applicant.user_data], applicant_ => {
-					return t.any (sql, [applicant.address, applicant.country_of_residence, applicant.country_of_study, applicant.dob, 
-						applicant.english_level, applicant.extra_notes, applicant.firstname, applicant.gender, applicant.highest_qualification, 
-						applicant.lastname, applicant.middlename, applicant.nationality, applicant.payment_options, applicant.start_semester, 
-						applicant.tel, applicant.years_of_expirence, applicant.__id])
-					.then (
-						y => {
-							return y;
-						}, no => {
-							return no;
-						}
-					);
-				})
-				.then (t.batch);		
-			})
-			.then (
-				updated => {
-					res.status (200).json ({
-						msg: 'updated',
-						data: true
-					});
-				}, err => {
-					res.status (200).json ({
-						msg: err,
-						data: false
-					});
-				}
-			);
-		} else {
-			res.status (404);
-		}
-	});
-
-	/** this is the applicant urls */
-	require ('./applicant.routes.js')(app, db, bcrypt);
-
-	// not existant
-	app.get ('*', function (req, res) {
-		var p = app.path.join (__dirname, '../../public/index.html');
-		res.sendFile (p);
 	});
 }

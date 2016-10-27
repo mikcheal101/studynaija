@@ -22,9 +22,7 @@
 					</h5>
 					<small class="bold text-ash">{{ scholarship.ts | date }}</small>
 					<hr class="m-t-05">
-					<div class="text-ash-01">
-						{{ scholarship.details }}
-					</div>
+					<div class="text-ash-01" ng-bind-html="scholarship.details"></div>
 				</div>
 			</div>
 		</div>

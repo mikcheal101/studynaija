@@ -14,12 +14,20 @@
 							<div class="col-sm-12 padding-00 p-r-10">
 								<div class="col-sm-6 input-box m-b-10">
 									<label for="address" class="text-green font-12 bold">Instituition Address:</label><br>
-									<textarea ng-model="school.address" ng-bind="school.address" class="font-12" rows="8"></textarea>
+									<textarea ng-model="school.address" ng-bind="school.address" class="font-12" rows="8" placeholder="enter institution address"></textarea>
 								</div>
 
 								<div class="col-sm-6 text-right padding-00 height-x-200" >
-									<img src="" style="height: 180px;" ngf-thumbnail="school.logo" class="img-fluid" ngf-resize="{width:80, height: 80, quality:0.9}" />
+									
+									<img src="" style="height: 180px;" ng-if="institution.logo && !institution._logo"
+										ngf-thumbnail="institution.logo" class="img-fluid" 
+										ngf-resize="{width:80, height: 80, quality:0.9}" />
+
+									<img src="" ng-if="institution._logo"
+										ngf-thumbnail="institution._logo" class="img-fluid" 
+										 />
 								</div>
+								
 							</div>
 							<div class="col-sm-12 padding-00">
 								<div class="col-sm-4 p-l-00 p-r-05">
@@ -27,8 +35,8 @@
 									<label for="name" class="text-green font-12 bold">Instituition's Logo:</label><br>
 
 									<input class="font-12" type="file" placeholder="enter the logo url" 
-										ng-model="school.logo" ngf-select="school.getInstituitionLogo ($files);" ngf-max-total-size="10MB";" 
-										accept="image/*"  />
+										ng-model="institution._logo" ngf-select="getInstituitionLogo ($file);" ngf-max-total-size="10MB";" 
+										accept="image/*" ngf-resize="{width:250, height: 180, quality:0.8}" />
 								</div>
 								</div>
 								
@@ -36,7 +44,7 @@
 									<div class=" input-box m-b-10">
 										<label for="instname" class="text-green font-12 bold">Instituition's Name:</label><br>
 										<input class="font-12" name="instname" type="text" placeholder="enter the Instituition's Name" 
-											ng-model="selectedInstituition.name" required />
+											ng-model="institution.name" required />
 											
 									</div>
 								</div>
@@ -44,7 +52,7 @@
 								<div class="p-l-00 col-sm-4 p-r-00">
 									<div class="input-box m-b-10 p-l-05">
 										<label for="" class="text-green font-12 bold">Instituition's Email:</label><br>
-										<input class="font-12" type="email" placeholder="enter the Instituition's Email Address"  ng-model="selectedInstituition.email" />
+										<input class="font-12" type="email" placeholder="enter the Instituition's Email Address"  ng-model="institution.email" />
 									</div>
 								</div>
 
@@ -54,7 +62,7 @@
 								<div class="col-sm-4 p-l-00 p-r-05">
 									<div class="col-sm-12 input-box m-b-10">
 										<label for="url" class="text-green font-12 bold">Instituition's Url:</label><br>
-										<input class="font-12" type="text" placeholder="enter the Instituition" ng-model="selectedInstituition.url" />
+										<input class="font-12" type="text" placeholder="enter the Instituition" ng-model="institution.url" />
 									</div>
 								</div>
 								
@@ -62,15 +70,15 @@
 									<div class="col-sm-12 input-box m-b-10">
 										<label for="" class="text-green font-12 bold">Instituition's Year of Establishment:</label><br>
 										<input class="font-12" type="month" placeholder="enter the Instituition's Year of Establishment" 
-											ng-model="selectedInstituition.year_of_est" ng-value="selectedInstituition.year_of_est | date : 'yyyy-MM'" />
+											ng-model="institution.year_of_est" ng-value="institution.year_of_est | date : 'yyyy-MM'" />
 									</div>
 								</div>
 								
 								<div class="col-sm-4 p-l-00 p-r-00">
 									<div class="col-sm-12 input-box m-b-10">
 										<label for="state" class="text-green font-12 bold">Instituition's State:</label><br>
-										<select ng-model="selectedInstituition.state" ng-class="['ngselect']" required name="state" 
-											ng-options="state.name for state in states track by state.id">
+										<select ng-model="institution.state" ng-class="['ngselect']" required name="state" 
+											ng-options="state.id as state.name for state in app.states track by state.id">
 											<option selected value="">--  Select State  --</option>
 										</select>
 									</div>
@@ -83,7 +91,7 @@
 									<div class="col-sm-12 input-box m-b-10">
 										<label for="" class="text-green font-12 bold">Instituition's Username:</label><br>
 										<input class="font-12" type="" placeholder="enter the Instituition's Username" 
-											ng-model="selectedInstituition.user.username" />
+											ng-model="institution.user.username" />
 									</div>
 								</div>
 								
@@ -91,7 +99,7 @@
 									<div class="col-sm-12 input-box m-b-10">
 										<label for="" class="text-green font-12 bold">Instituition's Password:</label><br>
 										<input class="font-12" type="password" placeholder="enter the Instituition's Password" 
-											ng-model="selectedInstituition.user.password" />
+											ng-model="institution.user.password" />
 									</div>
 								</div>
 								
@@ -99,18 +107,18 @@
 									<div class="col-sm-12 input-box m-b-10">
 										<label for="" class="text-green font-12 bold">Instituition's Type:</label><br>
 										<select class="text-600 ngselect"
-											ng-options="option.name for option in InstituitionTypes track by option.id"
-											ng-model="selectedInstituition.type" required="required">
+											ng-options="option.id as option.name for option in app.inst_types track by option.id"
+											ng-model="institution.type" required="required">
 											<option selected value="">--  Select Institution Type  --</option>
 										</select>
 									</div>
 								</div>
 							</div>
-
-							<div class="col-sm-12 p-l-00 p-r-05 p-b-10 text-right btns-family">
-								<button type="submit" ng-click="instituitionMakeChanges (form);" 
+								{{ institution }}
+							<div class="col-sm-12 p-l-00 p-r-05 p-b-10 text-right btns-family" ng-if="form.$valid">
+								<button type="submit" ng-click="commitInst (form);" 
 									class="btn btn-sm btn-success text-600">commit changes</button>
-								<span class="btn btn-sm btn-default text-600" ng-click="resetInstituition ();">reset</span>
+								<span class="btn btn-sm btn-default text-600" ng-click="clearInst ();">reset</span>
 							</div>
 						</div>
 					</div>
@@ -127,16 +135,17 @@
 							<div class="clearfix"></div>
 						</div>
 						<div class="panel-body">
+						{{ app.institutions }}
 							<table class="table table-responsive table-bordered text-600">
 								<thead>
 									<td width="5%" class="text-center"><i class="fa fa-photo"></i></td>
-									<td width="" class="text-center font-14 text-600 text-uppercase">Institution's Name</td>
-									<td width="" class="font-14 text-600 text-center text-uppercase">Institution's username</td>
-									<td width="10%" class="font-14 text-600 text-center text-uppercase">Type</td>
+									<td width="" class="text-center font-12 bold text-600 text-uppercase">Institution's Name</td>
+									<td width="" class="font-12 bold text-600 text-center text-uppercase">Institution's username</td>
+									<td width="15%" class="font-12 bold text-600 text-center text-uppercase">Type</td>
 									<td width="5%"  class="text-center"><i class="fa fa-cogs"></i></td>
 								</thead>
 								<tbody>
-									<tr dir-paginate="inst in instituitions | filter:search_instituitions | itemsPerPage: 10 ">
+									<tr dir-paginate="inst in app.institutions | filter:search_instituitions | itemsPerPage: 10 ">
 										<td class="font-12" width="5%">
 											<img ng-hide="inst.logo_file === ''"
 												ng-class="['img-responsive', 'img-rounded', {'height-x-30' : inst.logo_file !== ''}]" 
@@ -149,14 +158,14 @@
 												ng-style="[{'max-height': '45px'}, {'min-height': '40px'}]"
 												/>
 										</td>
-										<td class="font-14 text-left text-600 hand text-info text-underline" style="padding-top: 15px;" 
+										<td class="font-12 bold text-left text-600 hand text-info text-underline" style="padding-top: 15px;" 
 											ng-click="setInstitution (inst);">
 											<span ng-bind="inst.name" ng-class="['text-capitalize']"></span>
 										</td>
-										<td class="font-14 text-right text-600 p-t-15"><span ng-bind="inst.user.username"></span></td>
-										<td class="font-14 text-right text-600 p-t-15"><span ng-bind="inst.type.name"></span></td>
+										<td class="font-12 text-right text-600 p-t-15"><span ng-bind="inst.user.username"></span></td>
+										<td class="font-12 text-right text-600 p-t-15"><span ng-bind="inst.type_name"></span></td>
 										<td class="font-12 text-right text-600 p-t-15">
-											<i class="fa fa-times text-danger" ng-click="deleteInstituition ($index);"></i>
+											<i class="fa fa-times text-danger" ng-click="deleteInstituition (inst);"></i>
 										</td>
 									</tr>
 								</tbody>
@@ -194,7 +203,7 @@
 				<span ng-hide="institutionUpload.status === 100"
 					class="btn btn-info btn-sm text-uppercase text-600 p-b-10" ng-click="institutionUpload.upload ();"
 					ngf-max-total-size="10MB" ngf-select="institutionUpload.upload ($file);" 
-					ng-model="institutionUpload.file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+					ng-model="institution.file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
 						application/vnd.ms-excel">
 					select file to upload
 				</span>

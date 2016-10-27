@@ -25,7 +25,7 @@
 							}
 						</style>
 							<table class="table table-responsive table-fluid font-12 text-600 m-b-00 table-condensed">
-								<tr dir-paginate="d in disciplines | filter: dSearch | itemsPerPage: 10" pagination-id = 'searchDiscipline'>
+								<tr dir-paginate="d in app.disciplines | filter: dSearch | itemsPerPage: 10" pagination-id = 'searchDiscipline'>
 									<td ng-class="{'no-border-top': $index===0}">
 										<div class="radio m-b-00 m-t-05">
 											<label class="text-600">
@@ -54,7 +54,7 @@
 						</div>
 						<div class="col-sm-12 no-padding">
 							<table class="table table-responsive table-fluid font-12 text-600 m-b-00 table-condensed no-border-top">
-								<tr dir-paginate="inst in instituitions | filter: iSearch | itemsPerPage: 10" pagination-id = 'displayInstituitions' >
+								<tr dir-paginate="inst in app.instituitions | filter: iSearch | itemsPerPage: 10" pagination-id = 'displayInstituitions' >
 									<td>
 										<div class="checkbox p-b-00 p-t-00">
 											<label class="text-600">
