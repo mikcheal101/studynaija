@@ -11,7 +11,19 @@ var multer          = require ('multer');
 var flash			= require ('connect-flash');
 var session			= require ('express-session');
 var fs 				= require ('fs');
+var KeenTracking 	= require('keen-tracking');
 
+
+// Configure a client instance
+var client = new KeenTracking({
+  projectId: '58128e118db53dfda8a75aca',
+  writeKey: 'C7A0F96665C129C4FA8647576113D28CA92928A0C824F58FE4D1E0CBEE92EC4287FC78C2348D276C3378DD22D7089036E66382341790C9C1E33037CE1283EC5313B8B9B82F0DF6B13265574BB4A447BEC89D745066CE7F5C624AADA8266EA5E1'
+});
+
+// Record an event
+client.recordEvent('pageviews', {
+  title: document.title
+});
 
 // configuation ===================================================
 var admin_upload		= multer.diskStorage ({ 

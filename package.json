@@ -11,7 +11,7 @@
   "license": "ISC",
   "engines": {
     "node": "^6.5.0",
-    "npm" : "^3.10.3"
+    "npm": "^3.10.3"
   },
   "keywords": [],
   "dependencies": {
@@ -26,6 +26,7 @@
     "express-session": "^1.14.1",
     "fs": "0.0.1-security",
     "jade": "^1.11.0",
+    "keen-tracking": "^1.0.3",
     "kerberos": "^0.0.17",
     "method-override": "^2.0.2",
     "multer": "^1.2.0",
