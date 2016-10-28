@@ -85,6 +85,24 @@
 	<script src="assets/angular/dirPagination.js"></script>
 	<script src="assets/angular/checklist-model.js"></script>
 
+	<script type="text/javascript">
+	  !function(name,path,ctx){
+	    var latest,prev=name!=='Keen'&&window.Keen?window.Keen:false;ctx[name]=ctx[name]||{ready:function(fn){var h=document.getElementsByTagName('head')[0],s=document.createElement('script'),w=window,loaded;s.onload=s.onerror=s.onreadystatechange=function(){if((s.readyState&&!(/^c|loade/.test(s.readyState)))||loaded){return}s.onload=s.onreadystatechange=null;loaded=1;latest=w.Keen;if(prev){w.Keen=prev}else{try{delete w.Keen}catch(e){w.Keen=void 0}}ctx[name]=latest;ctx[name].ready(fn)};s.async=1;s.src=path;h.parentNode.insertBefore(s,h)}}
+	  }('KeenAsync','https://d26b395fwzu5fz.cloudfront.net/keen-tracking-1.0.3.min.js',this);
+
+	  KeenAsync.ready(function(){
+	    // Configure a client instance
+	    var client = new KeenAsync({
+	      projectId: '58128e118db53dfda8a75aca',
+	      writeKey: 'C7A0F96665C129C4FA8647576113D28CA92928A0C824F58FE4D1E0CBEE92EC4287FC78C2348D276C3378DD22D7089036E66382341790C9C1E33037CE1283EC5313B8B9B82F0DF6B13265574BB4A447BEC89D745066CE7F5C624AADA8266EA5E1'
+	    });
+
+	    // Record an event
+	    client.recordEvent('pageviews', {
+	      title: document.title
+	    });
+	  });
+	</script>
 </head>
  
 <body ng-app="app" ng-controller="AppController" data-spy="scroll" data-target=".navbar" data-offset="60" id="body" class="home-bg">
