@@ -1,4 +1,8 @@
-﻿body {font-weight : 600!important;}
+﻿@import url('https://fonts.googleapis.com/css?family=Exo+2|Lato|Nunito');
+body {
+    font-family: 'Exo 2', 'Lato', sans-serif!important;
+    font-weight : 400!important;
+}
 .brand-color { color: rgb(151, 15, 43)!important; }
 
 .full-height {

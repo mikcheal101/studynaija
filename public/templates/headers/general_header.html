@@ -1,3 +1,11 @@
+<style type="text/css">
+	nav {
+		height:50px!important;
+	}
+
+	nav div.container, nav div.container-fluid { height: inherit; }
+</style>
+
 <nav ng-show="sessions.authenticated === false" class="navbar navbar-fixed-top bg-white m-b-00 no-border" style="background-color:green!important;">
 	<div class="container-fluid" style="border-bottom-color:rgba(108,186,53,0.3); border-top:none; border-right:none; border-left:none;">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -109,16 +117,19 @@
 		          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
 		          		aria-haspopup="true" aria-expanded="false">		          	
 		          		<img class="img-circle"
-	        				ngf-thumbnail="admin.image || '/uploads/admin/' + admin.profile_image" 
+	        				ng-src="{{ '/uploads/admin/' + sessions.user.profile_image }}" 
 	        				alt="{{ sessions.user.username }}"  
-	        				ng-style="wh_2" />&nbsp;&nbsp;
+	        				ng-style="wh_2" style="width: 25px; height: 25px;" />&nbsp;&nbsp;
 
-	        			<span style="vertical-align: middle!important; font-size: 0.9em; color:#FFF!important;">{{ sessions.user.username }}</span> 
+	        			<span style="vertical-align: middle!important;" class="navbar-link text-ash-02 text-uppercase font-12">{{ sessions.user.username }}</span> 
 		          		<span class="caret" style="color:#FFF!important;"></span>
 		          	</a>
 		          		
 		          	<ul class="dropdown-menu">
-			            <li><a href="/sadmin/profile">My Profile</a></li>
+			            <li>
+			            	<a ng-if="sessions.user.usertype === 1" href="/sadmin/profile">My Profile</a>
+			            	<a ng-if="sessions.user.usertype === 2" href="/admin/profile">My Profile</a>
+			            </li>
 			            <li role="separator" class="divider"></li>
 			            <li><a href="/messages/inbox">Mails <span class="label label-info pull-right" style="margin-top:3px;">0</span></a></li>
 			            <li role="separator" class="divider"></li>

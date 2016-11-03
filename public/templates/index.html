@@ -1,11 +1,11 @@
 <style>
+
 	.text-mygreen {
 		color: #6CBA35!important;
 	}
 	body {
 		background-color: #FFF!important;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif!important;
-		font-weight: normal!important;
+		font-weight: 400!important;
 	}
 
 	.navbar-btn {
@@ -32,7 +32,7 @@
 		height: calc(100% - 5.5rem);
 	}
 	.hundred-height {
-	height: calc(100vh - 55px);
+		height: calc(100vh - 5.1rem);
 	}
 	.bg-green {
 		background-color: rgba(51, 223, 51, 0.2)!important;
@@ -123,17 +123,66 @@
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
+</nav>
+
+<nav ng-show="sessions.authenticated === true && ( sessions.user.usertype === 1 || sessions.user.usertype === 2)" class="navbar navbar-static-top bg-white m-b-00 no-border">
+	<div class="container-fluid" style="border-bottom-color:rgba(108,186,53,0.3); border-top:none; border-right:none; border-left:none;">
+		<!-- Brand and toggle get grouped for better mobile display -->
+
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+				data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<h1 class="navbar-brand m-b-00 m-t-00">studynaija</h1>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse no-overflow no-scroll" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="/states" class="navbar-link text-ash-02 text-uppercase font-12">states</a></li>
+				<li class="dropdown">
+		          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+		          		aria-haspopup="true" aria-expanded="false">		          	
+		          		<img class="img-circle"
+	        				ng-src="{{ '/uploads/admin/' + sessions.user.profile_image }}" 
+	        				alt="{{ sessions.user.username }}"  
+	        				ng-style="wh_2" style="width: 25px; height: 25px;" />&nbsp;&nbsp;
+
+	        			<span style="vertical-align: middle!important;" class="navbar-link text-ash-02 text-uppercase font-12">{{ sessions.user.username }}</span> 
+		          		<span class="caret" style="color:#FFF!important;"></span>
+		          	</a>
+		          		
+		          	<ul class="dropdown-menu">
+			            <li>
+			            	<a ng-if="sessions.user.usertype === 1" href="/sadmin/profile">My Profile</a>
+			            	<a ng-if="sessions.user.usertype === 2" href="/admin/profile">My Profile</a>
+			            </li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="/messages/inbox">Mails <span class="label label-info pull-right" style="margin-top:3px;">0</span></a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a href="#" ng-click="app.logout ();">Sign Out</a></li>
+		          	</ul>
+		        </li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
 </nav>			
 
 <div class="container-fluid home-container text-white font-white" style="height:calc(100vh-51px)!important;" >
 	<div class="row">
 		<div class="col-md-6 col-md-offset-6 col-sm-12 bg-green hundred-height">
 			<div class="col-sm-12 text-center p-t-20">
-				<img src="assets/images/logo.JPG" width="10rem" class="ten-rem" />
+				<img src="assets/images/logo.png" width="10rem" class="ten-rem" />
 			</div>
 			<div class="col-sm-12 col-md-10 col-md-offset-1 text-center p-t-20">
 				<h3 class="text-uppercase">
+					{{sessions.authenticated}}
 					Do you want a wonderful education and expirence amongst the best higher Institutions of learning in Nigeria?
+					
 				</h3>
 			</div>
 			

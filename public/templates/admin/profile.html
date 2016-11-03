@@ -10,8 +10,13 @@
 				<div class="panel p-b-05">
 					<div class="text-center" ng-if="admin.image || admin.profile_image">
 						
-						<img  style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px;" 
-							ngf-thumbnail="admin.image || '/uploads/admin/' + admin.profile_image" />	
+						<img  style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px;" ng-if="admin.image" 
+							ngf-thumbnail="admin.image" />
+
+						<img  style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px; width: 100%;" ng-if="admin.profile_image && !admin.image"
+							ngf-thumbnail="'/uploads/admin/' + admin.profile_image" />
+
+
 						<span ng-if="form.$submitted">
 							<small ng-if="form.passport.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">select a passport</small>
 						</span>
