@@ -29,7 +29,7 @@
 	}
 	.home-container {
 		border: none!important;
-		height: calc(100% - 55px);
+		height: calc(100% - 5.5rem);
 	}
 	.hundred-height {
 	height: calc(100vh - 55px);
@@ -41,10 +41,14 @@
 	.ten-rem { width: 10rem!important; }
 	.bg-white {background-color:#FFF;}
 	.myIcons {
-		border:1px solid #FFF; 
+		border:0.1rem solid #FFF; 
 		border-radius: 50%;
 		-moz-border-radius: 50%;
 		background-color: rgba(255, 255, 255, 0.5);
+		height:5.5rem!important;
+		width:5.5rem!important;
+		padding-top:1.3rem!important;
+		text-align: center!important;
 	}
 	.bg-white { background-color:#FFF!important; }
 	.bg-fb { background-color:#337ab7!important; }
@@ -119,11 +123,9 @@
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
-</nav>
+</nav>			
 
-				
-
-<div class="container-fluid home-container text-white font-white hundred-height" >
+<div class="container-fluid home-container text-white font-white" style="height:calc(100vh-51px)!important;" >
 	<div class="row">
 		<div class="col-md-6 col-md-offset-6 col-sm-12 bg-green hundred-height">
 			<div class="col-sm-12 text-center p-t-20">
@@ -137,8 +139,8 @@
 			
 			<div class="col-sm-12 col-md-10 col-md-offset-1 text-center p-t-20">
 				<input type="search" class="form-control font-12" style="color:#000; opacity: 0.8; border:1px solid #FFF;" 
-				placeholder="enter discipline or Institution name to search" 
-				name="search" ng-model="search.text" />
+					placeholder="enter discipline or Institution name to search" 
+					name="search" ng-model="search.text" ng-keyup="$event.keyCode == 13 && search.run ();" />
 			</div>
 
 			<div class="col-sm-12 col-md-10 col-md-offset-1 text-center p-t-20">

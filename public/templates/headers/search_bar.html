@@ -17,8 +17,8 @@
 				<div class=" input-group">
 					<input class="form-control font-12"  style="border-radius: 0px; -moz-border-radius: 0px;" 
 						ng-model="search.text" type="text" placeholder="Search for courses and schools here..." aria-describedby="searchBtn" 
-						name="searchbar" />
-					<span class="input-group-addon btn btn-white background-white-complete" style="background-color: #FFF;">
+						name="searchbar" ng-keyup="$event.keyCode == 13 && search.run ();" />
+					<span class="input-group-addon btn btn-white background-white-complete" style="background-color: #FFF;" ng-click="search.run();">
 						<button class="fa fa-search" style="color: #607D8B; background-color: rgba(0, 0, 0, 0)!important; border:none!important;"></button>
 					</span>
 					

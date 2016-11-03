@@ -327,14 +327,7 @@ angular.module ('admin.controller', [])
 					form.$setUntouched();	
 				});
 			} else {
-				username: param.username,
-				password: param.password,
-				status: 3,
-				file: param.profile_image,
-				usertype:param.usertype,
-				email: param.email,
-				school: param.school
-
+				
 				AdminService.createSchAdmin ({
 					username		: $scope.schAdmin.username,
 					password 		: $scope.schAdmin.pwd,

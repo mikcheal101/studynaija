@@ -220,7 +220,7 @@ angular.module ('app.controller', [])
 	$scope.search = {};
 
 	$scope.search.count_states 		= 5;
-	$scope.search.text 				= '';
+	$scope.search.text 				= $rootScope.search_text || '';
 	$scope.search.pricing 			= {};
 	$scope.search.pricing.minimum 	= 0;
 	$scope.search.pricing.maximum 	= 1000000;
@@ -230,6 +230,14 @@ angular.module ('app.controller', [])
 	$scope.search.disciplines 	= [];
 	$scope.search.awards		= [];
 	$scope.search.educational_variants	= [];
+
+	$scope.search.run = function () {
+		// set the search string and move to the disciplines page
+		$rootScope.search_text = $scope.search.text;
+		if ($location.path() !== '/disciplines')
+			$location.path ('/disciplines');
+	};
+
 
 	$scope.search.start = function () {
 		$rootScope.app.loadFaculties ();

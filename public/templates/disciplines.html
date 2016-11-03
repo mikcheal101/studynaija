@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			
-			<div class="panel m-b-05" dir-paginate="course in courses = (search.courses | itemsPerPage:10 | mySearchFilter:search | filter: search.searchBar | orderBy: 'course_name': search.search_order.selected.value)">
+			<div class="panel m-b-05" dir-paginate="course in courses = (search.courses | itemsPerPage:10 | filter: search.text | orderBy: 'course_name': search.search_order.selected.value)">
 				<div class="panel-body">
 					<h4 class="m-b-00 m-t-05">
 						<span class="bold text-green">Electrical Engineering (BSc)</span>
