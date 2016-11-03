@@ -116,12 +116,13 @@ exports = module.exports = function (app) {
 
 	app.post ('/api/admin/updateAdminProfile', app.admin_upload, (request, response, next) => {
 		
-		var admin = req.body;
+		var admin = request.body;
 
 		if (admin.username && admin.password && admin.email) {
 
 			admin.profile_image =  (request.file) ? request.file.filename : admin.profile_image || '';
-			admin.password 		= (bcrypt.compareSync (admin.pwd, admin.password)) ? admin.password:bcrypt.hashSync (admin.pwd);
+			if (admin.pwd)
+				admin.password 		= (bcrypt.compareSync (admin.pwd, admin.password)) ? admin.password:bcrypt.hashSync (admin.pwd);
 
 			db.any ('UPDATE users SET username = $1, password = $2, profile_image=$3, email=$4 WHERE id = $5', [
 				admin.username, admin.password, admin.profile_image, admin.email, request.session.user.user.id])

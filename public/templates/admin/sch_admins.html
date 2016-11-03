@@ -73,7 +73,7 @@
 
 							<div class="col-sm-12 input-box m-b-10 " >
 								<label for="institution" class="text-green font-12 bold" style="width: 100%!important;">
-									Institution: {{ form.institution }}
+									Institutions: 
 									<span ng-if="form.$submitted || form.institution.$touched">
 										<small ng-if="form.institution.$error.required" class="text-red pull-right" 
 											style="padding-top: 2px!important;">select institution</small>
@@ -88,7 +88,7 @@
 							</div>
 
 							<div>
-								<button type="submit" class="btn btn-sm text-600 btn-success">commit changes</button>
+								<button type="submit" class="btn btn-sm text-600 btn-success" ng-click="commitSchAdmin (form);">commit changes</button>
 								<span class="btn btn-danger btn-sm text-600">clear</span>
 							</div>
 						</div>

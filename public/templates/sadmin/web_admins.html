@@ -15,7 +15,8 @@
 					<div class="panel-body p-t-00">
 						<ul class="list-group">
 							<li class="list-group-item flex" dir-paginate="n in app.webadmins | itemsPerPage: 5">
-								<div style="background-repeat: no-repeat; background-size: cover; background-position: center; height: 50px; width: 50px; background-image: url('{{ n.profile_image ? '/uploads/admin/' + n.profile_image : '' }}'); border-radius: 50%; -moz-border-radius: 50% -o-border-radius: 50%; border: 1px solid #ddd;"></div>
+								<div style="background-repeat: no-repeat; background-size: cover; background-position: center; height: 50px; width: 50px; background-image: url('{{  n.profile_image ? '/uploads/admin/' + n.profile_image : '' }}'); border-radius: 50%; -moz-border-radius: 50% -o-border-radius: 50%; border: 1px solid #ddd;"></div>
+
 								<div ng-class="['p-l-20', 'm-t-10', 'hand']" ng-click="selectWebAdmin (n);">{{ n.username }}</div>
 								<div class="clearfix"></div>
 							</li>
@@ -59,13 +60,14 @@
 								</table>
 							</div>
 							<div class="col-sm-4 text-right padding-00">
-								<img ng-if="webadmin.profile_image" ng-src="{{ webadmin.profile_image ? '/uploads/admin/' + webadmin.profile_image : '' }}" 
+								<img ng-if="webadmin.profile_image && !webadmin.image" ng-src="{{ webadmin.profile_image ? '/uploads/admin/' + webadmin.profile_image : '' }}" 
 									class="img-thumbnail img img-responsive img-fluid height-x-100" height="150px" />
+								<img ngf-thumbnail="webadmin.image" class="" ng-if="webadmin.image" />
 							</div>
 						</div>
 						<div class="col-sm-12 input-box m-t-10 m-b-05 font-12">
 							<label for="image" class="text-green bold">profile Image: <small class="text-black" ng-if="webadmin.image">image selected</small></label><br>
-							<span class="text-blue hand p-t-05 p-b-05" ngf-max-total-size="10MB" ng-model="webadmin.image" ngf-select="getImage ($files, webadmin.image);" accept="image/*" >select profile image</span>
+							<span class="text-blue hand p-t-05 p-b-05" ngf-max-total-size="10MB" ng-model="webadmin.image" ngf-select="getImage ($files, webadmin.image);" accept="image/*" ngf-resize="{width:150, height:150, quality:0.9}" >select profile image</span>
 						</div>
 						<div class="col-sm-12 input-box m-t-10 m-b-05 font-12">
 							<label for="username" class="text-green bold">email:</label><br>

@@ -307,6 +307,58 @@ angular.module ('admin.controller', [])
 		$scope.institution._logo = param;
 	};
 
+	// school admin
+	$scope.clearSchAdmin = function () {
+
+	};
+	$scope.commitSchAdmin = function (form) {
+		if (form.$valid) {
+			if ($scope.schAdmin.id) {
+				AdminService.editSchAdmin ({
+					username		: $scope.schAdmin.username,
+					password 		: $scope.schAdmin.pwd,
+					profile_image	: $scope.schAdmin.image,
+					email 			: $scope.schAdmin.email,
+					school 			: $scope.schAdmin.school,
+					id 				: $scope.schAdmin.id
+				})
+				.then (done=> {
+					form.$setPristine();
+					form.$setUntouched();	
+				});
+			} else {
+				username: param.username,
+				password: param.password,
+				status: 3,
+				file: param.profile_image,
+				usertype:param.usertype,
+				email: param.email,
+				school: param.school
+
+				AdminService.createSchAdmin ({
+					username		: $scope.schAdmin.username,
+					password 		: $scope.schAdmin.pwd,
+					profile_image	: $scope.schAdmin.image,
+					email 			: $scope.schAdmin.email,
+					school 			: $scope.schAdmin.school
+				})
+				.then (done => {
+					$scope.schAdmin.id = done.id;
+					$scope.schAdmin.profile_image = done.image;
+					$scope.clearSchAdmin ();
+					form.$setPristine();
+					form.$setUntouched();	
+				});
+			}
+		}
+	};
+	$scope.selectSchAdminImage = function () {
+
+	};
+	$scope.dropSchAdmin = function () {
+		dropSchAdmin
+	};
+
 
 	// save webadmin
 	$scope.commitChangesWebAdmin = function () {
@@ -453,15 +505,11 @@ angular.module ('admin.controller', [])
 
 	$scope.updateProfile = function (form) {
 		if (form.$valid) {
-			$scope.admin.oldpwd = $scope.sessions.user.password;
 			
 			AdminService
 			.updateProfile ($scope.admin)
 			.then (
 				suc => {
-					$route.reload ();
-					console.log ($scope.admin);
-					console.log ($scope.sessions);
 				}, err => {
 					console.log ('err: ', err);
 				}

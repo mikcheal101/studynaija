@@ -266,9 +266,6 @@ module.exports = function (app) {
 		db.one (sql, [user.username, 3])
 		.then (
 			data => {
-				console.log ('sent: ', user.password);
-				console.log ('hashed: ', bcrypt.hashSync (user.password));
-				console.log ('required: ', data.password);
 
 				var valid = bcrypt.compareSync (user.password, data.password);
 				if (valid) {
@@ -287,7 +284,6 @@ module.exports = function (app) {
 					});
 				}
 			}, err => {
-				console.log ('errr: ', err);
 				request.session.user = { authenticated: false, user:{} };
 				response.status (200).json ({
 					msg 	: err,

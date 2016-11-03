@@ -5,20 +5,18 @@
 	<div class="row p-r-20 p-l-20">
 		<ng-include src="templates.admin_side" ></ng-include>
 
-		<form name="form" novalidate>
+		<form name="form" enctype="multipart/form-data">
 			<div class="col-sm-2 p-l-05 p-r-05">
 				<div class="panel p-b-05">
 					<div class="text-center" ng-if="admin.image || admin.profile_image">
-						<img style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px; width:100%;" 
-							ng-src="{{ '/uploads/admin/' + admin.profile_image }}" ng-if="!admin.image"/>	
-
-						<img style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px;" 
-							ngf-thumbnail="admin.image" ng-if="admin.image" />	
+						
+						<img  style="border-radius:5px; -moz-border-radius:5px; -o-border-radius:5px;" 
+							ngf-thumbnail="admin.image || '/uploads/admin/' + admin.profile_image" />	
 						<span ng-if="form.$submitted">
 							<small ng-if="form.passport.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">select a passport</small>
 						</span>
 					</div>
-
+				
 					<div class="panel-body p-l-05 p-r-05 p-b-05">
 						<ul class="list-group">
 							<li class="list-group-item">
@@ -35,16 +33,18 @@
 							</li>
 							<li class="list-group-item text-center ">
 								<span class="btn btn-info btn-sm text-600 text-wrap" 
-									ngf-max-total-size="10MB" ngf-select="upload.getImage ($files);" 
-									ng-model="profile.profile_image" accept="image/*">
+									ngf-max-total-size="10MB" ngf-select="getProfileImage ($files);" 
+									ng-model="admin.image" accept="image/*" ngf-resize="{width:200, height:200, quality:.9}">
 									select profile Image
 								</span>
-								<input type="hidden" name="image" ng-model="profile.profile_image" required />
+								<input type="hidden" name="passport" required="required" ng-model="admin.image" />
+
 								<div ng-show="profileForm.$submitted">
 									<p class="text-danger font-12" 
-										ng-show="profileForm.image.$error.required || profileForm.image.$error.minlength < 3">
+										ng-show="form.image.$error.required ">
 										Select A Passport Photo
 									</p>
+									<p class="text-danger font-12" ng-if="form.image.$error.maxSize">File too large {{ admin.profile_image.size / 1000000|number:1 }} MB : max 10MB</p>
 								</div>
 							</li>
 						</ul>
@@ -90,12 +90,10 @@
 									<label for="email" class="text-green font-12 bold" style="width:100%!important;">
 										Password:
 										<span ng-if="form.$submitted || form.password.$touched">
-											<small ng-if="form.password.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter password</small>
-											<small ng-if="form.password.$error.minlength" class="text-red pull-right" style="padding-top: 2px!important;">enter password with a min. length of 6</small>	
+											<small ng-if="form.password.$error.minlength" class="text-red pull-right" style="padding-top: 2px!important;">enter password with a min. length of 6 alphanumeric characters</small>	
 										</span>
 									</label><br>
-									<input class="font-12" required type="password" placeholder="enter password" name="password" ng-model="admin.password" 	username 
-										myusername="{{ admin.password }}" minlength="6" />	
+									<input class="font-12" type="password" placeholder="enter password" name="password" ng-model="admin.pwd" minlength="6" />	
 								</div>
 							</div>
 						</div>

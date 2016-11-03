@@ -90,12 +90,10 @@
 									<label for="email" class="text-green font-12 bold" style="width:100%!important;">
 										Password:
 										<span ng-if="form.$submitted || form.password.$touched">
-											<small ng-if="form.password.$error.required" class="text-red pull-right" style="padding-top: 2px!important;">enter password</small>
-											<small ng-if="form.password.$error.minlength" class="text-red pull-right" style="padding-top: 2px!important;">enter password with a min. length of 6</small>	
+											<small ng-if="form.password.$error.minlength" class="text-red pull-right" style="padding-top: 2px!important;">enter password with a min. length of 6 alphanumeric characters</small>	
 										</span>
 									</label><br>
-									<input class="font-12" required type="password" placeholder="enter password" name="password" ng-model="admin.password" 	username 
-										myusername="{{ admin.password }}" minlength="6" />	
+									<input class="font-12" type="password" placeholder="enter password" name="password" ng-model="admin.pwd" minlength="6" />	
 								</div>
 							</div>
 						</div>
