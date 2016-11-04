@@ -538,16 +538,18 @@ angular.module ('admin.controller', [])
 			$scope.institutionUpload.file 		= $file;
 			$scope.institutionUpload.file_size 	= Math.round ($scope.institutionUpload.file.size / 1000);
 			
-			AdminService.excel_to_json ({file:$file, type:1})
+			AdminService.uploadInstitutions ({file:$file, type:1})
 			.then (
 				result => {
 					var data = result.data;
 					$scope.institutionUpload.status = 100;
 
-					if (data) 
+					if (data) {
 						$scope.institutionUpload.success = 'upload complete';
-					else 
+						console.log (data);
+					} else {
 						$scope.institutionUpload.error = 'Error uploading files, Contact system admin';
+					}
 				}, 
 				error => {
 					$scope.institutionUpload.status = 100;

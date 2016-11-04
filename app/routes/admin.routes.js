@@ -935,4 +935,74 @@ module.exports = function (app) {
 		}
 	});	
 
+
+	app.post ('/api/admin/uploadInstitutions', app.tmp_storage, (request, response, next) => {
+		var file = request.file ? request.file : null;
+		var type = request.body.type ? request.body.type : 0;
+
+		if (file !== null) {
+			app.excel ({
+				input		: request.file.path,
+				output 		: null
+			}, (err, records) => {
+				if (!err) {
+					db.task (t => {
+						return t.batch (records.map (function (inst) {
+							// get the type id
+							return t.one (`
+								WITH ins AS (
+    								INSERT INTO institution_types (name) SELECT $1 where not exists 
+									(select id from institution_types where name = $1) returning id, name)
+									select id, name from ins union select id, name from institution_types where name = $1`, [inst.type])
+							.then ( type => {
+								return t.one ('insert into school (name, mail, email, tel, url, type) values ($1,$2,$3,$4,$5,$6) returning id', [inst['Instituition Name'], inst.Mail, inst.email, inst.tel, 
+									inst.website, type.id])
+									.then (school => {
+										inst.id 	= school.id;
+										inst.type 	= type.id;
+										return inst;
+									}, noschool => {
+										return inst;
+									});
+							}, err => {
+								console.log ('error: ', err);
+							});
+						}));
+					})
+					.then (
+						(finshed) => {
+							console.log ('schools length: ', finshed.length);
+							response.json ({
+								data:finished
+							});
+							next ();
+						}, (err) => {
+							console.log (err);
+							response.json ({
+								data:[]
+							});
+						}
+					);
+				} else {
+					console.log (err);
+					response.json ({
+						data:[]
+					});
+				}
+			});
+		} else {
+			response.status (404);
+		}
+	});
+
+	app.post ('/api/admin/uploadDisciplines', (request, response, next) => {
+		var x = request.body;
+		if (x) {
+
+		} else {
+			response.status (404);
+		}
+	});
+
+
 };

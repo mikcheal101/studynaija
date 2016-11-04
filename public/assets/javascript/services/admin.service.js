@@ -598,6 +598,29 @@ angular.module ('admin.service', [])
 		return q.promise;
 	};
 
-	
+	svc.uploadInstitutions = function (param) {
+		var q = $q.defer ();
+		Upload.upload({url 	: $rootScope.admin.uploadInstitutions,
+			method	: 'POST',
+			data 	: {
+				type 	: param.type,
+				file 	: param.file
+			}
+		})
+		.then (
+			done => {
+				console.log (done.data);
+				q.resolve (done.data);
+			}, err => {
+				console.warn (err);
+				q.reject (err);
+			}, prog => {
+				console.info (prog);
+				q.notify (prog);
+			}
+		);
+		return q.promise;
+	};
+
 	return svc;
 });

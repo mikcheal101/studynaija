@@ -78,7 +78,10 @@ angular.module ('app', ['ngRoute', 'ngAnimate', 'angular-loading-bar', 'checklis
 		editInst 		: '/api/admin/editInstitution',
 
 		verifyInstName 	: '/api/admin/verifyInstitutionName',
-		verifyFacName	: '/api/admin/verifyfacultyName'
+		verifyFacName	: '/api/admin/verifyfacultyName',
+
+		uploadInstitutions	: '/api/admin/uploadInstitutions',
+		uploadDisciplines	: '/api/admin/uploadDisciplines'
 	};
 
 	// institution routes
