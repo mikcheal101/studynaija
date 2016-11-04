@@ -1,5 +1,5 @@
 // import the admin model
-exports = module.exports = function (app) {
+module.exports = function (app) {
 	const db 		= app.db;
 	const bcrypt	= app.bcrypt;
 
@@ -79,12 +79,13 @@ exports = module.exports = function (app) {
 			FROM 
 				users AS u, school s, schooltousers us, institution_types i
 			WHERE
-				u.usertype = 2 AND u.id = us.user AND s.id = us.school AND i.id = s.type 
+				(u.usertype = 3 OR u.usertype = 5) AND u.id = us.user AND s.id = us.school AND i.id = s.type 
 			ORDER BY 
 				u.username DESC
 		`)
 		.then (
 			school_admins => {
+				
 				response.json ({
 					admins: school_admins
 				});
@@ -252,26 +253,33 @@ exports = module.exports = function (app) {
 	});
 
 	app.post ('/api/admin/createSchoolAdmin', app.school_admin_upload, (request, response) => {
+
 		var admin = request.body;
 		
-		if (admin.username && admin.password && admin.profile_image && admin.status && admin.usertype && admin.email && admin.school) {
+		if (admin.username && admin.password && admin.status && admin.usertype && admin.email && admin.school) {
 
 			admin.profile_image = request.file ? request.file.filename : admin.profile_image || '';
 
 			db.task (t => {
-				return t.map (`INSERT INTO users (username, password, profile_image, status, usertype, email) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`, [
-					admin.username, bcrypt.hashSync (admin.password), admin.profile_image, admin.status, admin.usertype, admin.email], user => {
-						return t.any (`INSERT INTO schooltousers (school, user) VALUES ($1,$2)`, [admin.school, user.id])
+				return t.one (`INSERT INTO users (username, password, profile_image, status, usertype, email) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`, [
+					admin.username, bcrypt.hashSync (admin.password), admin.profile_image, admin.status, admin.usertype, admin.email])
+					.then (user =>  {
+						console.log ('here: ', user, admin.school, user.id);
+						return t.any (`INSERT INTO schooltousers (school, "user") VALUES ($1,$2)`, [admin.school, user.id]);
+					}, error => {
+						console.log ('error', error);
+						return error;
 					})
-					.then (t.batch)
 			})
 			.then (
 				done => {
+					console.log ('done: ', done);
 					response.json ({
 						done : true,
 						id: done.id
 					});
 				}, err => {
+					console.log ('err: ', err);
 					response.json ({
 						done:false,
 						id:0
@@ -279,11 +287,13 @@ exports = module.exports = function (app) {
 				}
 			);
 		} else {
+			console.log (admin);
 			response.status (404).json ({
 				done:false,
 				id:0
 			});
 		}
+		
 	});
 
 	app.post ('/api/admin/createScholarship', app.scholarship_upload, (request, response) => {
@@ -536,27 +546,31 @@ exports = module.exports = function (app) {
 	app.post ('/api/admin/editSchoolAdmin', app.school_admin_upload, (request, response) => {
 		var admin = request.body;
 
-		if (admin.username && admin.password && admin.profile_image && admin.status && admin.usertype && admin.email && admin.id) {
+		if (admin.username && admin.password && admin.status && admin.usertype && admin.email && admin.id && admin.school) {
 
 			admin.profile_image = request.file ? request.file.filename : admin.profile_image || '';
 			admin.password 		= (bcrypt.compareSync (admin.pwd, admin.password)) ? admin.password : bcrypt.hashSync (admin.pwd);
 
-			db.one (`UPDATE users SET username=$1, password=$2, profile_image=$3, status=$4, usertype=$5, email=$6 WHERE id=$7`, [
+			db.one (`UPDATE users SET username=$1, password=$2, profile_image=$3, status=$4, usertype=$5, email=$6 WHERE id=$7 returning profile_image`, [
 				admin.username, bcrypt.hashSync (admin.password), admin.profile_image, admin.status, admin.usertype, admin.email, admin.id]
 			).then (
 				done => {
 					response.json ({
-						done : true
+						done : true,
+						image:done.profile_image
 					});
 				}, err => {
 					response.json ({
-						done:false
+						done:false,
+						image:null
 					});
 				}
 			);
 		} else {
+			console.log ('something missing');
 			response.status (404).json ({
-				done:false
+				done:false,
+				image:null
 			});
 		}
 	});

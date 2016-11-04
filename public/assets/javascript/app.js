@@ -25,6 +25,7 @@ angular.module ('app', ['ngRoute', 'ngAnimate', 'angular-loading-bar', 'checklis
 	$rootScope.api.funding			= '/api/funding';
 	$rootScope.api.english			= '/api/english';
 	$rootScope.api.institutionTypes	= '/api/institution_types';
+	$rootScope.api.excel_to_json	= '/api/excel_to_json';
 
 	$rootScope.api.login 			= '/api/authenticate';
 	$rootScope.api.sessions			= '/api/session';

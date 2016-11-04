@@ -80,6 +80,32 @@ module.exports = function (app) {
 		);
 	});
 
+	app.post ('/api/excel_to_json', app.tmp_storage, function (request, response, next) {
+		var file = request.file ? request.file : null;
+		var type = request.body.type ? request.body.type : 0;
+
+		if (file !== null) {
+			app.excel ({
+				input		: request.file.path,
+				output 		: null
+			}, (err, records) => {
+				if (!err) {
+					response.json ({
+						data: records
+					});
+				} else {
+					console.log (err);
+					response.json ({
+						data:[]
+					});
+				}
+			});
+		} else {
+			response.status (404);
+		}
+
+	});
+
 	app.post ('/api/single_news',  function (request, response, next) {
 		var id  = request.body.id || 0;
 		if (id !== 0) {
@@ -169,7 +195,6 @@ module.exports = function (app) {
 						schools:data 
 					}); 
 				}, err => { 
-					console.log (err);
 					response.json ({ 
 						schools:[] 
 					}); 
@@ -338,22 +363,19 @@ module.exports = function (app) {
 	});
 
 	app.post ('/api/verifyemail', (request, response, next) => {
-		console.log ('email', request.body);
-
+		
 		if (request.body.email) {
-			db.any ('SELECT * FROM users WHERE email=$1', [request.body.email])
+			db.any ('SELECT * FROM users WHERE email=$1 AND id != $2', [request.body.email, request.body.id])
 			.then (
 				found => {
+					console.log ('found: ', found);
 					if (found.length >= 1) {
-						console.log ('found: email ', found);
 						response.status (200).json ({ valid: true });
 					}
 					else {
-						console.log ('notfound: email ', found);
 						response.status (200).json ({ valid: false });	
 					}
 				}, err => {
-					console.log ('notfound err: ', err);
 					response.status (200).json ({ valid: false });
 				}
 			);
@@ -366,19 +388,16 @@ module.exports = function (app) {
 
 	app.post ('/api/verifyusername', (request, response, next) => {
 		if (request.body.username) {
-			db.any ('SELECT * FROM users WHERE username=$1', [request.body.username])
+			db.any ('SELECT * FROM users WHERE username=$1 AND id!=$2', [request.body.username, request.body.id])
 			.then (
 				found => {
 					if (found.length >= 1) {
-						console.log ('found: username', found);
 						response.status (200).json ({ valid: true });
 					}
 					else {
-						console.log ('notfound: username ', found);
 						response.status (200).json ({ valid: false });	
 					}
 				}, err => {
-					console.log ('notfound err: ', err);
 					response.status (200).json ({ valid: false });
 				}
 			);

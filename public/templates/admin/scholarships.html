@@ -8,15 +8,15 @@
 		<div class="col-sm-10 p-r-05 p-l-05" >
 			<div class="col-sm-4 m-b-05 p-l-05 p-r-05">
 				<div class="panel m-b-05">
-					<h5 class="panel-heading m-b-00 m-t-00 text-green bold text-600">
+					<h5 class="panel-heading m-b-00 m-t-00 text-green bold">
 						Scholarships
-						<span ng-class="['label', 'label-success', 'float-right']" ng-bind="scholarships.length"></span>
+						<span ng-class="['label', 'label-success', 'float-right', 'text-100']" ng-bind="app.scholarships.length"></span>
 					</h5>
 					<div class="panel-body p-t-00">
 						<ul class="list-group">
 							<li class="list-group-item flex" dir-paginate="n in app.scholarships | itemsPerPage: 15">
 								<div class="p-t-05 p-l-10 xs-p-t-00">
-									<h5 class="m-t-00 m-b-05 bold font-12 hand" ng-click="selectScholarship (n);">
+									<h5 class="m-t-00 m-b-05 font-12 hand" ng-click="selectScholarship (n);">
 										<p class="text-uppercase text-blue p-b-05" ng-bind="n.name"></p>
 										<small ng-bind-html="n.details | htmlToPlaintextTruncate:200" 
 											class="font-12 text-600 text-black p-t-10"></small>

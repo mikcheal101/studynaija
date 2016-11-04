@@ -270,16 +270,18 @@ angular.module ('admin.service', [])
 
 	svc.createSchAdmin = function (param) {
 		var q = $q.defer ();
+		console.log (param);
+
 		Upload.upload ({
 			url:$rootScope.admin.createSchAdmin, 
 			data: {
-				username: param.username,
-				password: param.password,
-				status: 3,
-				file: param.profile_image,
-				usertype:param.usertype,
-				email: param.email,
-				school: param.school
+				username	: param.username,
+				password	: param.password,
+				status		: 3,
+				file 		: Upload.rename (param.profile_image, param.username.replace (/ /g, '_')),
+				usertype 	: param.usertype,
+				email 		: param.email,
+				school 		: param.school
 			}
 		})
 		.then (
@@ -418,18 +420,21 @@ angular.module ('admin.service', [])
 
 	svc.editWebAdmin = function (param) {
 		var q = $q.defer ();
-		Upload.upload ({ url: $rootScope.admin.editWebAdmin, data: {
-			file: param.file ? Upload.rename (param.file, param.username.replace (/ /g, '_')) : null,
-			profile_image:param.profile_image,
-			pwd: param.pwd,
-			password:param.password,
-			username: param.username,
-			email:param.email,
-			status: param.status,
-			usertype: param.usertype,
-			email: param.email,
-			id: param.id
-		}})
+		Upload.upload ({ 
+			url: $rootScope.admin.editWebAdmin, 
+			data: {
+				file: param.file ? Upload.rename (param.file, param.username.replace (/ /g, '_')) : null,
+				profile_image:param.profile_image,
+				pwd: param.pwd,
+				password:param.password,
+				username: param.username,
+				email:param.email,
+				status: param.status,
+				usertype: param.usertype,
+				email: param.email,
+				id: param.id
+			}
+		})
 		.then (
 			y => {
 				q.resolve (y.data);
@@ -442,16 +447,19 @@ angular.module ('admin.service', [])
 
 	svc.editSchAdmin = function (param) {
 		var q = $q.defer ();
+
 		Upload.upload ({ url: $rootScope.admin.editSchAdmin, data: {
-			file: param.file,
-			pwd: param.pwd,
-			password:param.password,
-			username: param.username,
-			email:param.email,
-			status: param.status,
-			usertype: param.usertype,
-			email: param.email,
-			id: param.id
+			file 		: param.file ? Upload.rename (param.file, param.username.replace (/ /g, '_')) : null,
+			pwd 		: param.pwd,
+			password 	: param.password,
+			username 	: param.username,
+			email 		: param.email,
+			status 		: param.status,
+			usertype 	: param.usertype,
+			email 		: param.email,
+			id 			: param.id,
+			school 		: param.school,
+			profile_image:param.profile_image
 		}})
 		.then (
 			y => {
@@ -562,6 +570,29 @@ angular.module ('admin.service', [])
 				else q.reject (false);
 			}, n => {
 				q.reject (false);
+			}
+		);
+		return q.promise;
+	};
+
+	svc.excel_to_json = function (param) {
+		var q = $q.defer ();
+		
+		//$http.post ($rootScope.api.excel_to_json, {type:param.type})
+		Upload.upload({url 	: $rootScope.api.excel_to_json,
+			method	: 'POST',
+			data 	: {
+				type 	: param.type,
+				file 	: param.file
+			}
+		})
+		.then (
+			yes => {
+				q.resolve (yes.data);
+			}, no => {
+				q.reject (no);
+			}, progress => {
+				q.notify (progress);
 			}
 		);
 		return q.promise;

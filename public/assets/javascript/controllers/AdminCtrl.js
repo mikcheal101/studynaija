@@ -25,7 +25,7 @@ angular.module ('admin.controller', [])
 	$scope.institution 			= {};
 
 	$scope.selectApplicant 		= function (applicant) {
-		$scope.applicant = applicant;
+		$scope.applicant 		= applicant;
 	};
 	$scope.selectWebAdmin		= function (param) {
 		$scope.webadmin 		= param;
@@ -48,6 +48,7 @@ angular.module ('admin.controller', [])
 	$scope.selectInstitution 	= function (param) {
 		$scope.institution 		= param;
 	};
+	$scope.selectSchAdminImage 	= function (param) {} 
 
 	// save scholarship
 	$scope.commitScholarship = function (form) {
@@ -309,33 +310,46 @@ angular.module ('admin.controller', [])
 
 	// school admin
 	$scope.clearSchAdmin = function () {
-
+		$scope.schAdmin = {id:0};
 	};
 	$scope.commitSchAdmin = function (form) {
 		if (form.$valid) {
-			if ($scope.schAdmin.id) {
+
+			if ($scope.schAdmin.__id) {
 				AdminService.editSchAdmin ({
 					username		: $scope.schAdmin.username,
-					password 		: $scope.schAdmin.pwd,
-					profile_image	: $scope.schAdmin.image,
+					pwd 			: $scope.schAdmin.pwd || '',
+					password 		: $scope.schAdmin.password,
+					file 			: $scope.schAdmin.image || null,
 					email 			: $scope.schAdmin.email,
 					school 			: $scope.schAdmin.school,
-					id 				: $scope.schAdmin.id
+					usertype		: $scope.schAdmin.usertype,
+					status 			: $scope.schAdmin.status,
+					id 				: $scope.schAdmin.__id,
+					profile_image	: $scope.schAdmin.profile_image
 				})
 				.then (done=> {
+					console.log ('done:', done);
+					var y = $scope.app.schAdmins [$scope.app.schAdmins.indexOf ($scope.schAdmin)];
+					y.profile_image = done.image + '?decache=' + Math.random();
+
+					$scope.clearSchAdmin ();
 					form.$setPristine();
 					form.$setUntouched();	
 				});
 			} else {
-				
+
 				AdminService.createSchAdmin ({
 					username		: $scope.schAdmin.username,
 					password 		: $scope.schAdmin.pwd,
 					profile_image	: $scope.schAdmin.image,
 					email 			: $scope.schAdmin.email,
-					school 			: $scope.schAdmin.school
+					school 			: $scope.schAdmin.school,
+					usertype		: $scope.schAdmin.usertype
 				})
 				.then (done => {
+					$scope.app.schAdmins.push ($scope.schAdmin);
+
 					$scope.schAdmin.id = done.id;
 					$scope.schAdmin.profile_image = done.image;
 					$scope.clearSchAdmin ();
@@ -345,11 +359,11 @@ angular.module ('admin.controller', [])
 			}
 		}
 	};
-	$scope.selectSchAdminImage = function () {
-
-	};
 	$scope.dropSchAdmin = function () {
-		dropSchAdmin
+		//dropSchAdmin
+	};
+	$scope.setSchAdmin = function (param) {
+		$scope.schAdmin = param;
 	};
 
 
@@ -416,7 +430,6 @@ angular.module ('admin.controller', [])
 			}
 		);
 	};
-
 	$scope.getImage = function (img, var_) {
 		var_ = img;
 	};
@@ -514,6 +527,46 @@ angular.module ('admin.controller', [])
 		$scope.admin.profile_image = files;
 	};
 
+	$scope.institutionUpload 			= {};
+	$scope.institutionUpload.error 		= "";
+	$scope.institutionUpload.success 	= "";
+	$scope.institutionUpload.status 	= 0;
+	$scope.institutionUpload.file 		= {name:''};
+	$scope.institutionUpload.file_size 	= 0;
+	$scope.institutionUpload.upload 	= function ($file) {
+		if ($file) {
+			$scope.institutionUpload.file 		= $file;
+			$scope.institutionUpload.file_size 	= Math.round ($scope.institutionUpload.file.size / 1000);
+			
+			AdminService.excel_to_json ({file:$file, type:1})
+			.then (
+				result => {
+					var data = result.data;
+					$scope.institutionUpload.status = 100;
+
+					if (data) 
+						$scope.institutionUpload.success = 'upload complete';
+					else 
+						$scope.institutionUpload.error = 'Error uploading files, Contact system admin';
+				}, 
+				error => {
+					$scope.institutionUpload.status = 100;
+					$scope.institutionUpload.error 	=  'Compilation Error, Please conact Administrator!';
+				}, 
+				progress => {
+					$scope.institutionUpload.status = Math.round ((progress.loaded / progress.total) * 100) - 10;
+				}
+			);		
+		}
+	};
+	$scope.institutionUpload.clear = function () {
+		$scope.institutionUpload.error 		= "";
+		$scope.institutionUpload.success 	= "";
+		$scope.institutionUpload.status 	= 0;
+		$scope.institutionUpload.file 		= {name:''};
+	};
+
+	$scope.uploadDisciplines = function () {};
 
 
 });

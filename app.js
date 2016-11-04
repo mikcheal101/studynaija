@@ -11,9 +11,20 @@ var multer          = require ('multer');
 var flash			= require ('connect-flash');
 var session			= require ('express-session');
 var fs 				= require ('fs');
+var excel 			= require("xlsx-to-json-lc");
 
 
 // configuation ===================================================
+// 
+var tmp 				= multer.diskStorage ({
+	destination : function (req, file, cb) {
+		cb (null, 'public/uploads/tmp')
+	}, 
+	filename : function (req, file, cb) {
+		cb (null, 'tmp_file')
+	}
+});
+
 var admin_upload		= multer.diskStorage ({ 
 	destination : function (req, file, cb) {
 		cb (null, 'public/uploads/admin/')	
@@ -77,6 +88,7 @@ var scholarship_upload	= multer.diskStorage ({
 	}
 });
 
+app.excel 				= excel;
 app.io 					= socket;
 app.path 				= path;
 app.fs 					= fs;
@@ -86,6 +98,7 @@ app.conn 				= process.env.DATABASE_URL || 'postgres://mikkytrionze:mikkytrionze
 app.db 					= app.pgp (app.conn);
 app.bcrypt 				= require ('bcryptjs');
 
+app.tmp_storage 		= multer ({ storage: tmp}).single ('file');
 app.applicant_upload 	= multer ({ storage: applicant_upload}).single ('file');
 app.admin_upload 		= multer ({ storage: admin_upload }).single ('file');	 
 app.school_admin_upload	= multer ({ storage: school_admin_upload }).single ('file');	

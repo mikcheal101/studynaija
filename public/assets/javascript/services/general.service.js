@@ -286,10 +286,10 @@ angular.module ('app.service', [])
 	};
 
 	// verify email address
-	svc.verifyEmail = function (email) {
+	svc.verifyEmail = function (email, id=0) {
 		var defer = $q.defer ();
 		$http
-		.post ($rootScope.api.verifyEmail, {email:email})
+		.post ($rootScope.api.verifyEmail, {email:email, id:id})
 		.then (
 			gotten => {
 				if (gotten.data.valid)
@@ -304,9 +304,9 @@ angular.module ('app.service', [])
 	};
 
 	//verify username
-	svc.verifyUsername = function (username) {
+	svc.verifyUsername = function (username, id=0) {
 		var defer = $q.defer ();
-		$http.post ($rootScope.api.verifyUsername, {username:username})
+		$http.post ($rootScope.api.verifyUsername, {username:username, id:id})
 		.then (
 			gotten => {
 				if (gotten.data.valid)

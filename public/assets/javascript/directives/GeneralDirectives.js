@@ -8,13 +8,16 @@ angular.module ('app.directives', [])
 				if (c.$isEmpty (mV)) return $q.when ();
 				var defer = $q.defer ();
 
+				var id = angular.isUndefined(a.myId) ? 0 : a.myId;
+				
 				if (a.myemail === mV) {
 					defer.resolve (mV);
 				} else {
 					AppService
-					.verifyEmail (mV)
+					.verifyEmail (mV, id)
 					.then (
 						notfound => {
+
 							defer.resolve (notfound);
 						}, found => {
 							defer.reject (found);
@@ -34,12 +37,13 @@ angular.module ('app.directives', [])
 			c.$asyncValidators.username = (mV, vV) => {
 				if (c.$isEmpty (mV)) return $q.when ();
 				var defer = $q.defer ();
+				var id = angular.isUndefined(a.myId) ? 0 : a.myId;
 
 				if (a.myusername === mV) {
 					defer.resolve (mV);
 				} else {
 					AppService
-					.verifyUsername (mV)
+					.verifyUsername (mV, id)
 					.then (
 						notfound => {
 							defer.resolve (notfound);
